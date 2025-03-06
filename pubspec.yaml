@@ -1,0 +1,52 @@
+name: orion_safeguard
+description: "Orion SafeGuard"
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.4
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  flutter_svg: ^2.0.10+1
+  bot_toast: ^4.1.3
+  image_picker: ^1.1.2
+  logger: ^2.4.0
+  flutter_native_splash: ^2.4.1
+  cached_network_image: ^3.4.0
+  flutter_bloc: ^8.1.6
+  get_it: ^7.7.0
+  equatable: ^2.0.5
+  dio: ^5.5.0+1
+  shared_preferences: ^2.3.1
+  permission_handler: ^11.3.1
+  fluttertoast: ^8.2.6
+  intl: ^0.20.2
+  sizer: ^3.0.4
+  google_fonts:
+  url_launcher: ^6.3.1
+  file_picker:
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+
+  uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/images/svg/
+    - assets/images/png/
+    - assets/images/gif/
+    - assets/icons/
+    - assets/icons/png/
+    - assets/icons/svg/
+
+  fonts:
+    - family: DmSans
+      fonts:
+        - asset: assets/fonts/DMSans_24pt-Regular.ttf
