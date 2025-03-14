@@ -1,22 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:orion_safeguard/constants/app_text_styles.dart';
+import 'package:orion_safeguard/config/constants/app_text_styles.dart';
 import 'package:orion_safeguard/generated/assets.dart';
 import 'package:orion_safeguard/utils/heights_and_widths.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../constants/app_colors.dart';
+import '../../config/constants/app_colors.dart';
+import '../../utils/helper_widgets.dart';
+import '../dashboard/model/shifts_model/shifts_model.dart';
 
 class PreviousShiftWidget extends StatelessWidget {
   final String shiftName;
   final String location;
   final String date;
+  final String status;
 
   const PreviousShiftWidget(
       {super.key,
       required this.shiftName,
       required this.location,
-      required this.date});
+      required this.date,
+      required this.status});
 
   @override
   Widget build(BuildContext context) {
@@ -67,11 +71,13 @@ class PreviousShiftWidget extends StatelessWidget {
                 ],
               ),
               Text(
-                'Completed Shift',
+                shiftStatus(status),
                 style: AppTextStyles.robotoMedium(
                     fontSize: 14.0,
                     fontWeight: FontWeight.w400,
-                    color: AppColors.green),
+                    color: status == ShiftModel.keyShiftStatusCompleted
+                        ? AppColors.green
+                        : AppColors.primaryColor),
               ),
             ],
           ),

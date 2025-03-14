@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:orion_safeguard/constants/app_colors.dart';
-import 'package:orion_safeguard/constants/app_text_styles.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:orion_safeguard/config/constants/app_colors.dart';
+import 'package:orion_safeguard/config/constants/app_text_styles.dart';
 import 'package:orion_safeguard/modules/dashboard/shift_pages/active_shift_page.dart';
 import 'package:orion_safeguard/modules/dashboard/shift_pages/completed_shift_page.dart';
 
 import '../../../utils/heights_and_widths.dart';
 import '../../screen_layout_widget/base_view_layout.dart';
+import '../cubits/my_shifts_cubits/my_shifts_cubit.dart';
 
 class MyShiftsScreen extends StatelessWidget {
   const MyShiftsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    context.read<MyShiftsCubit>().activeShifts();
+    context.read<MyShiftsCubit>().completedShifts();
     return BaseViewLayout(
       pageTitle: 'My Shifts',
       child: DefaultTabController(
@@ -78,14 +82,3 @@ class MyShiftsScreen extends StatelessWidget {
     );
   }
 }
-
-// class ActiveShiftWidget extends StatelessWidget {
-//   const ActiveShiftWidget({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       child: ,
-//     );
-//   }
-// }

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:orion_safeguard/constants/app_text_styles.dart';
+import 'package:orion_safeguard/config/constants/app_text_styles.dart';
 import 'package:orion_safeguard/utils/heights_and_widths.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../constants/app_colors.dart';
+import '../../config/constants/app_colors.dart';
 import '../../generated/assets.dart';
 import 'custom_button.dart';
 

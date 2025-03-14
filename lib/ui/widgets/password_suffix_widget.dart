@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../constants/constants.dart';
+import '../../config/constants/constants.dart';
 
 class PasswordSuffixIcon extends StatelessWidget {
   const PasswordSuffixIcon({

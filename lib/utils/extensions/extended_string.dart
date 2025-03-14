@@ -4,14 +4,14 @@ extension ExtendedString on String {
     return replaceAll(' ', '').trim();
   }
 
-  // user => User
+  // authentication => User
   String toCapitalize() {
     return isEmpty
         ? ''
         : '${this[0].toUpperCase()}${substring(1).toLowerCase()}';
   }
 
-  // user name => User Name
+  // authentication name => User Name
   String toCapitaliseEachWordFirstChar() {
     return replaceAll(RegExp(' +'), ' ')
         .split(' ')

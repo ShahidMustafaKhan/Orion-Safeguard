@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:orion_safeguard/modules/screen_layout_widget/screen_layout.dart';
 
-import '../../../constants/app_colors.dart';
-import '../../../constants/app_text_styles.dart';
+import '../../../config/constants/app_colors.dart';
+import '../../../config/constants/app_text_styles.dart';
 import '../../../generated/assets.dart';
 import '../../../ui/button/primary_button.dart';
 import '../../../utils/heights_and_widths.dart';

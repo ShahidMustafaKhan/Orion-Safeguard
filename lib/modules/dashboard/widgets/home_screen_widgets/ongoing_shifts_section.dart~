@@ -1,0 +1,166 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:orion_safeguard/modules/dashboard/cubits/shift_cubits/shift_cubit.dart';
+import 'package:sizer/sizer.dart';
+
+import '../../../../config/constants/app_colors.dart';
+import '../../../../config/constants/app_text_styles.dart';
+import '../../../../config/routes/nav_router.dart';
+import '../../../../generated/assets.dart';
+import '../../../../utils/heights_and_widths.dart';
+import '../../../../utils/helper_widgets.dart';
+import '../../../../utils/time_utils.dart';
+import '../../../screen_layout_widget/custom_see_all_row.dart';
+import '../../../shift_details/pages/ongoing_shift_details_page.dart';
+import '../../model/shifts_model/shifts_model.dart';
+
+class OngoingShiftsSection extends StatefulWidget {
+  const OngoingShiftsSection({
+    super.key,
+  });
+
+  @override
+  State<OngoingShiftsSection> createState() => _OngoingShiftsSectionState();
+}
+
+class _OngoingShiftsSectionState extends State<OngoingShiftsSection> {
+  @override
+  void initState() {
+    context.read<ShiftCubit>().ongoingShift();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    context.read<ShiftCubit>().cancelTimer();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        // height: 300,
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Colors.grey.shade300,
+          ),
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: BlocBuilder<ShiftCubit, ShiftState>(
+            buildWhen: (previous, next) =>
+                previous.onGoingShifts != next.onGoingShifts,
+            builder: (context, state) {
+              ShiftModel? onGoingShifts = state.onGoingShifts.data;
+              return Padding(
+                padding:
+                    EdgeInsets.symmetric(horizontal: 16.sp, vertical: 13.sp),
+                child: Column(
+                  children: [
+                    CustomSeeAllRowWidget(
+                      text: 'On Going Shift',
+                      firstTextSize: 16.0,
+                      secondText: 'Pending',
+                      secondTextSize: 12.0,
+                      textColor: AppColors.primaryColor,
+                      fun: () {
+                        NavRouter.push(
+                            context,
+                            const OngoingShiftDetailsPage(
+                              shiftModel: null,
+                            ));
+                      },
+                    ),
+                    customDivider(
+                      vPadding: 4.0,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          flex: 5,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                onGoingShifts?.shiftName ?? '',
+                                style: AppTextStyles.robotoMedium(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                onGoingShifts?.location ?? '',
+                                style: AppTextStyles.robotoRegular(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              h2,
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                // crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SvgPicture.asset(
+                                    Assets.svgCalender,
+                                    height: 16.0,
+                                    width: 16.0,
+                                  ),
+                                  w1,
+                                  Text(formatDateTime(onGoingShifts?.createdAt),
+                                      style: AppTextStyles.robotoRegular(
+                                        fontSize: 12.0,
+                                        fontWeight: FontWeight.w400,
+                                      )),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: BlocBuilder<ShiftCubit, ShiftState>(
+                              buildWhen: (previous, next) => previous != next,
+                              builder: (context, state) {
+                                if (state.shiftDuration == null) {
+                                  return SizedBox();
+                                }
+                                return Column(
+                                  children: [
+                                    Text(
+                                      'Timer',
+                                      style: AppTextStyles.robotoMedium(
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.grey.shade500,
+                                      ),
+                                    ),
+                                    Text(
+                                      formatDuration(state.shiftDuration ?? 0),
+                                      textAlign: TextAlign.center,
+                                      style: AppTextStyles.robotoMedium(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400,
+                                        color: AppColors.black,
+                                      ),
+                                    ),
+                                    Text(
+                                      'Remaining',
+                                      style: AppTextStyles.robotoMedium(
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.normal,
+                                        color: Colors.grey.shade500,
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              }),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              );
+            }));
+  }
+}

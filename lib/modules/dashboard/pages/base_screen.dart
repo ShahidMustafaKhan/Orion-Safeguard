@@ -4,8 +4,8 @@ import 'package:orion_safeguard/modules/alerts_announcements/pages/alerts_page.d
 import 'package:orion_safeguard/modules/records/pages/record_screen.dart';
 
 import '../../screen_layout_widget/navbar.dart';
-import '../cubits/dashboard_cubit.dart';
-import '../cubits/dashboard_state.dart';
+import '../cubits/dashboard_cubits/dashboard_cubit.dart';
+import '../cubits/dashboard_cubits/dashboard_state.dart';
 import 'home_screen.dart';
 import 'my_shifts_screen.dart';
 

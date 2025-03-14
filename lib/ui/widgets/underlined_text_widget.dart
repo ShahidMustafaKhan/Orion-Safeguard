@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../constants/asset_paths.dart';
+import '../../config/constants/asset_paths.dart';
 
 class UnderlinedTextWidget extends StatelessWidget {
   final double width;

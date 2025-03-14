@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:orion_safeguard/constants/app_colors.dart';
+import 'package:orion_safeguard/config/constants/app_colors.dart';
 
 import '../../utils/time_utils.dart';
 

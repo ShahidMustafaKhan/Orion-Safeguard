@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:orion_safeguard/utils/extensions/extended_context.dart';
 
-import '../../../constants/app_colors.dart';
+import '../../config/constants/app_colors.dart';
 
 class TextTabWidget extends StatelessWidget {
   final String text;

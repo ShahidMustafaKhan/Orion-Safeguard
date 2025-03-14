@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../constants/app_colors.dart';
-import '../../../constants/app_text_styles.dart';
+import '../../../config/constants/app_colors.dart';
+import '../../../config/constants/app_text_styles.dart';
 import '../../../ui/input/input_field.dart';
 import '../../../utils/heights_and_widths.dart';
 import '../widget/custom_date_picker.dart';

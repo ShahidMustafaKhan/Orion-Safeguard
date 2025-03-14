@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../constants/app_text_styles.dart';
+import '../../../config/constants/app_text_styles.dart';
 
 class NotificationsWidget extends StatefulWidget {
   NotificationsWidget({super.key});

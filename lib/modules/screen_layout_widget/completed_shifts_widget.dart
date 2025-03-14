@@ -1,13 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:orion_safeguard/constants/app_colors.dart';
-import 'package:orion_safeguard/constants/app_text_styles.dart';
+import 'package:orion_safeguard/config/constants/app_colors.dart';
+import 'package:orion_safeguard/config/constants/app_text_styles.dart';
 
 import '../../generated/assets.dart';
 import '../../utils/heights_and_widths.dart';
 
 class CompletedShiftsWidget extends StatelessWidget {
-  const CompletedShiftsWidget({super.key});
+  final String? name;
+  final String? location;
+  final String? date;
+  final String? checkIn;
+  final String? checkOut;
+
+  const CompletedShiftsWidget(
+      {super.key,
+      required this.name,
+      required this.location,
+      required this.date,
+      required this.checkIn,
+      required this.checkOut});
 
   @override
   Widget build(BuildContext context) {
@@ -32,14 +44,14 @@ class CompletedShiftsWidget extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "Shift name",
+                  name ?? '',
                   style: AppTextStyles.robotoSemiBold(
                     fontSize: 16.0,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
                 Text(
-                  "Location of the Shift",
+                  location ?? '',
                   style: AppTextStyles.robotoRegular(
                     fontSize: 12.0,
                   ),
@@ -53,7 +65,7 @@ class CompletedShiftsWidget extends StatelessWidget {
                     ),
                     w1,
                     Text(
-                      "Nov 8, 18:00 - 01:00",
+                      date ?? '',
                       style: AppTextStyles.robotoRegular(
                         fontSize: 12.0,
                       ),
@@ -76,7 +88,7 @@ class CompletedShiftsWidget extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "10:00",
+                  checkIn ?? '',
                   style: AppTextStyles.robotoSemiBold(
                     fontSize: 14.0,
                     fontWeight: FontWeight.w500,
@@ -92,7 +104,7 @@ class CompletedShiftsWidget extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "22:00",
+                  checkOut ?? '',
                   style: AppTextStyles.robotoSemiBold(
                     fontSize: 14.0,
                     fontWeight: FontWeight.w500,

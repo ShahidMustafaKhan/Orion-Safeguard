@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:orion_safeguard/constants/app_text_styles.dart';
-import 'package:orion_safeguard/constants/constants.dart';
+import 'package:orion_safeguard/config/constants/app_text_styles.dart';
+import 'package:orion_safeguard/config/constants/constants.dart';
 import 'package:orion_safeguard/modules/common_modules/custom_dialogues/apply_for_account_approval_dialogue.dart';
 import 'package:orion_safeguard/ui/button/primary_button.dart';
 import 'package:orion_safeguard/utils/heights_and_widths.dart';

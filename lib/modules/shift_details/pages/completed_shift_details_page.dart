@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:orion_safeguard/config/config.dart';
-import 'package:orion_safeguard/modules/shift_details/pages/check_in_out_page.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../../constants/app_colors.dart';
-import '../../../constants/app_text_styles.dart';
-import '../../../ui/button/primary_button.dart';
+import '../../../config/constants/app_colors.dart';
+import '../../../config/constants/app_text_styles.dart';
 import '../../../utils/heights_and_widths.dart';
 import '../../../utils/helper_widgets.dart';
+import '../../dashboard/model/shifts_model/shifts_model.dart';
+import '../../dashboard/widgets/home_screen_widgets/upcoming_shifts_section/check_in_button.dart';
 import '../../screen_layout_widget/screen_layout.dart';
-import 'ongoing_shift_details_page.dart';
+import 'upcoming_shift_details_page.dart';
 
 class CompletedShiftDetailsPage extends StatefulWidget {
-  const CompletedShiftDetailsPage({super.key});
+  final ShiftModel? shiftModel;
+  const CompletedShiftDetailsPage({super.key, this.shiftModel});
 
   @override
   State<CompletedShiftDetailsPage> createState() =>
@@ -168,15 +168,8 @@ class _CompletedShiftDetailsPageState extends State<CompletedShiftDetailsPage> {
               ),
               customDivider(),
               h1,
-              PrimaryButton(
-                height: 50,
-                hMargin: 0,
-                backgroundColor: AppColors.green,
-                borderRadius: 16.0,
-                onPressed: () {
-                  NavRouter.push(context, const CheckInOutPage());
-                },
-                title: "Check-In",
+              CheckInButton(
+                shiftsModel: null,
               ),
             ],
           ),

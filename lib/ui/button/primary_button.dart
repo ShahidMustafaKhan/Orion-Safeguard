@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:orion_safeguard/utils/extensions/extended_context.dart';
 
-import '../../constants/app_colors.dart';
+import '../../config/constants/app_colors.dart';
 import '../../utils/heights_and_widths.dart';
 
 class PrimaryButton extends StatelessWidget {
@@ -10,6 +10,7 @@ class PrimaryButton extends StatelessWidget {
       {super.key,
       required this.onPressed,
       required this.title,
+      this.loading = false,
       this.hMargin = 16,
       this.vMargin = 10,
       this.height = 25,
@@ -35,6 +36,7 @@ class PrimaryButton extends StatelessWidget {
   final FontWeight fontWeight;
   final double? fontSize;
   final Widget? fontWidget;
+  final bool loading;
 
   @override
   Widget build(BuildContext context) {
@@ -55,17 +57,22 @@ class PrimaryButton extends StatelessWidget {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            Center(
-              child: Text(
-                title,
-                textAlign: TextAlign.center,
-                style: context.textTheme.titleLarge!.copyWith(
-                  fontWeight: fontWeight,
-                  color: titleColor ?? Colors.white,
-                  fontSize: fontSize,
-                ),
-              ),
-            ),
+            loading
+                ? Center(
+                    child: CircularProgressIndicator(
+                    color: AppColors.white,
+                  ))
+                : Center(
+                    child: Text(
+                      title,
+                      textAlign: TextAlign.center,
+                      style: context.textTheme.titleLarge!.copyWith(
+                        fontWeight: fontWeight,
+                        color: titleColor ?? Colors.white,
+                        fontSize: fontSize,
+                      ),
+                    ),
+                  ),
           ],
         ),
       ),

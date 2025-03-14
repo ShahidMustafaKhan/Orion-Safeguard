@@ -1,0 +1,44 @@
+import 'package:flutter/cupertino.dart';
+import 'package:orion_safeguard/core/di/service_locator.dart';
+
+import '../storage_service/storage_service.dart';
+
+class SessionController {
+  final localStorage = StorageService(sharedPreferences: getIt());
+
+  static final SessionController _instance = SessionController._internal();
+
+  bool isLogin = false;
+  String? objectId;
+  String? token;
+
+  SessionController._internal(); // private constructor
+
+  factory SessionController() {
+    return _instance;
+  }
+
+  void savedUserInPreference(String objectId, String token) {
+    localStorage.setString("token", token);
+    localStorage.setString("objectId", objectId);
+    localStorage.setBool("isLogin", true);
+  }
+
+  void getUserFromPreference() {
+    try {
+      var sessionToken = localStorage.getString("token");
+      var userObjectId = localStorage.getString("objectId");
+      var isLogin = localStorage.getBool("isLogin");
+
+      if (sessionToken.isNotEmpty) {
+        SessionController().token = sessionToken;
+      }
+      if (userObjectId.isNotEmpty) {
+        SessionController().objectId = userObjectId;
+      }
+      SessionController().isLogin = isLogin == true ? true : false;
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+}

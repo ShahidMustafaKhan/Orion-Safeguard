@@ -1,10 +1,12 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:orion_safeguard/constants/app_text_styles.dart';
+import 'package:orion_safeguard/config/constants/app_text_styles.dart';
 import 'package:orion_safeguard/ui/button/primary_button.dart';
-import '../../../constants/constants.dart';
+
+import '../../../config/constants/constants.dart';
 import '../../../generated/assets.dart';
 import '../../../utils/heights_and_widths.dart';
 

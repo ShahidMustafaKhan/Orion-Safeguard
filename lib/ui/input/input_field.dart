@@ -3,16 +3,17 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:orion_safeguard/utils/extensions/extended_context.dart';
 
-import '../../constants/app_colors.dart';
-import '../../constants/asset_paths.dart';
+import '../../config/constants/app_colors.dart';
+import '../../config/constants/asset_paths.dart';
 import '../../utils/validators/validators.dart';
 import '../widgets/password_suffix_widget.dart';
 
 class InputField extends StatefulWidget {
   const InputField({
-    required this.controller,
+    this.controller,
     required this.label,
     this.textInputAction,
+    this.focusNode,
     this.keyboardType = TextInputType.text,
     this.validator,
     this.onFieldSubmitted,
@@ -48,7 +49,8 @@ class InputField extends StatefulWidget {
   });
 
   final String? fieldTitle;
-  final TextEditingController controller;
+  final TextEditingController? controller;
+  final FocusNode? focusNode;
   final String label;
   final TextInputAction? textInputAction;
   final TextInputType keyboardType;
@@ -122,6 +124,7 @@ class _InputFieldState extends State<InputField> {
               textInputAction: widget.textInputAction,
               obscureText: widget.obscureText,
               validator: validator,
+              focusNode: widget.focusNode,
               enabled: true,
               onTap: widget.onTap,
               autofocus: widget.autoFocus,

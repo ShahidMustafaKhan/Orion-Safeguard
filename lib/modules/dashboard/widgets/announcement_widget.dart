@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:orion_safeguard/config/config.dart';
-import 'package:orion_safeguard/constants/app_colors.dart';
-import 'package:orion_safeguard/constants/app_text_styles.dart';
+import 'package:orion_safeguard/config/constants/app_colors.dart';
+import 'package:orion_safeguard/config/constants/app_text_styles.dart';
 import 'package:orion_safeguard/modules/alerts_announcements/pages/full_alert_screen.dart';
 import 'package:orion_safeguard/ui/widgets/on_click.dart';
 

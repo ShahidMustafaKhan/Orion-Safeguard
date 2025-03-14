@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:orion_safeguard/constants/app_colors.dart';
-import 'package:orion_safeguard/constants/app_text_styles.dart';
+import 'package:orion_safeguard/config/constants/app_colors.dart';
+import 'package:orion_safeguard/config/constants/app_text_styles.dart';
 import 'package:orion_safeguard/modules/alerts_announcements/pages/full_alert_screen.dart';
 import 'package:orion_safeguard/modules/alerts_announcements/widgets/decline_reason_dialogue.dart';
 import 'package:orion_safeguard/modules/screen_layout_widget/base_view_layout.dart';

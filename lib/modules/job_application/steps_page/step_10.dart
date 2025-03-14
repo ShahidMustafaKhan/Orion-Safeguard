@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:orion_safeguard/constants/app_colors.dart';
-import 'package:orion_safeguard/constants/app_text_styles.dart';
+import 'package:orion_safeguard/config/constants/app_colors.dart';
+import 'package:orion_safeguard/config/constants/app_text_styles.dart';
 import 'package:sizer/sizer.dart';
-import '../../../constants/asset_paths.dart';
+
+import '../../../config/constants/asset_paths.dart';
 import '../../../ui/input/input_field.dart';
 import '../../../utils/heights_and_widths.dart';
 import '../widget/custom_date_picker.dart';

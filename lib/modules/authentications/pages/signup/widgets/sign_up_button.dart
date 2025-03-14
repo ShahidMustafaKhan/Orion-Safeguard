@@ -1,0 +1,57 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../../../config/constants/constants.dart';
+import '../../../../../config/routes/nav_router.dart';
+import '../../../../../ui/button/primary_button.dart';
+import '../../../../../utils/display/display_utils.dart';
+import '../../../../../utils/enums.dart';
+import '../../../../dashboard/pages/base_screen.dart';
+import '../../../cubit/signup/signup_cubit.dart';
+
+class SignUpButton extends StatelessWidget {
+  final GlobalKey<FormState> globalKey;
+  const SignUpButton({
+    super.key,
+    required this.globalKey,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<SignUpCubit, SignUpState>(
+      listenWhen: (previous, next) =>
+          previous.postApiStatus != next.postApiStatus,
+      listener: (context, state) {
+        if (state.postApiStatus == PostApiStatus.success) {
+          DisplayUtils.showSuccessToast(
+              context, "Account created Successfully");
+          NavRouter.pushAndRemoveUntil(context, const BaseScreen());
+        } else if (state.postApiStatus == PostApiStatus.error) {
+          DisplayUtils.showErrorToast(context, state.message);
+        }
+      },
+      child: BlocBuilder<SignUpCubit, SignUpState>(
+          buildWhen: (previous, next) => true,
+          builder: (context, state) {
+            return PrimaryButton(
+              onPressed: () {
+                if (globalKey.currentState!.validate()) {
+                  context.read<SignUpCubit>().onSignUpButtonClicked();
+                  // showDialog(
+                  //     context: context,
+                  //     builder: (context) => const SelectUserDialogue());
+                }
+              },
+              title: "Sign Up",
+              loading: state.postApiStatus == PostApiStatus.loading,
+              backgroundColor: AppColors.primaryColor,
+              borderRadius: 12.0,
+              height: buttonHeight,
+              fontSize: 16.0,
+              fontWeight: FontWeight.bold,
+              hMargin: 0.0,
+            );
+          }),
+    );
+  }
+}

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../constants/app_colors.dart';
-import '../../constants/asset_paths.dart';
+import '../../config/constants/app_colors.dart';
+import '../../config/constants/asset_paths.dart';
 
 /// headline large 24 800
 /// headline medium 20 800

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../constants/app_colors.dart';
-import '../../constants/asset_paths.dart';
+import '../../config/constants/app_colors.dart';
+import '../../config/constants/asset_paths.dart';
 
 class TextWithCheckBox extends StatefulWidget {
   final String title;

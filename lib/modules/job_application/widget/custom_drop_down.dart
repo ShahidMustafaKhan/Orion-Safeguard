@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:orion_safeguard/constants/app_colors.dart';
-import 'package:orion_safeguard/constants/constants.dart';
+import 'package:orion_safeguard/config/constants/constants.dart';
 import 'package:orion_safeguard/utils/heights_and_widths.dart';
 
 class CustomDropdown<T> extends StatelessWidget {

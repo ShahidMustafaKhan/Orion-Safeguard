@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../../../constants/app_text_styles.dart';
+import '../../../config/constants/app_text_styles.dart';
 import '../../../generated/assets.dart';
 import '../../../utils/heights_and_widths.dart';
 import '../../../utils/helper_widgets.dart';

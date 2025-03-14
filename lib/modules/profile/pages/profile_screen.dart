@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:orion_safeguard/constants/app_colors.dart';
+import 'package:orion_safeguard/config/constants/app_colors.dart';
 import 'package:orion_safeguard/generated/assets.dart';
-import 'package:orion_safeguard/modules/authentications/pages/signin_screen.dart';
+import 'package:orion_safeguard/modules/authentications/pages/signIn/signin_screen.dart';
 import 'package:orion_safeguard/modules/screen_layout_widget/screen_layout.dart';
 import 'package:orion_safeguard/ui/button/primary_button.dart';
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:orion_safeguard/constants/app_text_styles.dart';
-import 'package:orion_safeguard/constants/constants.dart';
+import 'package:orion_safeguard/config/constants/app_text_styles.dart';
+import 'package:orion_safeguard/config/constants/constants.dart';
 import 'package:orion_safeguard/modules/job_application/steps_page/step_1.dart';
 import 'package:orion_safeguard/modules/job_application/steps_page/step_10.dart';
 import 'package:orion_safeguard/modules/job_application/steps_page/step_5.dart';

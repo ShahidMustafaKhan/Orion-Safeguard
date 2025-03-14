@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../constants/asset_paths.dart';
+import '../../config/constants/asset_paths.dart';
 
 class LogoWidget extends StatelessWidget {
   const LogoWidget({super.key});

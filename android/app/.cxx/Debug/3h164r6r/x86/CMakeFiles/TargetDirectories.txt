@@ -1,0 +1,2 @@
+C:/Users/all/StudioProjects/orion_safeguard-master/android/app/.cxx/Debug/3h164r6r/x86/CMakeFiles/edit_cache.dir
+C:/Users/all/StudioProjects/orion_safeguard-master/android/app/.cxx/Debug/3h164r6r/x86/CMakeFiles/rebuild_cache.dir

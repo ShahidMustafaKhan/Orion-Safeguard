@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:orion_safeguard/constants/app_colors.dart';
+import 'package:orion_safeguard/config/constants/app_colors.dart';
 
 class TitleWidgetSmall extends StatelessWidget {
   final String title;

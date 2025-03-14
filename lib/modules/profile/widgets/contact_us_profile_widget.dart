@@ -4,7 +4,7 @@ import 'package:orion_safeguard/config/config.dart';
 import 'package:orion_safeguard/modules/profile/pages/contact_us_page.dart';
 import 'package:orion_safeguard/ui/widgets/on_click.dart';
 
-import '../../../constants/app_text_styles.dart';
+import '../../../config/constants/app_text_styles.dart';
 import '../../../generated/assets.dart';
 import '../../../utils/heights_and_widths.dart';
 

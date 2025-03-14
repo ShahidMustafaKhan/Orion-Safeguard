@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:orion_safeguard/constants/app_text_styles.dart';
+import 'package:orion_safeguard/config/constants/app_text_styles.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../../constants/app_colors.dart';
+import '../../../config/constants/app_colors.dart';
 import '../../../ui/input/input_field.dart';
 import '../../../utils/heights_and_widths.dart';
 import '../widget/custom_radio_button.dart';

@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sizer/sizer.dart';
 
-import '../config/routes/nav_router.dart';
-import '../config/themes/light_theme.dart';
-// import '../modules/job_application/pages/stepper_page.dart';
-import '../modules/startup/pages/splash_page.dart';
+import '../../config/routes/nav_router.dart';
+import '../../config/themes/light_theme.dart';
+import '../../modules/startup/pages/splash_page.dart';
 import 'bloc/bloc_di.dart';
 import 'cubit/app_cubit.dart';
 

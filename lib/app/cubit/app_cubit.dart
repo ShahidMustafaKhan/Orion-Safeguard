@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../core/storage_service/storage_service.dart';
+import '../../core/services/storage_service/storage_service.dart';
 
 part 'app_state.dart';
 

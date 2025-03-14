@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../constants/styles.dart';
+import '../../config/constants/styles.dart';
 
 class GradientBaseScaffold extends StatelessWidget {
   const GradientBaseScaffold({

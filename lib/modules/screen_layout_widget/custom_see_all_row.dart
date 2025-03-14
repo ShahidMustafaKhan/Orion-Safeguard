@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:orion_safeguard/ui/widgets/on_click.dart';
 
-import '../../../constants/app_colors.dart';
-import '../../constants/app_text_styles.dart';
+import '../../config/constants/app_colors.dart';
+import '../../config/constants/app_text_styles.dart';
 
 class CustomSeeAllRowWidget extends StatelessWidget {
   final String text;

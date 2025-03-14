@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:orion_safeguard/constants/app_colors.dart';
+import 'package:orion_safeguard/config/constants/app_colors.dart';
 import 'package:orion_safeguard/ui/button/primary_button.dart';
 
 import '../../../config/routes/nav_router.dart';
@@ -11,6 +11,7 @@ class DeclineReasonDialogue extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController controller = TextEditingController();
     return Dialog(
       child: Padding(
         padding: const EdgeInsets.all(12.0),
@@ -21,7 +22,7 @@ class DeclineReasonDialogue extends StatelessWidget {
               titleWeight: FontWeight.bold,
               titleSize: 14.0,
               maxLines: 4,
-              controller: TextEditingController(),
+              controller: controller,
               label: "Enter text here...",
               borderRadius: 20.0,
               borderColor: Colors.black,
@@ -36,7 +37,8 @@ class DeclineReasonDialogue extends StatelessWidget {
               height: 50.0,
               borderRadius: 16.0,
               onPressed: () {
-                NavRouter.pop(context);
+                NavRouter.pop(context,
+                    {"reason": controller.text, "status": "submitted"});
               },
               title: "Submit",
             )

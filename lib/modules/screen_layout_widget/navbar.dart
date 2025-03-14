@@ -4,8 +4,8 @@ import 'package:orion_safeguard/ui/widgets/on_click.dart';
 import 'package:orion_safeguard/utils/extensions/extended_context.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../constants/app_colors.dart';
-import '../dashboard/model/dashboard_model.dart';
+import '../../config/constants/app_colors.dart';
+import '../dashboard/model/dashboard_model/dashboard_model.dart';
 
 class Navbar extends StatelessWidget {
   final List<BottomNavModel> tabs;

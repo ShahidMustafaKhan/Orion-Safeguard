@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:orion_safeguard/constants/app_text_styles.dart';
+import 'package:orion_safeguard/config/constants/app_text_styles.dart';
 import 'package:orion_safeguard/modules/screen_layout_widget/screen_layout.dart';
 
-import '../../../constants/app_colors.dart';
+import '../../../config/constants/app_colors.dart';
 import '../../../generated/assets.dart';
 import '../../../ui/button/primary_button.dart';
 import '../../../ui/input/input_field.dart';

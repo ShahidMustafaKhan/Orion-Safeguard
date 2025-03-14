@@ -1,26 +1,40 @@
 import 'package:get_it/get_it.dart';
+import 'package:orion_safeguard/repository/authentication/authentication_repository.dart';
+import 'package:orion_safeguard/repository/notification/notification_http_repository.dart';
+import 'package:orion_safeguard/repository/notification/notification_repository.dart';
+import 'package:orion_safeguard/repository/profile/profile_http_repository.dart';
+import 'package:orion_safeguard/repository/profile/profile_repository.dart';
+import 'package:orion_safeguard/repository/shifts/shifts_http_repository.dart';
+import 'package:orion_safeguard/repository/shifts/shifts_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../config/environment.dart';
-import '../storage_service/storage_service.dart';
+import '../../repository/authentication/authentication_http_repository.dart';
+import '../services/storage_service/storage_service.dart';
 
-final sl = GetIt.instance;
+final getIt = GetIt.instance;
 
 void setupLocator(Environment environment) async {
   /// ==================== Environment =========================
-  sl.registerLazySingleton<Environment>(() => environment);
+  getIt.registerLazySingleton<Environment>(() => environment);
 
   /// ==================== Shared Pref =========================
-  sl.registerSingletonAsync<SharedPreferences>(
+  getIt.registerSingletonAsync<SharedPreferences>(
       () async => SharedPreferences.getInstance());
 
   /// ==================== DataBase ===========================
-  sl.registerSingletonWithDependencies<StorageService>(
-    () => StorageService(sharedPreferences: sl()),
+  getIt.registerSingletonWithDependencies<StorageService>(
+    () => StorageService(sharedPreferences: getIt()),
     dependsOn: [SharedPreferences],
   );
 
   /// ==================== Networking ===========================
+  getIt.registerLazySingleton<AuthenticationRepository>(
+      () => AuthenticationHttpRepository());
+  getIt.registerLazySingleton<ProfileRepository>(() => ProfileHttpRepository());
+  getIt.registerLazySingleton<ShiftsRepository>(() => ShiftsHttpRepository());
+  getIt.registerLazySingleton<NotificationRepository>(
+      () => NotificationHttpRepository());
 
   /// ==================== Modules ===========================
 }

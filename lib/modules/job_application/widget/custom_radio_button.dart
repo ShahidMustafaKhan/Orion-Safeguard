@@ -1,5 +1,5 @@
 // import 'package:flutter/material.dart';
-// import 'package:orion_safeguard/constants/constants.dart';
+// import 'package:orion_safeguard/config/constants/config/constants.dart';
 // import 'package:orion_safeguard/utils/heights_and_widths.dart';
 // import 'package:sizer/sizer.dart';
 //
@@ -74,7 +74,7 @@
 // }
 
 import 'package:flutter/material.dart';
-import 'package:orion_safeguard/constants/constants.dart';
+import 'package:orion_safeguard/config/constants/constants.dart';
 import 'package:orion_safeguard/utils/heights_and_widths.dart';
 import 'package:sizer/sizer.dart';
 
