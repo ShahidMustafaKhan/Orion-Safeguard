@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:orion_safeguard/config/constants/app_text_styles.dart';
+import 'package:orion_safeguard/modules/profile/cubit/contact_us/contact_us_cubit.dart';
+import 'package:orion_safeguard/modules/profile/widgets/contact_us/input_email_field.dart';
 import 'package:orion_safeguard/modules/screen_layout_widget/screen_layout.dart';
 
-import '../../../config/constants/app_colors.dart';
 import '../../../generated/assets.dart';
-import '../../../ui/button/primary_button.dart';
-import '../../../ui/input/input_field.dart';
+import '../../../utils/enums.dart';
 import '../../../utils/heights_and_widths.dart';
+import '../widgets/contact_us/input_message_field.dart';
+import '../widgets/contact_us/input_name_field.dart';
+import '../widgets/contact_us/send_message_button.dart';
 
 class ContactUsPage extends StatefulWidget {
   const ContactUsPage({super.key});
@@ -19,80 +23,67 @@ class ContactUsPage extends StatefulWidget {
 class _ContactUsPageState extends State<ContactUsPage> {
   @override
   Widget build(BuildContext context) {
+    FocusNode nameFocusNode = FocusNode();
+    FocusNode emailFocusNode = FocusNode();
+    FocusNode messageFocusNode = FocusNode();
+
+    final key = GlobalKey<FormState>();
+
     return OrionLayout(
         pageTitle: 'Contact us',
-        child: SingleChildScrollView(
-            padding: const EdgeInsets.all(
-              16.0,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const ContactDetailsWidget(),
-                h2,
-                Text(
-                  "Send us a message",
-                  style: AppTextStyles.robotoSemiBold(
-                    fontSize: 20.0,
-                  ),
-                ),
-                h2,
-                Form(
+        child: BlocProvider<ContactUsCubit>(
+          create: (BuildContext context) => ContactUsCubit(),
+          child: BlocConsumer<ContactUsCubit, ContactUsState>(
+              listener: (context, state) {
+                if (state.status == PostApiStatus.success) {
+                  setState(() {});
+                }
+              },
+              buildWhen: (previous, next) => false,
+              builder: (context, state) {
+                return SingleChildScrollView(
+                    padding: const EdgeInsets.all(
+                      16.0,
+                    ),
                     child: Column(
-                  children: [
-                    InputField(
-                      titleWeight: FontWeight.bold,
-                      titleSize: 14.0,
-                      controller: TextEditingController(),
-                      label: "Enter text name",
-                      borderRadius: 20.0,
-                      borderColor: Colors.black,
-                      boxConstraints: 12,
-                      verticalPadding: 18.0,
-                      fieldTitle: "Name",
-                      hintColor: Colors.grey.shade600,
-                    ),
-                    h1,
-                    InputField(
-                      titleWeight: FontWeight.bold,
-                      titleSize: 14.0,
-                      controller: TextEditingController(),
-                      label: "Enter your email",
-                      borderRadius: 20.0,
-                      borderColor: Colors.black,
-                      boxConstraints: 12,
-                      verticalPadding: 18.0,
-                      fieldTitle: "Email",
-                      hintColor: Colors.grey.shade600,
-                    ),
-                    h1,
-                    InputField(
-                      titleWeight: FontWeight.bold,
-                      titleSize: 14.0,
-                      maxLines: 4,
-                      controller: TextEditingController(),
-                      label: "Enter message",
-                      borderRadius: 20.0,
-                      borderColor: Colors.black,
-                      boxConstraints: 12,
-                      verticalPadding: 18.0,
-                      fieldTitle: "Message",
-                      hintColor: Colors.grey.shade600,
-                    ),
-                    h2,
-                    PrimaryButton(
-                      fontSize: 16.0,
-                      height: 50,
-                      hMargin: 0,
-                      backgroundColor: AppColors.primaryColor,
-                      borderRadius: 16.0,
-                      onPressed: () {},
-                      title: "Send",
-                    ),
-                  ],
-                ))
-              ],
-            )));
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const ContactDetailsWidget(),
+                        h2,
+                        Text(
+                          "Send us a message",
+                          style: AppTextStyles.robotoSemiBold(
+                            fontSize: 20.0,
+                          ),
+                        ),
+                        h2,
+                        Form(
+                            key: key,
+                            child: Column(
+                              children: [
+                                InputNameField(
+                                  nameFocusNode: nameFocusNode,
+                                  emailFocusNode: emailFocusNode,
+                                ),
+                                h1,
+                                InputEmailField(
+                                  emailFocusNode: emailFocusNode,
+                                  messageFocusNode: messageFocusNode,
+                                ),
+                                h1,
+                                InputMessageField(
+                                  messageFocusNode: messageFocusNode,
+                                ),
+                                h2,
+                                SendMessageButton(
+                                  formKey: key,
+                                ),
+                              ],
+                            ))
+                      ],
+                    ));
+              }),
+        ));
   }
 }
 

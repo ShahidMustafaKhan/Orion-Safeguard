@@ -33,6 +33,7 @@ class ShiftModel extends ParseObject implements ParseCloneable {
   static const String keyEmployee = 'employee';
   static const String keyCreatedAt = 'createdAt';
   static const String keyDeclineReason = 'declineReason';
+  static const String keyCheckOutApproval = 'checkOutApproval';
 
   String? get shiftName => get<String?>(keyShiftName);
 
@@ -74,4 +75,8 @@ class ShiftModel extends ParseObject implements ParseCloneable {
 
   String? get declineReason => get<String?>(keyDeclineReason);
   set declineReason(String? reason) => set<String?>(keyDeclineReason, reason);
+
+  bool get checkOutApproval => get<bool?>(keyCheckOutApproval) ?? false;
+  set checkOutApproval(bool checkOutApproval) =>
+      set<bool?>(keyCheckOutApproval, checkOutApproval);
 }

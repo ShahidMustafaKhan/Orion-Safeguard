@@ -3,15 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orion_safeguard/modules/notification/cubits/notification_cubit.dart';
 
 import '../../../config/constants/app_colors.dart';
-import '../../../generated/assets.dart';
 import '../../../utils/display/display_utils.dart';
 import '../../../utils/enums.dart';
 import '../../../utils/heights_and_widths.dart';
-import '../../../utils/helper_widgets.dart';
 import '../../screen_layout_widget/custom_see_all_row.dart';
 import '../../screen_layout_widget/screen_layout.dart';
 import '../model/notification_model.dart';
-import '../widgets/custom_notification_widget.dart';
+import '../widgets/notification_data_view.dart';
+import '../widgets/notification_empty_view.dart';
+import '../widgets/notification_loading_view.dart';
 
 class NotificationScreen extends StatelessWidget {
   const NotificationScreen({super.key});
@@ -55,30 +55,12 @@ class NotificationScreen extends StatelessWidget {
                       },
                     ),
                     h1,
-                    Expanded(
-                      child: ListView.separated(
-                        padding: EdgeInsets.zero,
-                        itemCount: notifications.length,
-                        itemBuilder: (context, index) {
-                          return AnnouncementCard(
-                            isUnRead: notifications[index].status ==
-                                NotificationModel.keyStatusUnread,
-                            title: notifications[index].title ?? '',
-                            time: timeAgo(notifications[index].createdAt),
-                            content: notifications[index].description ?? '',
-                            iconPath:
-                                returnIcon(notifications[index].type ?? '')!,
-                          );
-                        },
-                        separatorBuilder: (BuildContext context, int index) {
-                          return customDivider(
-                            hPadding: 0.0,
-                            thickness: 1.2,
-                            color: Colors.grey.shade300,
-                          );
-                        },
-                      ),
-                    ),
+                    if (state.notifications.status == Status.loading)
+                      const NotificationLoadingView()
+                    else if (notifications.isEmpty)
+                      const NotificationEmptyView()
+                    else
+                      NotificationDataView(notifications: notifications),
                   ],
                 );
               }),
@@ -86,36 +68,4 @@ class NotificationScreen extends StatelessWidget {
       ),
     );
   }
-}
-
-String timeAgo(DateTime? dateTime) {
-  if (dateTime == null) return '';
-  final Duration difference = DateTime.now().difference(dateTime);
-
-  if (difference.inSeconds < 60) {
-    return '${difference.inSeconds} sec';
-  } else if (difference.inMinutes < 60) {
-    return '${difference.inMinutes} min';
-  } else if (difference.inHours < 24) {
-    return '${difference.inHours} hours';
-  } else if (difference.inDays < 7) {
-    return '${difference.inDays} days';
-  } else if (difference.inDays < 30) {
-    return '${(difference.inDays / 7).floor()} weeks';
-  } else if (difference.inDays < 365) {
-    return '${(difference.inDays / 30).floor()} months';
-  } else {
-    return '${(difference.inDays / 365).floor()} years';
-  }
-}
-
-String? returnIcon(String type) {
-  if (type == NotificationModel.keyTypeUpComingShift) {
-    return Assets.svgCalendarTick;
-  } else if (type == NotificationModel.keyTypeShiftChange) {
-    return Assets.svgRepeat;
-  } else if (type == NotificationModel.keyTypeAnnouncement) {
-    return Assets.svgUserAdd;
-  }
-  return null;
 }

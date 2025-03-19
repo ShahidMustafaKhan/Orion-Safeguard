@@ -13,6 +13,8 @@ part 'my_shifts_state.dart';
 
 class MyShiftsCubit extends Cubit<MyShiftsState> {
   final ShiftsRepository shiftsRepository = getIt();
+  bool isLoadingMoreActiveShift = false; //flag
+  bool isLoadingMoreCompletedShift = false;
 
   MyShiftsCubit()
       : super(MyShiftsState(
@@ -22,29 +24,63 @@ class MyShiftsCubit extends Cubit<MyShiftsState> {
           declineStatus: PostApiStatus.initial,
         ));
 
-  void activeShifts() async {
+  void activeShifts({bool loadMore = false}) async {
+    if (isLoadingMoreActiveShift) {
+      return;
+    }
     try {
       String? objectId = SessionController().objectId;
-      List<ShiftModel> activeShiftsList =
-          await shiftsRepository.getActiveShifts(objectId);
+
+      isLoadingMoreActiveShift = true;
+
+      final currentList = state.activeShifts.data ?? [];
+      final newShifts = await shiftsRepository.getActiveShifts(objectId,
+          skip: loadMore ? currentList.length : 0);
+
+      final hasMore = newShifts.length == 7; // Assuming 7 is the fetch limit
+
+      isLoadingMoreActiveShift = false;
       emit(state.copyWith(
-          activeShifts: ApiResponse.completed(activeShiftsList)));
+        activeShifts: ApiResponse.completed(
+            loadMore ? [...currentList, ...newShifts] : newShifts),
+        hasMoreDataActiveShift: hasMore,
+      ));
     } catch (e) {
       debugPrint(e.toString());
-      emit(state.copyWith(activeShifts: ApiResponse.error(e.toString())));
+      isLoadingMoreActiveShift = false;
+      emit(state.copyWith(
+        activeShifts: ApiResponse.error(e.toString()),
+      ));
     }
   }
 
-  void completedShifts() async {
+  void completedShifts({bool loadMore = false}) async {
+    if (isLoadingMoreCompletedShift) {
+      return;
+    }
     try {
       String? objectId = SessionController().objectId;
-      List<ShiftModel> completedShiftsList =
-          await shiftsRepository.getCompletedShifts(objectId);
+
+      isLoadingMoreCompletedShift = true;
+
+      final currentList = state.completedShifts.data ?? [];
+      final newShifts = await shiftsRepository.getCompletedShifts(objectId,
+          skip: loadMore ? currentList.length : 0);
+
+      final hasMore = newShifts.length == 7; // Assuming 7 is the fetch limit
+
+      isLoadingMoreCompletedShift = false;
       emit(state.copyWith(
-          completedShifts: ApiResponse.completed(completedShiftsList)));
+        completedShifts: ApiResponse.completed(
+            loadMore ? [...currentList, ...newShifts] : newShifts),
+        hasMoreDataCompletedShift: hasMore,
+      ));
     } catch (e) {
       debugPrint(e.toString());
-      emit(state.copyWith(completedShifts: ApiResponse.error(e.toString())));
+      isLoadingMoreCompletedShift = false;
+      emit(state.copyWith(
+        completedShifts: ApiResponse.error(e.toString()),
+      ));
     }
   }
 

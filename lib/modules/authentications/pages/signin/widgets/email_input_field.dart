@@ -4,6 +4,7 @@ import 'package:orion_safeguard/modules/authentications/cubit/login/login_cubit.
 
 import '../../../../../ui/input/input_field.dart';
 import '../../../../../utils/utils.dart';
+import '../../../../../utils/validators/email_validator.dart';
 
 class InputEmailField extends StatelessWidget {
   const InputEmailField({
@@ -13,7 +14,7 @@ class InputEmailField extends StatelessWidget {
   });
 
   final FocusNode emailFocusNode;
-  final FocusNode passwordFocusNode;
+  final FocusNode? passwordFocusNode;
 
   @override
   Widget build(BuildContext context) {
@@ -38,16 +39,18 @@ class InputEmailField extends StatelessWidget {
                 context.read<LoginCubit>().onEmailChanged(value);
               },
               onFieldSubmitted: (_) {
-                Utils.focusNextField(
-                    context: context,
-                    currentFocus: emailFocusNode,
-                    nextFocus: passwordFocusNode);
+                if (passwordFocusNode != null) {
+                  Utils.focusNextField(
+                      context: context,
+                      currentFocus: emailFocusNode,
+                      nextFocus: passwordFocusNode!);
+                }
               },
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter an email';
-                } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                  return 'Enter a valid email';
+                } else if (!EmailValidator.validate(value)) {
+                  return 'Please enter a valid email';
                 }
                 return null;
               },

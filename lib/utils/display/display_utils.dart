@@ -2,6 +2,7 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:another_flushbar/flushbar_route.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:orion_safeguard/config/constants/app_colors.dart';
 
 // import 'package:fluttertoast/fluttertoast.dart';
 
@@ -27,7 +28,7 @@ class DisplayUtils {
           duration: const Duration(seconds: 3),
           borderRadius: BorderRadius.circular(8),
           flushbarPosition: FlushbarPosition.TOP,
-          backgroundColor: Colors.red,
+          backgroundColor: AppColors.red,
           title: "Error",
           messageText: Text(title ?? "Something went wrong"),
           positionOffset: 20,
@@ -46,7 +47,7 @@ class DisplayUtils {
           duration: const Duration(seconds: 3),
           borderRadius: BorderRadius.circular(8),
           flushbarPosition: FlushbarPosition.TOP,
-          backgroundColor: Colors.green,
+          backgroundColor: AppColors.green,
           title: "Success",
           messageText: Text(title),
           positionOffset: 20,

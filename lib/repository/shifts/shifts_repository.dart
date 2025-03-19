@@ -13,8 +13,11 @@ abstract class ShiftsRepository {
   Future<ShiftModel?> checkIn(ShiftModel shiftModel, File file);
   Future<ShiftModel?> checkOut(ShiftModel shiftModel, File file);
 
-  Future<List<ShiftModel>> getCompletedShifts(String? objectId);
-  Future<List<ShiftModel>> getActiveShifts(String? objectId);
+  Future<ShiftModel?> checkOutApproval(ShiftModel shiftModel, File file);
 
-  Future<List<ShiftModel>> getRecords(String? objectId);
+  Future<List<ShiftModel>> getCompletedShifts(String? objectId, {int skip = 0});
+  Future<List<ShiftModel>> getActiveShifts(String? objectId, {int skip = 0});
+
+  Future<List<ShiftModel>> getRecords(String? objectId, {int skip = 0});
+  Future<ShiftModel?> getShiftDetail(ShiftModel? shiftModel);
 }

@@ -1,5 +1,7 @@
 part of 'signup_cubit.dart';
 
+enum EmploymentStatus { none, applying, existing }
+
 class SignUpState extends Equatable {
   final String firstName;
   final String lastName;
@@ -10,9 +12,9 @@ class SignUpState extends Equatable {
   final String confirmPassword;
   final bool hidePassword;
   final bool hideConfirmPassword;
-
   final String message;
   final PostApiStatus postApiStatus;
+  final EmploymentStatus employmentStatus;
 
   const SignUpState(
       {this.email = '',
@@ -22,10 +24,11 @@ class SignUpState extends Equatable {
       this.licenseNo = "",
       this.niNumber = "",
       this.password = '',
-      this.hidePassword = false,
-      this.hideConfirmPassword = false,
+      this.hidePassword = true,
+      this.hideConfirmPassword = true,
       this.message = '',
-      this.postApiStatus = PostApiStatus.initial});
+      this.postApiStatus = PostApiStatus.initial,
+      this.employmentStatus = EmploymentStatus.none});
 
   SignUpState copyWith(
       {String? email,
@@ -38,7 +41,8 @@ class SignUpState extends Equatable {
       String? confirmPassword,
       String? licenseNo,
       String? niNumber,
-      PostApiStatus? postApiStatus}) {
+      PostApiStatus? postApiStatus,
+      EmploymentStatus? employmentStatus}) {
     return SignUpState(
         email: email ?? this.email,
         password: password ?? this.password,
@@ -50,7 +54,8 @@ class SignUpState extends Equatable {
         niNumber: niNumber ?? this.niNumber,
         hidePassword: hidePassword ?? this.hidePassword,
         hideConfirmPassword: hideConfirmPassword ?? this.hideConfirmPassword,
-        postApiStatus: postApiStatus ?? this.postApiStatus);
+        postApiStatus: postApiStatus ?? this.postApiStatus,
+        employmentStatus: employmentStatus ?? this.employmentStatus);
   }
 
   @override
@@ -65,6 +70,7 @@ class SignUpState extends Equatable {
         niNumber,
         hidePassword,
         hideConfirmPassword,
-        confirmPassword
+        confirmPassword,
+        employmentStatus
       ];
 }

@@ -28,7 +28,7 @@ class StartupCubit extends Cubit<StartupState> {
           SessionController()
               .savedUserInPreference(value?.objectId ?? '', sessionToken);
           SessionController().getUserFromPreference();
-          emit(state.copyWith(status: Status.authenticated));
+          emit(state.copyWith(status: Status.authenticated, user: value));
         });
       }).catchError((error) {
         Timer(Duration(seconds: 1), () {

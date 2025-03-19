@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:orion_safeguard/modules/alerts_announcements/cubits/alerts_cubit.dart';
 import 'package:orion_safeguard/modules/dashboard/cubits/my_shifts_cubits/my_shifts_cubit.dart';
 import 'package:orion_safeguard/modules/records/cubit/records_cubit.dart';
 
 import '../../../core/di/service_locator.dart';
 import '../../modules/dashboard/cubits/dashboard_cubits/dashboard_cubit.dart';
 import '../../modules/dashboard/cubits/home_cubits/home_cubit.dart';
-import '../../modules/profile/cubit/profile_cubit.dart';
+import '../../modules/profile/cubit/profile_cubit/profile_cubit.dart';
 import '../cubit/app_cubit.dart';
 
 class BlocDI extends StatelessWidget {
@@ -35,6 +36,9 @@ class BlocDI extends StatelessWidget {
         ),
         BlocProvider<RecordsCubit>(
           create: (context) => RecordsCubit(),
+        ),
+        BlocProvider<AlertsCubit>(
+          create: (context) => AlertsCubit(),
         ),
       ],
       child: child,

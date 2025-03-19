@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:orion_safeguard/config/constants/app_colors.dart';
 import 'package:orion_safeguard/config/constants/app_text_styles.dart';
-import 'package:orion_safeguard/modules/profile/cubit/profile_cubit.dart';
+import 'package:orion_safeguard/modules/profile/cubit/profile_cubit/profile_cubit.dart';
 import 'package:orion_safeguard/modules/profile/pages/profile_screen.dart';
 import 'package:orion_safeguard/ui/widgets/on_click.dart';
 
@@ -36,6 +36,7 @@ class _BaseViewLayoutState extends State<BaseViewLayout> {
           Expanded(
             flex: 2,
             child: Stack(
+              clipBehavior: Clip.none,
               children: [
                 Container(
                   decoration: const BoxDecoration(
@@ -80,7 +81,8 @@ class _BaseViewLayoutState extends State<BaseViewLayout> {
                                 child: CircleAvatar(
                                   radius: 27.0,
                                   backgroundImage: NetworkImage(
-                                      state.userModel.data?.image?.url ?? ''),
+                                    state.userModel.data?.image?.url ?? '',
+                                  ),
                                 ),
                               ),
                               backgroundColor: Colors.transparent,

@@ -65,7 +65,7 @@ String shiftStatus(String status,
   } else if (status == ShiftModel.keyShiftStatusOngoing) {
     return 'Ongoing ${removeWordShift ? '' : 'Shift'}';
   } else if (status == ShiftModel.keyShiftStatusApproved) {
-    return '${includeApproveKeyword ? 'Approved' : 'Ongoing'} ${removeWordShift ? '' : 'Shift'}';
+    return '${includeApproveKeyword ? 'Approved' : 'Up Coming'} ${removeWordShift ? '' : 'Shift'}';
   } else if (status == ShiftModel.keyShiftStatusUpcoming) {
     return 'Up Coming ${removeWordShift ? '' : 'Shift'}';
   } else {

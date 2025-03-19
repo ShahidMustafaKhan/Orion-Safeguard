@@ -81,9 +81,9 @@ class CheckInOutCubit extends Cubit<CheckInOutState> {
     }
   }
 
-  Future<void> checkOutFunc() async {
-    if (isDatePassed(state.shift?.endDate) == true) {
-      if (state.file != null) {
+  Future<void> checkOutFunc(Function() earlyCheckOutRequest) async {
+    if (state.file != null) {
+      if (isDatePassed(state.shift?.endDate) == true) {
         await checkOutApi(state.shift!).then((value) {
           emit(state.copyWith(
               file: null, shift: value, postApiStatus: PostApiStatus.success));
@@ -93,16 +93,36 @@ class CheckInOutCubit extends Cubit<CheckInOutState> {
               errorMessage: error.toString()));
         });
       } else {
-        emit(state.copyWith(
-            postApiStatus: PostApiStatus.error,
-            errorMessage: "Please upload a selfie"));
+        earlyCheckOutRequest();
       }
     } else {
       emit(state.copyWith(
           postApiStatus: PostApiStatus.error,
-          errorMessage:
-              "You can’t perform this action. The shift hasn’t ended yet."));
+          errorMessage: "Please upload a selfie"));
     }
+  }
+
+  Future<void> checkOutApproval(ShiftModel? shiftModel) async {
+    try {
+      await shiftsRepository.checkOutApproval(shiftModel!, state.file!);
+      emit(state.copyWith(
+        approvalPostStatus: PostApiStatus.success,
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+          approvalPostStatus: PostApiStatus.error,
+          errorMessage: "Request for approval failed"));
+    }
+  }
+
+  void resetApprovalPostStatus() {
+    emit(state.copyWith(approvalPostStatus: PostApiStatus.initial));
+  }
+
+  void resetPostStatus() {
+    emit(state.copyWith(
+        approvalPostStatus: PostApiStatus.initial,
+        postApiStatus: PostApiStatus.initial));
   }
 
   void startTimer() {
@@ -112,9 +132,15 @@ class CheckInOutCubit extends Cubit<CheckInOutState> {
     });
   }
 
+  void stopTimer() {
+    _timer?.cancel();
+  }
+
   @override
   Future<void> close() {
-    _timer?.cancel();
+    if (state.shift?.shiftStatus == ShiftModel.keyShiftStatusOngoing) {
+      _timer?.cancel();
+    }
     return super.close();
   }
 }

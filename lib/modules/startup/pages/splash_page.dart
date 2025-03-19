@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:orion_safeguard/modules/authentications/pages/signin/signin_screen.dart';
-import 'package:orion_safeguard/modules/dashboard/pages/base_screen.dart';
-import 'package:orion_safeguard/modules/profile/cubit/profile_cubit.dart';
 import 'package:orion_safeguard/modules/startup/cubits/startup_cubit.dart';
+import 'package:orion_safeguard/utils/navigation_helper.dart';
 
 import '../../../config/constants/app_colors.dart';
 import '../../../config/routes/nav_router.dart';
 import '../../../generated/assets.dart';
+import '../../profile/cubit/profile_cubit/profile_cubit.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -30,7 +30,7 @@ class _SplashPageState extends State<SplashPage> {
               NavRouter.pushAndRemoveUntil(context, const LoginScreen());
             } else if (state.status == Status.authenticated) {
               context.read<ProfileCubit>().updateUserModel(state.user);
-              NavRouter.pushAndRemoveUntil(context, const BaseScreen());
+              NavigationHelper.handleNavigation(context, state.user);
             }
           },
           builder: (context, state) {

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:orion_safeguard/modules/shift_details/cubits/shift_detail_cubits/shift_details_cubit.dart';
 
 import '../../../../../config/constants/app_colors.dart';
 import '../../../../../config/routes/nav_router.dart';
@@ -25,7 +27,9 @@ class CheckInButton extends StatelessWidget {
             context,
             CheckInOutPage(
               shiftsModel: shiftsModel,
-            ));
+            )).then((value) {
+          context.read<ShiftDetailCubit>().getShiftDetail(shiftsModel);
+        });
       },
       title: "Check-In",
     );

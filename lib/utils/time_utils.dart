@@ -179,3 +179,24 @@ bool isDatePassedNotReached(DateTime? date) {
   DateTime now = DateTime.now();
   return now.isBefore(date);
 }
+
+String timeAgo(DateTime? dateTime) {
+  if (dateTime == null) return '';
+  final Duration difference = DateTime.now().difference(dateTime);
+
+  if (difference.inSeconds < 60) {
+    return '${difference.inSeconds} sec';
+  } else if (difference.inMinutes < 60) {
+    return '${difference.inMinutes} min';
+  } else if (difference.inHours < 24) {
+    return '${difference.inHours} hours';
+  } else if (difference.inDays < 7) {
+    return '${difference.inDays} days';
+  } else if (difference.inDays < 30) {
+    return '${(difference.inDays / 7).floor()} weeks';
+  } else if (difference.inDays < 365) {
+    return '${(difference.inDays / 30).floor()} months';
+  } else {
+    return '${(difference.inDays / 365).floor()} years';
+  }
+}

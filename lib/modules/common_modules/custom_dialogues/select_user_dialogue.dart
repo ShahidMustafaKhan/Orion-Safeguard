@@ -8,7 +8,6 @@ import 'package:sizer/sizer.dart';
 
 import '../../../config/routes/nav_router.dart';
 import '../../../generated/assets.dart';
-import '../../job_application/pages/stepper_page.dart';
 
 class SelectUserDialogue extends StatelessWidget {
   const SelectUserDialogue({super.key});
@@ -39,11 +38,16 @@ class SelectUserDialogue extends StatelessWidget {
             h2,
             PrimaryButton(
               onPressed: () {
-                NavRouter.pop(context);
                 showDialog(
                     context: context,
                     builder: (context) =>
-                        const ApplyForAccountApprovalDialogue());
+                        const ApplyForAccountApprovalDialogue()).then((value) {
+                  if (value == true) {
+                    if (context.mounted) {
+                      NavRouter.pop(context, "existingEmployee");
+                    }
+                  }
+                });
               },
               title: "Existing Employee",
               hMargin: 0,
@@ -54,8 +58,7 @@ class SelectUserDialogue extends StatelessWidget {
             PrimaryButton(
               vMargin: 0,
               onPressed: () {
-                NavRouter.pop(context);
-                NavRouter.push(context, const JobApplicationPage());
+                NavRouter.pop(context, "applyingForJob");
               },
               title: "Applying for the employment",
               hMargin: 0,

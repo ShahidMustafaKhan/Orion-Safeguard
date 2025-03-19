@@ -1,0 +1,70 @@
+import 'package:flutter/material.dart';
+
+import '../../../config/constants/app_colors.dart';
+
+class InputTextDialogue extends StatelessWidget {
+  final String title;
+  final String hintText;
+
+  const InputTextDialogue(
+      {super.key, required this.title, required this.hintText});
+
+  @override
+  Widget build(BuildContext context) {
+    TextEditingController controller = TextEditingController();
+
+    return AlertDialog(
+      title: Text(
+        title,
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          TextField(
+            controller: controller,
+            decoration: InputDecoration(
+              hintText: hintText,
+              contentPadding: const EdgeInsets.only(bottom: 9, top: 8),
+              // hintStyle:
+              //     const TextStyle(fontSize: 12, color: AppColors.greyColor),
+              filled: false,
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: AppColors.primaryColor, width: 2),
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: AppColors.primaryColor, width: 2),
+              ),
+            ),
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: const Text(
+            'CANCEL',
+            style: TextStyle(
+                color: AppColors.primaryColor, fontWeight: FontWeight.bold),
+          ),
+        ),
+        TextButton(
+          onPressed: () {
+            String text = controller.text;
+            if (text.isNotEmpty) {
+              Navigator.pop(context, text);
+            }
+          },
+          child: const Text(
+            'OK',
+            style: TextStyle(
+                color: AppColors.primaryColor, fontWeight: FontWeight.bold),
+          ),
+        ),
+      ],
+    );
+  }
+}

@@ -14,6 +14,7 @@ import 'package:sizer/sizer.dart';
 
 import '../../../../config/routes/nav_router.dart';
 import '../../../../generated/assets.dart';
+import '../forgetPassword/forget_password.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -80,11 +81,15 @@ class _LoginScreenState extends State<LoginScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               const RememberMeCheckbox(),
-                              Text("Forgot Password?",
-                                  overflow: TextOverflow.visible,
-                                  maxLines: 10,
-                                  style: AppTextStyles.robotoMedium(
-                                      fontSize: 15.sp)),
+                              GestureDetector(
+                                onTap: () => NavRouter.push(
+                                    context, ForgetPasswordScreen()),
+                                child: Text("Forgot Password?",
+                                    overflow: TextOverflow.visible,
+                                    maxLines: 10,
+                                    style: AppTextStyles.robotoMedium(
+                                        fontSize: 15.sp)),
+                              ),
                             ],
                           ),
                         ),

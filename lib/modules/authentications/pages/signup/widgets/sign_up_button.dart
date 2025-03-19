@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:orion_safeguard/modules/job_application/pages/stepper_page.dart';
 
 import '../../../../../config/constants/constants.dart';
 import '../../../../../config/routes/nav_router.dart';
 import '../../../../../ui/button/primary_button.dart';
 import '../../../../../utils/display/display_utils.dart';
 import '../../../../../utils/enums.dart';
+import '../../../../common_modules/custom_dialogues/select_user_dialogue.dart';
 import '../../../../dashboard/pages/base_screen.dart';
 import '../../../cubit/signup/signup_cubit.dart';
 
@@ -25,7 +27,11 @@ class SignUpButton extends StatelessWidget {
         if (state.postApiStatus == PostApiStatus.success) {
           DisplayUtils.showSuccessToast(
               context, "Account created Successfully");
-          NavRouter.pushAndRemoveUntil(context, const BaseScreen());
+          if (state.employmentStatus == EmploymentStatus.applying) {
+            NavRouter.pushAndRemoveUntil(context, const JobApplicationPage());
+          } else if (state.employmentStatus == EmploymentStatus.existing) {
+            NavRouter.pushAndRemoveUntil(context, const BaseScreen());
+          }
         } else if (state.postApiStatus == PostApiStatus.error) {
           DisplayUtils.showErrorToast(context, state.message);
         }
@@ -36,11 +42,25 @@ class SignUpButton extends StatelessWidget {
             return PrimaryButton(
               onPressed: () {
                 if (globalKey.currentState!.validate()) {
-                  context.read<SignUpCubit>().onSignUpButtonClicked();
-                  // showDialog(
-                  //     context: context,
-                  //     builder: (context) => const SelectUserDialogue());
+                  final signUpCubit = context.read<SignUpCubit>();
+
+                  showDialog(
+                    context: context,
+                    builder: (context) => const SelectUserDialogue(),
+                  ).then((value) {
+                    FocusScope.of(context).unfocus();
+                    if (value == "applyingForJob") {
+                      signUpCubit
+                          .onEmploymentStatusChanged(EmploymentStatus.applying);
+                      signUpCubit.onSignUpButtonClicked();
+                    } else if (value == "existingEmployee") {
+                      signUpCubit
+                          .onEmploymentStatusChanged(EmploymentStatus.existing);
+                      signUpCubit.onSignUpButtonClicked();
+                    }
+                  });
                 }
+                // }
               },
               title: "Sign Up",
               loading: state.postApiStatus == PostApiStatus.loading,

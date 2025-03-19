@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:orion_safeguard/modules/profile/cubit/profile_cubit/profile_cubit.dart';
 
 import '../../../config/constants/app_text_styles.dart';
 
-class NotificationsWidget extends StatefulWidget {
-  NotificationsWidget({super.key});
-
-  @override
-  State<NotificationsWidget> createState() => _NotificationsWidgetState();
-}
-
-class _NotificationsWidgetState extends State<NotificationsWidget> {
-  bool _isSwitched = true;
+class NotificationsWidget extends StatelessWidget {
+  const NotificationsWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -47,19 +42,22 @@ class _NotificationsWidgetState extends State<NotificationsWidget> {
                   fontSize: 14.0,
                 ),
               ),
-              Transform.scale(
-                scale: 0.7,
-                child: Switch(
-                  value: _isSwitched,
-                  onChanged: (bool value) {
-                    setState(() {
-                      _isSwitched = value;
-                    });
-                  },
-                  activeTrackColor: Colors.black,
-                  activeColor: Colors.white,
-                ),
-              ),
+              BlocBuilder<ProfileCubit, ProfileState>(
+                  buildWhen: (previous, next) =>
+                      previous.userModel != next.userModel,
+                  builder: (context, state) {
+                    return Transform.scale(
+                      scale: 0.7,
+                      child: Switch(
+                        value: state.userModel.data?.alerts ?? true,
+                        onChanged: (bool value) {
+                          context.read<ProfileCubit>().updateAlert(value);
+                        },
+                        activeTrackColor: Colors.black,
+                        activeColor: Colors.white,
+                      ),
+                    );
+                  }),
             ],
           ),
         )

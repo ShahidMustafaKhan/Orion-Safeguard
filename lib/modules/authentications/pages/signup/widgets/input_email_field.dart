@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../ui/input/input_field.dart';
 import '../../../../../utils/utils.dart';
+import '../../../../../utils/validators/email_validator.dart';
 import '../../../cubit/signup/signup_cubit.dart';
 
 class InputEmail extends StatelessWidget {
@@ -37,6 +38,9 @@ class InputEmail extends StatelessWidget {
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please enter your email';
+              }
+              if (!EmailValidator.validate(value)) {
+                return 'Please enter a valid email';
               }
               return null;
             },

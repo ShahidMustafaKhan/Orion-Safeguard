@@ -1,209 +1,231 @@
+import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:orion_safeguard/config/constants/app_colors.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:orion_safeguard/config/constants/app_text_styles.dart';
+import 'package:orion_safeguard/modules/job_application/widget/input_form_field.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../generated/assets.dart';
-import '../../../ui/input/input_field.dart';
+import '../../../utils/display/display_utils.dart';
 import '../../../utils/heights_and_widths.dart';
+import '../cubit/job_application_cubit.dart';
+import '../widget/primary_form_button.dart';
 
-class Step2 extends StatefulWidget {
+class Step2 extends StatelessWidget {
   const Step2({super.key});
 
   @override
-  State<Step2> createState() => _Step2State();
-}
+  Widget build(BuildContext context) {
+    final formKey = GlobalKey<FormState>();
+    JobApplicationCubit jobApplicationCubit =
+        context.read<JobApplicationCubit>();
 
-class _Step2State extends State<Step2> {
-  final TextEditingController _controller = TextEditingController();
-  void _removeFile() {
-    setState(() {
-      pickedFileName = null;
-      _controller.clear();
+    TextEditingController positionAppliedForController = TextEditingController(
+        text: jobApplicationCubit.state.positionAppliedFor);
+    TextEditingController attachedDocumentController = TextEditingController(
+        text: jobApplicationCubit.state.attachedDocumentName);
+    TextEditingController titleController =
+        TextEditingController(text: jobApplicationCubit.state.title);
+    TextEditingController surnameController =
+        TextEditingController(text: jobApplicationCubit.state.surname);
+    TextEditingController forenameController =
+        TextEditingController(text: jobApplicationCubit.state.forename);
+    TextEditingController surnameAtBirthController =
+        TextEditingController(text: jobApplicationCubit.state.surnameAtBirth);
+
+    FocusNode positionAppliedForFocusNode = FocusNode();
+    FocusNode attachedDocumentFocusNode = FocusNode();
+    FocusNode titleFocusNode = FocusNode();
+    FocusNode surnameFocusNode = FocusNode();
+    FocusNode forenameFocusNode = FocusNode();
+    FocusNode surnameAtBirthFocusNode = FocusNode();
+
+    attachedDocumentFocusNode.addListener(() {
+      if (attachedDocumentFocusNode.hasFocus) {
+        pickFile(jobApplicationCubit, context, titleFocusNode);
+      }
     });
+
+    return BlocConsumer<JobApplicationCubit, JobApplicationState>(
+        listenWhen: (previous, next) =>
+            previous.validationStatus != next.validationStatus ||
+            previous.errorMessage != next.errorMessage,
+        listener: (context, state) {
+          if (state.validationStatus == ValidationStatus.error) {
+            DisplayUtils.showErrorToast(context, state.errorMessage);
+          }
+        },
+        buildWhen: (previous, next) => true,
+        builder: (context, state) {
+          return SizedBox(
+            width: double.infinity,
+            child: Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 12.sp, vertical: 3.sp),
+                    child: Form(
+                      key: formKey,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Form",
+                            style: AppTextStyles.robotoBold(
+                              fontSize: 24.0,
+                            ),
+                          ),
+                          h0P2,
+                          Text(
+                            "Fill up your job application",
+                            style: AppTextStyles.robotoRegular(
+                              fontSize: 16.0,
+                            ),
+                          ),
+                          h1,
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              InputFormField(
+                                controller: positionAppliedForController,
+                                fieldTitle: "Position Applied for",
+                                label: "Enter Position",
+                                focusNode: positionAppliedForFocusNode,
+                                nextFocusNode: attachedDocumentFocusNode,
+                              ),
+                              h1,
+                              GestureDetector(
+                                onTap: () => pickFile(jobApplicationCubit,
+                                    context, titleFocusNode),
+                                child: InputFormField(
+                                  readOnly: true,
+                                  controller: attachedDocumentController,
+                                  focusNode: attachedDocumentFocusNode,
+                                  nextFocusNode: titleFocusNode,
+                                  fieldTitle: "Attached Document",
+                                  label: "Select Document",
+                                  suffixIcon: SvgPicture.asset(
+                                    Assets.svgClip,
+                                  ),
+                                ),
+                              ),
+                              if (state.accountHolderName.isNotEmpty) ...[
+                                const SizedBox(height: 10),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        "Selected: ${state.accountHolderName}",
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black87,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(Icons.close,
+                                          color: Colors.red),
+                                      onPressed: () =>
+                                          removeFile(jobApplicationCubit),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                              h1,
+                              Text(
+                                textAlign: TextAlign.left,
+                                "Personal information",
+                                style: AppTextStyles.robotoRegular(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              h0P5,
+                              InputFormField(
+                                controller: titleController,
+                                label: "Enter Your title",
+                                focusNode: titleFocusNode,
+                                nextFocusNode: surnameFocusNode,
+                                fieldTitle: "Title",
+                              ),
+                              h1,
+                              InputFormField(
+                                controller: surnameController,
+                                focusNode: surnameFocusNode,
+                                nextFocusNode: forenameFocusNode,
+                                label: "Enter your surname",
+                                fieldTitle: "Surname",
+                              ),
+                              h1,
+                              InputFormField(
+                                controller: forenameController,
+                                focusNode: forenameFocusNode,
+                                nextFocusNode: surnameAtBirthFocusNode,
+                                label: "Enter your forename",
+                                fieldTitle: "Forename",
+                              ),
+                              h1,
+                              InputFormField(
+                                controller: surnameAtBirthController,
+                                focusNode: surnameAtBirthFocusNode,
+                                label: "Enter your Surname at Birth",
+                                fieldTitle: "Surname at Birth",
+                              ),
+                            ],
+                          ),
+                          h1,
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                PrimaryFormButton(
+                  onPressed: () {
+                    jobApplicationCubit = context.read<JobApplicationCubit>();
+                    jobApplicationCubit.updateJobApplicationState(
+                      state.copyWith(
+                        positionAppliedFor: positionAppliedForController.text,
+                        attachedDocumentName: attachedDocumentController.text,
+                        title: titleController.text,
+                        surname: surnameController.text,
+                        forename: forenameController.text,
+                        surnameAtBirth: surnameAtBirthController.text,
+                      ),
+                    );
+                  },
+                  formKey: formKey,
+                ),
+              ],
+            ),
+          );
+        });
   }
 
-  String? pickedFileName;
+  void removeFile(jobApplicationCubit) {
+    jobApplicationCubit.updateJobApplicationState(JobApplicationState()
+        .copyWith(attachedDocument: null, attachedDocumentName: ""));
+  }
 
-  Future<void> _pickFile() async {
+  Future<void> pickFile(jobApplicationCubit, BuildContext context,
+      FocusNode titleFocusNode) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['pdf', 'doc', 'docx', 'jpg', 'png'],
     );
 
     if (result != null && result.files.isNotEmpty) {
-      setState(() {
-        pickedFileName = result.files.single.name;
-        _controller.text = result.files.single.name;
-      });
+      jobApplicationCubit.updateJobApplicationState(JobApplicationState()
+          .copyWith(
+              attachedDocument: File(result.files.single.path ?? ''),
+              attachedDocumentName: result.files.single.name));
+      if (context.mounted) FocusScope.of(context).requestFocus(titleFocusNode);
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 12.sp, vertical: 3.sp),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              "Form",
-              style: AppTextStyles.robotoBold(
-                fontSize: 24.0,
-              ),
-            ),
-            h0P2,
-
-            Text(
-              "Fill up your job application",
-              style: AppTextStyles.robotoRegular(
-                fontSize: 16.0,
-              ),
-            ),
-            h1,
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                InputField(
-                  fillColor: AppColors.grey,
-                  titleSize: 14.0,
-                  controller: TextEditingController(),
-                  label: "Enter Position",
-                  borderRadius: 20.0,
-                  borderColor: AppColors.greyColor,
-                  boxConstraints: 12,
-                  verticalPadding: 17.0,
-                  fieldTitle: "Position Applied for",
-                  hintColor: Colors.grey.shade600,
-                  titleWeight: FontWeight.w600,
-                ),
-                h1,
-                GestureDetector(
-                  onTap: _pickFile,
-                  child: InputField(
-                    fillColor: AppColors.grey,
-                    titleSize: 14.0,
-                    controller: TextEditingController(),
-                    label: "Select Document",
-                    borderRadius: 20.0,
-                    borderColor: AppColors.greyColor,
-                    boxConstraints: 12,
-                    verticalPadding: 17.0,
-                    fieldTitle: "Attached Document",
-                    suffixIcon: SvgPicture.asset(
-                      Assets.svgClip,
-                    ),
-                    hintColor: Colors.grey.shade600,
-                    titleWeight: FontWeight.w600,
-                    readOnly: true,
-                  ),
-                ),
-                if (pickedFileName != null) ...[
-                  const SizedBox(height: 10),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          "Selected: $pickedFileName",
-                          style: const TextStyle(
-                            fontSize: 14,
-                            color: Colors.black87,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.close, color: Colors.red),
-                        onPressed: _removeFile,
-                      ),
-                    ],
-                  ),
-                ],
-                h1,
-                Text(
-                  textAlign: TextAlign.left,
-                  "Personal information",
-                  style: AppTextStyles.robotoRegular(
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                h0P5,
-                InputField(
-                  fillColor: AppColors.grey,
-                  titleSize: 14.0,
-                  controller: TextEditingController(),
-                  label: "Enter Your title",
-                  borderRadius: 20.0,
-                  borderColor: AppColors.greyColor,
-                  boxConstraints: 12,
-                  verticalPadding: 17.0,
-                  fieldTitle: "Title",
-                  hintColor: Colors.grey.shade600,
-                  titleWeight: FontWeight.w600,
-                ),
-                h1,
-                InputField(
-                  fillColor: AppColors.grey,
-                  titleSize: 14.0,
-                  controller: TextEditingController(),
-                  label: "Enter your surname",
-                  borderRadius: 20.0,
-                  borderColor: AppColors.greyColor,
-                  boxConstraints: 12,
-                  verticalPadding: 17.0,
-                  fieldTitle: "Surname",
-                  hintColor: Colors.grey.shade600,
-                  titleWeight: FontWeight.w600,
-                ),
-                h1,
-                InputField(
-                  fillColor: AppColors.grey,
-                  titleSize: 14.0,
-                  controller: TextEditingController(),
-                  label: "Enter your forename",
-                  borderRadius: 20.0,
-                  borderColor: AppColors.greyColor,
-                  boxConstraints: 12,
-                  verticalPadding: 17.0,
-                  fieldTitle: "Forename",
-                  hintColor: Colors.grey.shade600,
-                  titleWeight: FontWeight.w600,
-                ),
-                h1,
-                InputField(
-                  fillColor: AppColors.grey,
-                  titleSize: 14.0,
-                  titleWeight: FontWeight.w600,
-                  controller: TextEditingController(),
-                  label: "Enter your Surname at Birth",
-                  borderRadius: 20.0,
-                  borderColor: AppColors.greyColor,
-                  boxConstraints: 12,
-                  verticalPadding: 17.0,
-                  fieldTitle: "Surname at Birth",
-                  hintColor: Colors.grey.shade600,
-                ),
-              ],
-            ),
-            h1,
-            // PrimaryButton(
-            //   height: 60,
-            //   hMargin: 0,
-            //   backgroundColor: AppColors.primaryColor,
-            //   borderRadius: 16.0,
-            //   onPressed: () {},
-            //   title: "Send",
-            // ),
-          ],
-        ),
-      ),
-    );
   }
 }

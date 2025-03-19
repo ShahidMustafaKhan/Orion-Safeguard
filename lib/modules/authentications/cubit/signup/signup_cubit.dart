@@ -51,6 +51,10 @@ class SignUpCubit extends Cubit<SignUpState> {
     emit(state.copyWith(hidePassword: !state.hidePassword));
   }
 
+  void onEmploymentStatusChanged(EmploymentStatus employmentStatus) {
+    emit(state.copyWith(employmentStatus: employmentStatus));
+  }
+
   Future<void> onSignUpButtonClicked() async {
     emit(state.copyWith(postApiStatus: PostApiStatus.loading));
     try {
@@ -60,7 +64,10 @@ class SignUpCubit extends Cubit<SignUpState> {
           state.firstName,
           state.lastName,
           state.licenseNo,
-          state.niNumber);
+          state.niNumber,
+          state.employmentStatus == EmploymentStatus.applying
+              ? UserModel.keyEmploymentStatusApplying
+              : UserModel.keyEmploymentStatusExisting);
       ParseResponse response = await ParseSession().save();
       SessionController().savedUserInPreference(
           userModel?.objectId ?? '', response.result?.sessionToken ?? '');

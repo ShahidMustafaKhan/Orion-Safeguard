@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:orion_safeguard/core/di/service_locator.dart';
 
+import '../../exceptions/app_exceptions.dart';
 import '../storage_service/storage_service.dart';
 
 class SessionController {
@@ -38,7 +38,18 @@ class SessionController {
       }
       SessionController().isLogin = isLogin == true ? true : false;
     } catch (e) {
-      debugPrint(e.toString());
+      AppException(e.toString());
+    }
+  }
+
+  Future<void> clearPreference() async {
+    try {
+      await localStorage.clear();
+      SessionController().isLogin = false;
+      SessionController().objectId = '';
+      SessionController().token = '';
+    } catch (e) {
+      AppException(e.toString());
     }
   }
 }

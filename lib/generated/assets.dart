@@ -7,6 +7,8 @@ class Assets {
   static const String pngMegaphone = 'assets/images/png/megaphone.png';
   static const String pngProfilePic = 'assets/images/png/profile_pic.png';
   static const String pngQuestionMark = 'assets/images/png/question_mark.png';
+  static const String pngCalendar = 'assets/images/png/calendar.png';
+  static const String pngNotification = 'assets/images/png/notification.png';
   static const String svgArrowRight = 'assets/icons/svg/arrow_right.svg';
   static const String svgCalendarSelected =
       'assets/icons/svg/calendar_selected.svg';

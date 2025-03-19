@@ -1,8 +1,7 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:orion_safeguard/modules/dashboard/widgets/home_screen_widgets/ongoing_shifts_section/timer_widget.dart';
 import 'package:orion_safeguard/modules/shift_details/pages/check_in_out_page.dart';
 import 'package:sizer/sizer.dart';
 
@@ -10,12 +9,14 @@ import '../../../../../config/constants/app_colors.dart';
 import '../../../../../config/constants/app_text_styles.dart';
 import '../../../../../config/routes/nav_router.dart';
 import '../../../../../generated/assets.dart';
+import '../../../../../utils/enums.dart';
 import '../../../../../utils/heights_and_widths.dart';
 import '../../../../../utils/helper_widgets.dart';
 import '../../../../../utils/time_utils.dart';
 import '../../../../screen_layout_widget/custom_see_all_row.dart';
 import '../../../cubits/home_cubits/home_cubit.dart';
 import '../../../model/shifts_model/shifts_model.dart';
+import 'ongoing_loading_view.dart';
 
 class OngoingShiftsSection extends StatelessWidget {
   const OngoingShiftsSection({
@@ -24,21 +25,28 @@ class OngoingShiftsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<HomeCubit>().ongoingShift();
-    return Container(
-        // height: 300,
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: Colors.grey.shade300,
-          ),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: BlocBuilder<HomeCubit, HomeState>(
-            buildWhen: (previous, next) =>
-                previous.onGoingShifts != next.onGoingShifts,
-            builder: (context, state) {
-              ShiftModel? onGoingShifts = state.onGoingShifts.data;
-              return InkWell(
+    return BlocBuilder<HomeCubit, HomeState>(
+        buildWhen: (previous, next) =>
+            previous.onGoingShifts != next.onGoingShifts,
+        builder: (context, state) {
+          ShiftModel? onGoingShifts = state.onGoingShifts.data;
+          if (state.onGoingShifts.status == Status.loading) {
+            return OngoingLoadingView();
+          }
+          if (state.onGoingShifts.status == Status.error ||
+              onGoingShifts == null) {
+            return SizedBox();
+          }
+          return Padding(
+            padding: EdgeInsets.only(top: 1.h),
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.grey.shade300,
+                ),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: InkWell(
                 onTap: () => NavRouter.push(
                     context,
                     CheckInOutPage(
@@ -70,14 +78,14 @@ class OngoingShiftsSection extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  onGoingShifts?.shiftName ?? '',
+                                  onGoingShifts.shiftName ?? '',
                                   style: AppTextStyles.robotoMedium(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
                                 Text(
-                                  onGoingShifts?.location ?? '',
+                                  onGoingShifts.location ?? '',
                                   style: AppTextStyles.robotoRegular(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w500,
@@ -95,8 +103,7 @@ class OngoingShiftsSection extends StatelessWidget {
                                     ),
                                     w1,
                                     Text(
-                                        formatDateTime(
-                                            onGoingShifts?.createdAt),
+                                        formatDateTime(onGoingShifts.createdAt),
                                         style: AppTextStyles.robotoRegular(
                                           fontSize: 12.0,
                                           fontWeight: FontWeight.w400,
@@ -113,78 +120,9 @@ class OngoingShiftsSection extends StatelessWidget {
                     ],
                   ),
                 ),
-              );
-            }));
-  }
-}
-
-class TimerWidget extends StatefulWidget {
-  const TimerWidget({
-    super.key,
-    required this.onGoingShifts,
-  });
-
-  final ShiftModel? onGoingShifts;
-
-  @override
-  State<TimerWidget> createState() => _TimerWidgetState();
-}
-
-class _TimerWidgetState extends State<TimerWidget> {
-  late Timer _timer;
-  DateTime _now = DateTime.now();
-
-  @override
-  void initState() {
-    super.initState();
-    _startTimer();
-  }
-
-  @override
-  void dispose() {
-    _timer.cancel();
-    super.dispose();
-  }
-
-  void _startTimer() {
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      setState(() {
-        _now = DateTime.now();
-      });
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          'Timer',
-          style: AppTextStyles.robotoMedium(
-            fontSize: 10,
-            fontWeight: FontWeight.w500,
-            color: Colors.grey.shade500,
-          ),
-        ),
-        Text(
-          timeDifferenceTillNow(widget.onGoingShifts?.endDate, _now,
-              showSeconds: true),
-          textAlign: TextAlign.center,
-          style: AppTextStyles.robotoMedium(
-            fontSize: 14,
-            fontWeight: FontWeight.w400,
-            color: AppColors.black,
-          ),
-        ),
-        Text(
-          'Remaining',
-          style: AppTextStyles.robotoMedium(
-            fontSize: 10,
-            fontWeight: FontWeight.normal,
-            color: Colors.grey.shade500,
-          ),
-        ),
-      ],
-    );
+              ),
+            ),
+          );
+        });
   }
 }

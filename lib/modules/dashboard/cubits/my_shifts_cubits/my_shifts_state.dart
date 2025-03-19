@@ -8,6 +8,8 @@ class MyShiftsState extends Equatable {
   final String? message;
   final String? approveLoadingItemId; // Track which item is loading
   final String? declineLoadingItemId; // Track which item is loading
+  final bool hasMoreDataActiveShift;
+  final bool hasMoreDataCompletedShift; // Track which item is loading
 
   const MyShiftsState({
     required this.activeShifts,
@@ -17,6 +19,8 @@ class MyShiftsState extends Equatable {
     this.message,
     this.approveLoadingItemId,
     this.declineLoadingItemId,
+    this.hasMoreDataActiveShift = false,
+    this.hasMoreDataCompletedShift = false,
   });
 
   MyShiftsState copyWith({
@@ -24,6 +28,8 @@ class MyShiftsState extends Equatable {
     ApiResponse<List<ShiftModel>>? completedShifts,
     PostApiStatus? approveStatus,
     PostApiStatus? declineStatus,
+    bool? hasMoreDataActiveShift,
+    bool? hasMoreDataCompletedShift,
     String? message,
     bool resetApproveLoadingItemId = false,
     String? approveLoadingItemId,
@@ -35,7 +41,13 @@ class MyShiftsState extends Equatable {
       completedShifts: completedShifts ?? this.completedShifts,
       approveStatus: approveStatus ?? this.approveStatus,
       declineStatus: declineStatus ?? this.declineStatus,
-      message: message ?? this.message,
+      hasMoreDataActiveShift:
+          hasMoreDataActiveShift ?? this.hasMoreDataActiveShift,
+      hasMoreDataCompletedShift:
+          hasMoreDataCompletedShift ?? this.hasMoreDataCompletedShift,
+      declineLoadingItemId: resetDeclineLoadingItemId
+          ? null
+          : (declineLoadingItemId ?? this.declineLoadingItemId),
       approveLoadingItemId: resetApproveLoadingItemId
           ? null
           : (approveLoadingItemId ?? this.approveLoadingItemId),
@@ -50,6 +62,8 @@ class MyShiftsState extends Equatable {
         declineStatus,
         message,
         approveLoadingItemId,
-        declineLoadingItemId
+        declineLoadingItemId,
+        hasMoreDataActiveShift,
+        hasMoreDataCompletedShift
       ];
 }

@@ -24,13 +24,13 @@ class CustomButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: tap,
       style: ButtonStyle(
-        padding: MaterialStateProperty.all(
+        padding: WidgetStateProperty.all(
             EdgeInsets.symmetric(vertical: 9.sp, horizontal: 8)),
-        shape: MaterialStateProperty.all(
+        shape: WidgetStateProperty.all(
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
         backgroundColor:
-            MaterialStateProperty.all(color ?? AppColors.primaryColor),
-        shadowColor: MaterialStateProperty.all(Colors.transparent),
+            WidgetStateProperty.all(color ?? AppColors.primaryColor),
+        shadowColor: WidgetStateProperty.all(Colors.transparent),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,

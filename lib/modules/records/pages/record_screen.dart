@@ -5,13 +5,14 @@ import 'package:orion_safeguard/modules/dashboard/model/shifts_model/shifts_mode
 import 'package:orion_safeguard/modules/records/cubit/records_cubit.dart';
 import 'package:orion_safeguard/modules/screen_layout_widget/base_view_layout.dart';
 import 'package:orion_safeguard/utils/heights_and_widths.dart';
-import 'package:orion_safeguard/utils/helper_widgets.dart';
-import 'package:orion_safeguard/utils/time_utils.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../config/constants/app_text_styles.dart';
 import '../../../generated/assets.dart';
-import '../widgets/record_widget.dart';
+import '../../../utils/enums.dart';
+import '../widgets/record_data_view.dart';
+import '../widgets/record_empty_view.dart';
+import '../widgets/record_loading_view.dart';
 
 class RecordScreen extends StatelessWidget {
   const RecordScreen({super.key});
@@ -65,33 +66,17 @@ class RecordScreen extends StatelessWidget {
                         previous.records != next.records,
                     builder: (context, state) {
                       List<ShiftModel> records = state.records.data ?? [];
-                      return ListView.separated(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12.0,
-                            vertical: 8.0,
-                          ),
-                          itemBuilder: (context, index) {
-                            int divisor =
-                                index; // Ensure the divisor is a valid number
-                            bool isCompleted =
-                                divisor != 0 && 2 % divisor == 0; // Safe check
 
-                            return RecordWidget(
-                              name: records[index].shiftName,
-                              location: records[index].location,
-                              date: formatDateTimeRange(
-                                  records[index].startDate,
-                                  records[index].startDate),
-                              isCompleted: records[index].shiftStatus ==
-                                      ShiftModel.keyShiftStatusCompleted
-                                  ? true
-                                  : false,
-                            );
-                          },
-                          separatorBuilder: (BuildContext context, int index) {
-                            return customDivider(thickness: 1.2);
-                          },
-                          itemCount: records.length);
+                      if (state.records.status == Status.loading) {
+                        return RecordLoadingView();
+                      }
+
+                      if (state.records.status == Status.error ||
+                          records.isEmpty) {
+                        return RecordEmptyView();
+                      }
+
+                      return RecordDataView(records: records);
                     }),
               )
             ],

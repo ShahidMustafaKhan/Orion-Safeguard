@@ -7,6 +7,7 @@ import 'package:orion_safeguard/repository/shifts/shifts_repository.dart';
 
 import '../../../../core/response/api_response.dart';
 import '../../../../core/services/session_controller/session_controller.dart';
+import '../../../../utils/enums.dart';
 
 part 'home_state.dart';
 
@@ -55,6 +56,16 @@ class HomeCubit extends Cubit<HomeState> {
     } catch (e) {
       debugPrint(e.toString());
       emit(state.copyWith(previousShifts: ApiResponse.error(e.toString())));
+    }
+  }
+
+  bool noShiftsFound() {
+    if (state.upcomingShifts.status == Status.error &&
+        state.previousShifts.status == Status.error &&
+        state.onGoingShifts.status == Status.error) {
+      return true;
+    } else {
+      return false;
     }
   }
 }

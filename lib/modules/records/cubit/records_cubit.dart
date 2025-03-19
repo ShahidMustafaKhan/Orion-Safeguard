@@ -12,21 +12,37 @@ part 'records_state.dart';
 
 class RecordsCubit extends Cubit<RecordsState> {
   final ShiftsRepository shiftsRepository = getIt();
+  bool isLoadingMore = false;
 
   RecordsCubit()
       : super(RecordsState(
           records: ApiResponse.loading(),
         ));
 
-  void fetchRecords() async {
+  void fetchRecords({bool loadMore = false}) async {
+    if (isLoadingMore) {
+      return; // Prevent multiple simultaneous requests
+    }
+    isLoadingMore = true;
     try {
       String? objectId = SessionController().objectId;
-      List<ShiftModel> recordsList =
-          await shiftsRepository.getRecords(objectId);
-      emit(state.copyWith(records: ApiResponse.completed(recordsList)));
+      final currentList = state.records.data ?? [];
+      final newShifts = await shiftsRepository.getRecords(objectId,
+          skip: loadMore ? currentList.length : 0);
+
+      final hasMore = newShifts.length == 12;
+      final recordsList = loadMore ? [...currentList, ...newShifts] : newShifts;
+
+      emit(state.copyWith(
+        records: ApiResponse.completed(recordsList),
+        hasMoreData: hasMore,
+      ));
+
+      isLoadingMore = false;
     } catch (e) {
       debugPrint(e.toString());
       emit(state.copyWith(records: ApiResponse.error(e.toString())));
+      isLoadingMore = false;
     }
   }
 }

@@ -12,21 +12,36 @@ part 'notification_state.dart';
 
 class NotificationCubit extends Cubit<NotificationState> {
   final NotificationRepository notificationRepository = getIt();
+  bool isLoadingMore = false; // flag
 
   NotificationCubit()
       : super(NotificationState(
           notifications: ApiResponse.loading(),
         ));
 
-  void fetchNotifications() async {
+  void fetchNotifications({bool loadMore = false}) async {
+    if (isLoadingMore) return;
     try {
+      isLoadingMore = true;
       String? objectId = SessionController().objectId;
+
+      final currentList = state.notifications.data ?? [];
+      final newList = await notificationRepository.getNotifications(
+          objectId ?? '',
+          skip: loadMore ? currentList.length : 0);
+
+      final hasMore = newList.length == 9;
+
       List<NotificationModel> notificationsList =
-          await notificationRepository.getNotifications(objectId ?? '');
+          loadMore ? [...currentList, ...newList] : newList;
+
+      isLoadingMore = false;
       emit(state.copyWith(
-          notifications: ApiResponse.completed(notificationsList)));
+          notifications: ApiResponse.completed(notificationsList),
+          hasMoreData: hasMore));
     } catch (e) {
       debugPrint(e.toString());
+      isLoadingMore = false;
       emit(state.copyWith(notifications: ApiResponse.error(e.toString())));
     }
   }

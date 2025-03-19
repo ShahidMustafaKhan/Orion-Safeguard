@@ -19,7 +19,6 @@ class ShiftsHttpRepository implements ShiftsRepository {
       })
       ..whereEqualTo(
           ShiftModel.keyShiftStatus, ShiftModel.keyShiftStatusOngoing)
-      ..whereGreaterThan(ShiftModel.keyEndDate, currentTime())
       ..whereValueExists(ShiftModel.keyCheckInTime, true)
       ..whereValueExists(ShiftModel.keyCheckInProof, true)
       ..orderByDescending(ShiftModel.keyCreatedAt)
@@ -147,7 +146,21 @@ class ShiftsHttpRepository implements ShiftsRepository {
   }
 
   @override
-  Future<List<ShiftModel>> getCompletedShifts(String? objectId) async {
+  Future<ShiftModel?> checkOutApproval(ShiftModel shiftModel, File file) async {
+    shiftModel.checkOutApproval = true;
+    shiftModel.checkOutTime = currentTime();
+    shiftModel.checkOutProof = ParseFile(file);
+    final response = await shiftModel.save();
+    if (response.success && response.results != null) {
+      return response.results!.first as ShiftModel;
+    } else {
+      throw AppException(response.error?.message ?? 'Something went wrong');
+    }
+  }
+
+  @override
+  Future<List<ShiftModel>> getCompletedShifts(String? objectId,
+      {int skip = 0}) async {
     final queryBuilder = QueryBuilder<ShiftModel>(ShiftModel())
       ..whereEqualTo('employee', {
         '__type': 'Pointer',
@@ -156,6 +169,8 @@ class ShiftsHttpRepository implements ShiftsRepository {
       })
       ..whereEqualTo(
           ShiftModel.keyShiftStatus, ShiftModel.keyShiftStatusCompleted)
+      ..setAmountToSkip(skip)
+      ..setLimit(7)
       ..whereValueExists(ShiftModel.keyCheckInTime, true)
       ..whereValueExists(ShiftModel.keyCheckOutTime, true)
       ..orderByDescending(ShiftModel.keyCreatedAt)
@@ -173,7 +188,8 @@ class ShiftsHttpRepository implements ShiftsRepository {
   }
 
   @override
-  Future<List<ShiftModel>> getActiveShifts(String? objectId) async {
+  Future<List<ShiftModel>> getActiveShifts(String? objectId,
+      {int skip = 0}) async {
     final queryBuilder = QueryBuilder<ShiftModel>(ShiftModel())
       ..whereEqualTo('employee', {
         '__type': 'Pointer',
@@ -185,6 +201,8 @@ class ShiftsHttpRepository implements ShiftsRepository {
         ShiftModel.keyShiftStatusUpcoming,
         ShiftModel.keyShiftStatusOngoing,
       ])
+      ..setAmountToSkip(skip)
+      ..setLimit(7)
       ..orderByDescending(ShiftModel.keyCreatedAt)
       ..includeObject([
         ShiftModel.keyEmployee,
@@ -194,13 +212,15 @@ class ShiftsHttpRepository implements ShiftsRepository {
 
     if (response.success && response.results != null) {
       return response.results!.map((json) => json as ShiftModel).toList();
+    } else if (response.results == null) {
+      return [];
     } else {
       throw AppException(response.error?.message ?? 'Failed to fetch shifts');
     }
   }
 
   @override
-  Future<List<ShiftModel>> getRecords(String? objectId) async {
+  Future<List<ShiftModel>> getRecords(String? objectId, {int skip = 0}) async {
     final queryBuilder = QueryBuilder<ShiftModel>(ShiftModel())
       ..whereEqualTo('employee', {
         '__type': 'Pointer',
@@ -215,6 +235,8 @@ class ShiftsHttpRepository implements ShiftsRepository {
           ShiftModel.keyShiftStatusMissed,
         ],
       )
+      ..setAmountToSkip(skip)
+      ..setLimit(12)
       ..includeObject([
         ShiftModel.keyEmployee,
       ]);
@@ -223,6 +245,26 @@ class ShiftsHttpRepository implements ShiftsRepository {
 
     if (response.success && response.results != null) {
       return response.results!.map((json) => json as ShiftModel).toList();
+    } else if (response.results == null) {
+      return [];
+    } else {
+      throw AppException(response.error?.message ?? 'Failed to fetch shifts');
+    }
+  }
+
+  @override
+  Future<ShiftModel?> getShiftDetail(ShiftModel? shiftModel) async {
+    final queryBuilder = QueryBuilder<ShiftModel>(ShiftModel())
+      ..whereEqualTo(ShiftModel.keyObjectId, shiftModel?.objectId)
+      ..orderByDescending(ShiftModel.keyCreatedAt)
+      ..includeObject([
+        ShiftModel.keyEmployee,
+      ]);
+
+    final response = await queryBuilder.query();
+
+    if (response.success && response.results != null) {
+      return response.results!.first as ShiftModel;
     } else {
       throw AppException(response.error?.message ?? 'Failed to fetch shifts');
     }

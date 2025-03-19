@@ -24,6 +24,10 @@ class LoginCubit extends Cubit<LoginState> {
     emit(state.copyWith(password: password));
   }
 
+  void onPasswordVisibilityChanged() {
+    emit(state.copyWith(hidePassword: !state.hidePassword));
+  }
+
   Future<void> onSubmitButtonClicked() async {
     emit(state.copyWith(postApiStatus: PostApiStatus.loading));
     try {
@@ -33,6 +37,18 @@ class LoginCubit extends Cubit<LoginState> {
       SessionController().savedUserInPreference(
           userModel?.objectId ?? '', response.result?.sessionToken ?? '');
       SessionController().getUserFromPreference();
+      emit(state.copyWith(postApiStatus: PostApiStatus.success));
+    } catch (e) {
+      debugPrint(e.toString());
+      emit(state.copyWith(
+          postApiStatus: PostApiStatus.error, message: e.toString()));
+    }
+  }
+
+  Future<void> forgetPassword() async {
+    emit(state.copyWith(postApiStatus: PostApiStatus.loading));
+    try {
+      await authenticationRepository.forgetPassword(state.email);
       emit(state.copyWith(postApiStatus: PostApiStatus.success));
     } catch (e) {
       debugPrint(e.toString());

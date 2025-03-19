@@ -15,7 +15,9 @@ class InputPasswordField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LoginCubit, LoginState>(
-        buildWhen: (previous, next) => previous.password != next.password,
+        buildWhen: (previous, next) =>
+            previous.password != next.password ||
+            previous.hidePassword != next.hidePassword,
         builder: (context, state) {
           return Padding(
             padding: const EdgeInsets.symmetric(
@@ -26,10 +28,18 @@ class InputPasswordField extends StatelessWidget {
               label: "Enter your password",
               borderRadius: 20.0,
               borderColor: Colors.black,
-              obscureText: true,
+              obscureText: state.hidePassword,
               boxConstraints: 12,
               verticalPadding: 17.0,
               fieldTitle: "Password",
+              suffixIcon: IconButton(
+                icon: Icon(state.hidePassword
+                    ? Icons.visibility_off_outlined
+                    : Icons.visibility),
+                onPressed: () {
+                  context.read<LoginCubit>().onPasswordVisibilityChanged();
+                },
+              ),
               hintColor: Colors.grey.shade600,
               titleSize: 15.0,
               onChange: (value) =>

@@ -1,0 +1,47 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../config/constants/app_colors.dart';
+import '../../../config/routes/nav_router.dart';
+import '../../../generated/assets.dart';
+import '../../../ui/button/primary_button.dart';
+import '../../../utils/display/display_utils.dart';
+import '../../authentications/pages/signIn/signin_screen.dart';
+import '../cubit/profile_cubit/profile_cubit.dart';
+
+class LogoutButton extends StatefulWidget {
+  const LogoutButton({super.key});
+
+  @override
+  State<LogoutButton> createState() => _LogoutButtonState();
+}
+
+class _LogoutButtonState extends State<LogoutButton> {
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<ProfileCubit, ProfileState>(
+        listenWhen: (previous, next) => previous != next,
+        listener: (context, state) {
+          if (state.updateType == ProfileUpdateType.logout) {
+            NavRouter.pushAndRemoveUntil(context, const LoginScreen());
+          }
+          if (state.updateType == ProfileUpdateType.error) {
+            DisplayUtils.showErrorToast(context, state.message ?? "");
+          }
+        },
+        buildWhen: (previous, next) => previous != next,
+        builder: (context, state) {
+          return PrimaryIconOutlineButton(
+            onPressed: () {
+              context.read<ProfileCubit>().logout();
+            },
+            title: "Logout",
+            titleColor: AppColors.primaryColor,
+            borderColor: AppColors.primaryColor,
+            height: 64,
+            borderRadius: 16.0,
+            iconSvgPath: Assets.svgLogout,
+          );
+        });
+  }
+}

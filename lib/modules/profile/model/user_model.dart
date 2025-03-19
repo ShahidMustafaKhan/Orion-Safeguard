@@ -26,6 +26,20 @@ class UserModel extends ParseUser implements ParseCloneable {
   static const String keyPassword = 'password';
   static const String keyLicenseNo = 'licenseNo';
   static const String keyNlNumber = 'nlNumber';
+  static const String keyLinkedin = 'linkedin';
+  static const String keyFacebook = 'facebook';
+  static const String keyInstagram = 'instagram';
+  static const String keyWhatsapp = 'whatsapp';
+  static const String keyAlerts = 'alerts';
+  static const String keyAccountStatus = 'accountStatus';
+  static const String keyAccountStatusTypePending = 'pending';
+  static const String keyAccountStatusTypeApproved = 'approved';
+  static const String keyAccountStatusTypeRejected = 'rejected';
+  static const String keyAccountStatusTypeApplying = 'applying';
+  static const String keyAccountStatusTypeFreezed = 'freezed';
+  static const String keyEmploymentStatus = 'employmentStatus';
+  static const String keyEmploymentStatusExisting = 'existing';
+  static const String keyEmploymentStatusApplying = 'applying';
 
   String? get firstName => get<String>(keyFirstName);
   set firstName(String? name) => set<String?>(keyFirstName, name);
@@ -46,4 +60,27 @@ class UserModel extends ParseUser implements ParseCloneable {
 
   int? get nlNumber => get<int>(keyNlNumber);
   set nlNumber(int? nlNumber) => set<int?>(keyNlNumber, nlNumber);
+
+  String? get linkedin => get<String>(keyLinkedin);
+  set linkedin(String? linkedin) => set<String?>(keyLinkedin, linkedin);
+
+  String? get facebook => get<String>(keyFacebook);
+  set facebook(String? facebook) => set<String?>(keyFacebook, facebook);
+
+  String? get instagram => get<String>(keyInstagram);
+  set instagram(String? instagram) => set<String?>(keyInstagram, instagram);
+
+  String? get whatsapp => get<String>(keyWhatsapp);
+  set whatsapp(String? whatsapp) => set<String?>(keyWhatsapp, whatsapp);
+
+  bool get alerts => get<bool>(keyAlerts) ?? true;
+  set alerts(bool alerts) => set<bool>(keyAlerts, alerts);
+
+  String? get accountStatus => get<String>(keyAccountStatus);
+  set accountStatus(String? accountStatus) =>
+      set<String?>(keyAccountStatus, accountStatus);
+
+  String? get employmentStatus => get<String>(keyEmploymentStatus);
+  set employmentStatus(String? employmentStatus) =>
+      set<String?>(keyEmploymentStatus, employmentStatus);
 }

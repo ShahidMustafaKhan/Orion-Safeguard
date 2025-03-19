@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orion_safeguard/config/constants/constants.dart';
 import 'package:sizer/sizer.dart';
 
@@ -7,7 +6,6 @@ import '../../../config/constants/app_text_styles.dart';
 import '../../../config/routes/nav_router.dart';
 import '../../../ui/button/primary_button.dart';
 import '../../../utils/heights_and_widths.dart';
-import '../../authentications/cubit/signup/signup_cubit.dart';
 
 class ApplyForAccountApprovalDialogue extends StatefulWidget {
   const ApplyForAccountApprovalDialogue({super.key});
@@ -128,23 +126,15 @@ class _ApplyForAccountApprovalDialogueState
                 ),
               ),
             ),
-            BlocProvider<SignUpCubit>(
-              create: (BuildContext context) => SignUpCubit(),
-              child: BlocBuilder<SignUpCubit, SignUpState>(
-                  buildWhen: (_, state) => false,
-                  builder: (context, state) {
-                    return PrimaryButton(
-                      onPressed: () {
-                        context.read<SignUpCubit>().onSignUpButtonClicked();
-                        NavRouter.pop(context);
-                      },
-                      title: "Yes Apply",
-                      hMargin: 0,
-                      borderRadius: 14.0,
-                      height: buttonHeight,
-                      backgroundColor: AppColors.primaryColor,
-                    );
-                  }),
+            PrimaryButton(
+              onPressed: () {
+                NavRouter.pop(context, true);
+              },
+              title: "Yes Apply",
+              hMargin: 0,
+              borderRadius: 14.0,
+              height: buttonHeight,
+              backgroundColor: AppColors.primaryColor,
             ),
             PrimaryOutlineButton(
               onPressed: () {

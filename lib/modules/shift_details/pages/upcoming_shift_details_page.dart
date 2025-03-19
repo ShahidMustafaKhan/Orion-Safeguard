@@ -33,6 +33,9 @@ class UpcomingShiftDetailsPage extends StatelessWidget {
               listener: (BuildContext context, ShiftDetailState state) {
                 if (state.postApiStatus == PostApiStatus.error) {
                   DisplayUtils.showErrorToast(context, state.errorMessage);
+                } else if (state.postApiStatus == PostApiStatus.success) {
+                  DisplayUtils.showSuccessToast(
+                      context, "Shift Rejection Confirmed");
                 }
               },
               buildWhen: (previous, next) => previous != next,

@@ -17,10 +17,6 @@ class BaseScreen extends StatefulWidget {
 }
 
 class _BaseScreenState extends State<BaseScreen> {
-  final _pageController = PageController(
-    initialPage: 0,
-  );
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DashboardCubit, DashboardState>(
@@ -31,22 +27,12 @@ class _BaseScreenState extends State<BaseScreen> {
             child: Navbar(
               tabs: state.tabs,
               onChanged: (index) {
-                int selectedIndex = state.tabs.indexOf(state.tabs
-                    .firstWhere((element) => element.isSelected == true));
-
-                if (index == selectedIndex + 1 || index == selectedIndex - 1) {
-                  _pageController.animateToPage(index,
-                      duration: const Duration(milliseconds: 500),
-                      curve: Curves.easeInOut);
-                } else {
-                  _pageController.jumpToPage(index);
-                }
-                context.read<DashboardCubit>().changeNavSelection(index);
+                context.read<DashboardCubit>().changePage(index);
               },
             ),
           ),
           body: PageView(
-            controller: _pageController,
+            controller: context.read<DashboardCubit>().pageController,
             physics: const NeverScrollableScrollPhysics(),
             scrollDirection: Axis.horizontal,
             children: const [

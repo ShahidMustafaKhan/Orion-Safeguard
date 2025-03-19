@@ -9,6 +9,8 @@ import 'package:orion_safeguard/repository/shifts/shifts_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../config/environment.dart';
+import '../../repository/alerts/alerts_http_repository.dart';
+import '../../repository/alerts/alerts_repository.dart';
 import '../../repository/authentication/authentication_http_repository.dart';
 import '../services/storage_service/storage_service.dart';
 
@@ -35,6 +37,7 @@ void setupLocator(Environment environment) async {
   getIt.registerLazySingleton<ShiftsRepository>(() => ShiftsHttpRepository());
   getIt.registerLazySingleton<NotificationRepository>(
       () => NotificationHttpRepository());
+  getIt.registerLazySingleton<AlertsRepository>(() => AlertsHttpRepository());
 
   /// ==================== Modules ===========================
 }

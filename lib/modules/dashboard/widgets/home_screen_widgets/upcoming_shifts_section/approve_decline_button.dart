@@ -3,10 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orion_safeguard/modules/shift_details/cubits/shift_detail_cubits/shift_details_cubit.dart';
 
 import '../../../../../config/constants/app_colors.dart';
-import '../../../../../config/routes/nav_router.dart';
 import '../../../../../ui/button/primary_button.dart';
-import '../../../../../utils/dialogs/confirmation_dialog.dart';
 import '../../../../../utils/heights_and_widths.dart';
+import '../../../../alerts_announcements/widgets/decline_reason_dialogue.dart';
 import '../../../model/shifts_model/shifts_model.dart';
 
 class ApproveDeclineButton extends StatelessWidget {
@@ -39,13 +38,11 @@ class ApproveDeclineButton extends StatelessWidget {
           borderColor: AppColors.primaryColor,
           onPressed: () {
             showDialog(
-                context: context,
-                builder: (context) => const ConfirmationDialog(
-                      title: 'Confirmation',
-                      message: 'Are you sure you want to decline this shift?',
-                    )).then((value) {
-              if (value == true) {
-                NavRouter.pop(context);
+                    context: context,
+                    builder: (context) => const DeclineReasonDialogue())
+                .then((value) async {
+              if (value["status"] == "submitted") {
+                context.read<ShiftDetailCubit>().decline(shiftModel);
               }
             });
           },
