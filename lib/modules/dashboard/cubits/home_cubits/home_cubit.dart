@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:orion_safeguard/core/di/service_locator.dart';
 import 'package:orion_safeguard/modules/dashboard/model/shifts_model/shifts_model.dart';
 import 'package:orion_safeguard/repository/shifts/shifts_repository.dart';
+import 'package:parse_server_sdk/parse_server_sdk.dart';
 
 import '../../../../core/response/api_response.dart';
 import '../../../../core/services/session_controller/session_controller.dart';
@@ -13,6 +14,8 @@ part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
   final ShiftsRepository shiftsRepository = getIt();
+  LiveQuery liveQuery = LiveQuery();
+  Subscription? subscription;
 
   HomeCubit()
       : super(HomeState(
@@ -66,6 +69,37 @@ class HomeCubit extends Cubit<HomeState> {
       return true;
     } else {
       return false;
+    }
+  }
+
+  Future<void> subscribeToShifts() async {
+    String? userId = SessionController().objectId;
+
+    final query = QueryBuilder<ShiftModel>(ShiftModel())
+      ..whereEqualTo('employee', {
+        '__type': 'Pointer',
+        'className': '_User',
+        'objectId': userId,
+      });
+
+    subscription = await liveQuery.client.subscribe(query);
+
+    subscription?.on(LiveQueryEvent.update, (value) {
+      debugPrint(value.get<String>(ShiftModel.keyShiftStatus));
+      upcomingShift();
+      previousShift();
+      ongoingShift();
+    });
+
+    subscription?.on(LiveQueryEvent.create, (value) {
+      debugPrint(value.get<String>(ShiftModel.keyShiftStatus));
+      upcomingShift();
+    });
+  }
+
+  cancelSubscription() async {
+    if (subscription != null) {
+      liveQuery.client.unSubscribe(subscription!);
     }
   }
 }

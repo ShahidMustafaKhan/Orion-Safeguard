@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../config/constants/constants.dart';
-import '../../../../../config/routes/nav_router.dart';
 import '../../../../../ui/button/primary_button.dart';
 import '../../../../../utils/display/display_utils.dart';
 import '../../../../../utils/enums.dart';
-import '../../../../dashboard/pages/base_screen.dart';
+import '../../../../../utils/navigation_helper.dart';
+import '../../../../profile/cubit/profile_cubit/profile_cubit.dart';
 import '../../../cubit/login/login_cubit.dart';
 
 class LoginButton extends StatelessWidget {
@@ -25,7 +25,8 @@ class LoginButton extends StatelessWidget {
       listener: (context, state) {
         if (state.postApiStatus == PostApiStatus.success) {
           DisplayUtils.showSuccessToast(context, "Login Successfully");
-          NavRouter.pushAndRemoveUntil(context, const BaseScreen());
+          context.read<ProfileCubit>().updateUserModel(state.userModel);
+          NavigationHelper.handleNavigation(context, state.userModel);
         } else if (state.postApiStatus == PostApiStatus.error) {
           DisplayUtils.showErrorToast(context, state.message);
         }

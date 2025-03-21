@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:orion_safeguard/config/constants/app_colors.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orion_safeguard/config/constants/app_text_styles.dart';
+import 'package:orion_safeguard/modules/job_application/cubit/job_application_cubit.dart';
+import 'package:orion_safeguard/modules/job_application/model/previous_job_model.dart';
+import 'package:orion_safeguard/modules/job_application/widget/input_form_field.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../../config/constants/asset_paths.dart';
-import '../../../ui/input/input_field.dart';
 import '../../../utils/heights_and_widths.dart';
 import '../widget/custom_date_picker.dart';
-import '../widget/custom_drop_down.dart';
 import '../widget/primary_form_button.dart';
 
 class Step10 extends StatefulWidget {
@@ -19,31 +18,37 @@ class Step10 extends StatefulWidget {
 }
 
 class _Step10State extends State<Step10> {
-  TextEditingController fromDateController = TextEditingController();
-  TextEditingController toDateController = TextEditingController();
-  final List<String> placesList = [
-    "Father",
-    "Mom",
-    "Brother",
-    "Sister",
-    "Uncle",
-    "Son"
-  ];
-  String? selectedPlace;
+  final formKey = GlobalKey<FormState>();
+  TextEditingController fromDate = TextEditingController();
+  TextEditingController toDate = TextEditingController();
 
-  // List to hold experience fields, initially containing one experience.
   List<Map<String, dynamic>> experienceList = [
     {
-      "addressController": TextEditingController(),
-      "sortCodeController": TextEditingController(),
-      "postcodeController": TextEditingController(),
-      "accountNoController": TextEditingController(),
-      "managerController": TextEditingController(),
-      "salaryController": TextEditingController(),
-      "fromDateController": TextEditingController(),
-      "toDateController": TextEditingController(),
-      "reasonController": TextEditingController(),
-      "selectedPlace": null
+      "nameInstitute": TextEditingController(),
+      "sortCode": TextEditingController(),
+      "postCode": TextEditingController(),
+      "telephoneNo": TextEditingController(),
+      "managerName": TextEditingController(),
+      "salary": TextEditingController(),
+      "fromDate": TextEditingController(),
+      "toDate": TextEditingController(),
+      "reasonForLeaving": TextEditingController(),
+      "position": TextEditingController()
+    },
+  ];
+
+  List<Map<String, dynamic>> focusNodeList = [
+    {
+      "nameInstitute": FocusNode(),
+      "sortCode": FocusNode(),
+      "postCode": FocusNode(),
+      "telephoneNo": FocusNode(),
+      "managerName": FocusNode(),
+      "salary": FocusNode(),
+      "fromDate": FocusNode(),
+      "toDate": FocusNode(),
+      "reasonForLeaving": FocusNode(),
+      "position": FocusNode()
     },
   ];
 
@@ -52,19 +57,75 @@ class _Step10State extends State<Step10> {
     if (experienceList.length < 5) {
       setState(() {
         experienceList.add({
-          "addressController": TextEditingController(),
-          "sortCodeController": TextEditingController(),
-          "postcodeController": TextEditingController(),
-          "accountNoController": TextEditingController(),
-          "managerController": TextEditingController(),
-          "salaryController": TextEditingController(),
-          "fromDateController": TextEditingController(),
-          "toDateController": TextEditingController(),
-          "reasonController": TextEditingController(),
-          "selectedPlace": null
+          "nameInstitute": TextEditingController(),
+          "sortCode": TextEditingController(),
+          "postCode": TextEditingController(),
+          "telephoneNo": TextEditingController(),
+          "managerName": TextEditingController(),
+          "salary": TextEditingController(),
+          "fromDate": TextEditingController(),
+          "toDate": TextEditingController(),
+          "reasonForLeaving": TextEditingController(),
+          "position": TextEditingController()
+        });
+        focusNodeList.add({
+          "nameInstitute": FocusNode(),
+          "sortCode": FocusNode(),
+          "postCode": FocusNode(),
+          "telephoneNo": FocusNode(),
+          "managerName": FocusNode(),
+          "salary": FocusNode(),
+          "fromDate": FocusNode(),
+          "toDate": FocusNode(),
+          "reasonForLeaving": FocusNode(),
+          "position": FocusNode()
         });
       });
     }
+  }
+
+  @override
+  void initState() {
+    JobApplicationCubit cubit = context.read<JobApplicationCubit>();
+    List<JobExperience> jobExperienceList = cubit.state.jobExperience;
+
+    if (jobExperienceList.isNotEmpty) {
+      experienceList = [];
+      focusNodeList = [];
+      for (var element in jobExperienceList) {
+        experienceList.add({
+          "nameInstitute":
+              TextEditingController(text: element.previousInstituteName),
+          "sortCode":
+              TextEditingController(text: element.previousInstituteSortCode),
+          "postCode":
+              TextEditingController(text: element.previousInstitutePostCode),
+          "telephoneNo":
+              TextEditingController(text: element.previousInstituteTelephoneNo),
+          "managerName": TextEditingController(text: element.managerName),
+          "salary": TextEditingController(text: element.salary),
+          "fromDate": TextEditingController(text: element.startDate),
+          "toDate": TextEditingController(text: element.endDate),
+          "reasonForLeaving":
+              TextEditingController(text: element.reasonForLeaving),
+          "position":
+              TextEditingController(text: element.previousInstitutePosition)
+        });
+        focusNodeList.add({
+          "nameInstitute": FocusNode(),
+          "sortCode": FocusNode(),
+          "postCode": FocusNode(),
+          "telephoneNo": FocusNode(),
+          "managerName": FocusNode(),
+          "salary": FocusNode(),
+          "fromDate": FocusNode(),
+          "toDate": FocusNode(),
+          "reasonForLeaving": FocusNode(),
+          "position": FocusNode()
+        });
+      }
+    }
+    super.initState();
   }
 
   @override
@@ -98,151 +159,117 @@ class _Step10State extends State<Step10> {
                       fontSize: 16.0,
                     ),
                   ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: List.generate(experienceList.length, (index) {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          InputField(
-                            fillColor: AppColors.grey,
-                            titleSize: 14.0,
-                            controller: experienceList[index]
-                                ["addressController"],
-                            label: "Enter Address of Institute ",
-                            borderRadius: 20.0,
-                            borderColor: AppColors.greyColor,
-                            boxConstraints: 12,
-                            verticalPadding: 17.0,
-                            fieldTitle: "Name",
-                            hintColor: Colors.grey.shade600,
-                          ),
-                          h1,
-                          InputField(
-                            fillColor: AppColors.grey,
-                            titleSize: 14.0,
-                            controller: experienceList[index]
-                                ["sortCodeController"],
-                            label: "Enter Sort Code",
-                            borderRadius: 20.0,
-                            borderColor: AppColors.greyColor,
-                            boxConstraints: 12,
-                            verticalPadding: 17.0,
-                            fieldTitle: "Sort Code",
-                            hintColor: Colors.grey.shade600,
-                          ),
-                          h1,
-                          InputField(
-                            fillColor: AppColors.grey,
-                            titleSize: 14.0,
-                            controller: experienceList[index]
-                                ["postcodeController"],
-                            label: "Enter Post code",
-                            borderRadius: 20.0,
-                            borderColor: AppColors.greyColor,
-                            boxConstraints: 12,
-                            verticalPadding: 17.0,
-                            fieldTitle: "Post code",
-                            hintColor: Colors.grey.shade600,
-                          ),
-                          h1,
-                          InputField(
-                            fillColor: AppColors.grey,
-                            titleSize: 14.0,
-                            controller: experienceList[index]
-                                ["accountNoController"],
-                            label: "Enter Account No",
-                            borderRadius: 20.0,
-                            borderColor: AppColors.greyColor,
-                            boxConstraints: 12,
-                            verticalPadding: 17.0,
-                            fieldTitle: "Telephone no",
-                            hintColor: Colors.grey.shade600,
-                          ),
-                          h1,
-                          CustomDropdown<String>(
-                            icon: SvgPicture.asset(AssetPaths.dropDownIcon,
-                                color: AppColors.black),
-                            text: 'Position',
-                            hint: "Select Position",
-                            value: experienceList[index]["selectedPlace"],
-                            items: placesList,
-                            onChanged: (value) {
-                              setState(() {
-                                experienceList[index]["selectedPlace"] = value;
-                              });
-                            },
-                          ),
-                          h1,
-                          InputField(
-                            fillColor: AppColors.grey,
-                            titleSize: 14.0,
-                            controller: experienceList[index]
-                                ["managerController"],
-                            label: "Enter Manager Name",
-                            borderRadius: 20.0,
-                            borderColor: AppColors.greyColor,
-                            boxConstraints: 12,
-                            verticalPadding: 17.0,
-                            fieldTitle: "Manager name",
-                            hintColor: Colors.grey.shade600,
-                          ),
-                          h1,
-                          InputField(
-                            fillColor: AppColors.grey,
-                            titleSize: 14.0,
-                            controller: experienceList[index]
-                                ["salaryController"],
-                            label: "Enter Salary",
-                            borderRadius: 20.0,
-                            borderColor: AppColors.greyColor,
-                            boxConstraints: 12,
-                            verticalPadding: 17.0,
-                            fieldTitle: "Salary",
-                            hintColor: Colors.grey.shade600,
-                          ),
-                          h2,
-                          Row(
-                            children: [
-                              Expanded(
-                                child: DatePickerTextField(
-                                  text: 'From',
-                                  hintText: 'From Date',
-                                  controller: experienceList[index]
-                                      ["fromDateController"],
+                  Form(
+                    key: formKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: List.generate(experienceList.length, (index) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            InputFormField(
+                              controller: experienceList[index]
+                                  ["nameInstitute"],
+                              focusNode: focusNodeList[index]["nameInstitute"],
+                              nextFocusNode: focusNodeList[index]["sortCode"],
+                              label: "Enter Address of Institute ",
+                              fieldTitle: "Name",
+                            ),
+                            h1,
+                            InputFormField(
+                              controller: experienceList[index]["sortCode"],
+                              focusNode: focusNodeList[index]["sortCode"],
+                              nextFocusNode: focusNodeList[index]["postCode"],
+                              label: "Enter Sort Code",
+                              fieldTitle: "Sort Code",
+                            ),
+                            h1,
+                            InputFormField(
+                              controller: experienceList[index]["postCode"],
+                              focusNode: focusNodeList[index]["postCode"],
+                              nextFocusNode: focusNodeList[index]
+                                  ["telephoneNo"],
+                              label: "Enter Post Code",
+                              fieldTitle: "Post Code",
+                            ),
+                            h1,
+                            InputFormField(
+                              controller: experienceList[index]["telephoneNo"],
+                              focusNode: focusNodeList[index]["telephoneNo"],
+                              nextFocusNode: focusNodeList[index]["position"],
+                              label: "Enter Telephone no",
+                              fieldTitle: "Telephone no",
+                            ),
+                            h1,
+                            InputFormField(
+                              controller: experienceList[index]["position"],
+                              focusNode: focusNodeList[index]["position"],
+                              nextFocusNode: focusNodeList[index]
+                                  ["managerName"],
+                              label: "Enter Position",
+                              fieldTitle: "Position",
+                            ),
+                            h1,
+                            InputFormField(
+                              controller: experienceList[index]["managerName"],
+                              focusNode: focusNodeList[index]["managerName"],
+                              nextFocusNode: focusNodeList[index]["salary"],
+                              label: "Enter Manager Name",
+                              fieldTitle: "Manager name",
+                            ),
+                            h1,
+                            InputFormField(
+                              controller: experienceList[index]["salary"],
+                              focusNode: focusNodeList[index]["salary"],
+                              nextFocusNode: focusNodeList[index]["fromDate"],
+                              label: "Enter Salary",
+                              fieldTitle: "Salary",
+                            ),
+                            h1,
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: DatePickerTextField(
+                                    text: 'From',
+                                    hintText: 'From Date',
+                                    focusNode: focusNodeList[index]["fromDate"],
+                                    nextFocusNode: focusNodeList[index]
+                                        ["toDate"],
+                                    controller: experienceList[index]
+                                        ["fromDate"],
+                                  ),
                                 ),
-                              ),
-                              w1,
-                              Expanded(
-                                child: DatePickerTextField(
-                                  text: 'To',
-                                  hintText: 'To Date',
-                                  controller: experienceList[index]
-                                      ["toDateController"],
+                                w1,
+                                Expanded(
+                                  child: DatePickerTextField(
+                                    text: 'To',
+                                    hintText: 'To Date',
+                                    focusNode: focusNodeList[index]["toDate"],
+                                    nextFocusNode: focusNodeList[index]
+                                        ["reasonForLeaving"],
+                                    controller: experienceList[index]["toDate"],
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          h1,
-                          InputField(
-                            maxLines: 3,
-                            fillColor: AppColors.grey,
-                            titleSize: 14.0,
-                            controller: experienceList[index]
-                                ["reasonController"],
-                            label: "Enter text here",
-                            borderRadius: 20.0,
-                            borderColor: AppColors.greyColor,
-                            boxConstraints: 12,
-                            verticalPadding: 17.0,
-                            fieldTitle: "Reason for Leaving",
-                            hintColor: Colors.grey.shade600,
-                          ),
-                          h1,
-                        ],
-                      );
-                    }),
+                              ],
+                            ),
+                            h1,
+                            InputFormField(
+                              controller: experienceList[index]
+                                  ["reasonForLeaving"],
+                              label: "Enter text here",
+                              focusNode: focusNodeList[index]
+                                  ["reasonForLeaving"],
+                              nextFocusNode: index < focusNodeList.length - 1
+                                  ? focusNodeList[index + 1]["nameInstitute"]
+                                  : null,
+                              fieldTitle: "Reason for Leaving",
+                            ),
+                            h1,
+                          ],
+                        );
+                      }),
+                    ),
                   ),
                   // h1,
                   if (experienceList.length <
@@ -264,16 +291,10 @@ class _Step10State extends State<Step10> {
                               borderRadius: BorderRadius.circular(5),
                               border: Border.all(color: Colors.black),
                             ),
-                            child:
-                                //  IconButton(
-                                //   icon: const
-
-                                Icon(
+                            child: Icon(
                               Icons.add,
                               size: 16,
                             ),
-                            // onPressed: _addExperience,
-                            // ),
                           ),
                         ],
                       ),
@@ -283,8 +304,32 @@ class _Step10State extends State<Step10> {
             ),
           ),
           PrimaryFormButton(
-            onPressed: () {},
-            // formKey: formKey,
+            onPressed: () {
+              JobApplicationCubit cubit = context.read<JobApplicationCubit>();
+
+              List<JobExperience> jobExperienceList = [];
+
+              for (var element in experienceList) {
+                JobExperience experience = JobExperience(
+                  previousInstituteName: element["nameInstitute"].text,
+                  previousInstituteSortCode: element["sortCode"].text,
+                  previousInstitutePostCode: element["postCode"].text,
+                  previousInstituteTelephoneNo: element["telephoneNo"].text,
+                  previousInstitutePosition: element["position"].text,
+                  managerName: element["managerName"].text,
+                  salary: element["salary"].text,
+                  startDate: element["fromDate"].text,
+                  endDate: element["toDate"].text,
+                  reasonForLeaving: element["reasonForLeaving"].text,
+                );
+                jobExperienceList.add(experience);
+              }
+
+              cubit.updateJobApplicationState(cubit.state.copyWith(
+                jobExperience: jobExperienceList,
+              ));
+            },
+            formKey: formKey,
           )
         ],
       ),

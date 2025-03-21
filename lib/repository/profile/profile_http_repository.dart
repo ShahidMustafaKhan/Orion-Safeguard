@@ -121,4 +121,14 @@ class ProfileHttpRepository implements ProfileRepository {
       throw AppException(response.error?.message ?? "Something went wrong");
     }
   }
+
+  @override
+  Future<UserModel?> saveUser(UserModel user) async {
+    ParseResponse response = await user.save();
+    if (response.success && response.result != null) {
+      return response.result as UserModel;
+    } else {
+      throw AppException(response.error?.message ?? "Something went wrong");
+    }
+  }
 }

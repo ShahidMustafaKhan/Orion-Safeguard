@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:orion_safeguard/modules/job_application/pages/stepper_page.dart';
 
 import '../../../../../config/constants/constants.dart';
 import '../../../../../config/routes/nav_router.dart';
@@ -9,6 +8,8 @@ import '../../../../../utils/display/display_utils.dart';
 import '../../../../../utils/enums.dart';
 import '../../../../common_modules/custom_dialogues/select_user_dialogue.dart';
 import '../../../../dashboard/pages/base_screen.dart';
+import '../../../../job_application/pages/stepper_view.dart';
+import '../../../../profile/cubit/profile_cubit/profile_cubit.dart';
 import '../../../cubit/signup/signup_cubit.dart';
 
 class SignUpButton extends StatelessWidget {
@@ -27,8 +28,9 @@ class SignUpButton extends StatelessWidget {
         if (state.postApiStatus == PostApiStatus.success) {
           DisplayUtils.showSuccessToast(
               context, "Account created Successfully");
+          context.read<ProfileCubit>().updateUserModel(state.userModel);
           if (state.employmentStatus == EmploymentStatus.applying) {
-            NavRouter.pushAndRemoveUntil(context, const JobApplicationPage());
+            NavRouter.pushAndRemoveUntil(context, const JobApplicationView());
           } else if (state.employmentStatus == EmploymentStatus.existing) {
             NavRouter.pushAndRemoveUntil(context, const BaseScreen());
           }

@@ -1,14 +1,14 @@
 import 'package:parse_server_sdk/parse_server_sdk.dart';
 
 class NotificationModel extends ParseObject implements ParseCloneable {
-  NotificationModel() : super(_keyTableName);
+  NotificationModel() : super(keyTableName);
   NotificationModel.clone() : this();
 
   /// Mimic a clone due to Flutter not using reflection
   @override
   clone(Map<String, dynamic> map) => NotificationModel.clone()..fromJson(map);
 
-  static const String _keyTableName = 'Notification';
+  static const String keyTableName = 'Notification';
   static const String keyObjectId = 'objectId';
   static const String keyTitle = 'title';
   static const String keyDescription = 'description';

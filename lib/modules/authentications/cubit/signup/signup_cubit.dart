@@ -55,6 +55,10 @@ class SignUpCubit extends Cubit<SignUpState> {
     emit(state.copyWith(employmentStatus: employmentStatus));
   }
 
+  void onUserModelChanged(UserModel? userModel) {
+    emit(state.copyWith(userModel: userModel));
+  }
+
   Future<void> onSignUpButtonClicked() async {
     emit(state.copyWith(postApiStatus: PostApiStatus.loading));
     try {
@@ -72,7 +76,8 @@ class SignUpCubit extends Cubit<SignUpState> {
       SessionController().savedUserInPreference(
           userModel?.objectId ?? '', response.result?.sessionToken ?? '');
       SessionController().getUserFromPreference();
-      emit(state.copyWith(postApiStatus: PostApiStatus.success));
+      emit(state.copyWith(
+          postApiStatus: PostApiStatus.success, userModel: userModel));
     } catch (e) {
       emit(state.copyWith(
           postApiStatus: PostApiStatus.error, message: e.toString()));

@@ -17,6 +17,7 @@ class InputConfirmPassword extends StatelessWidget {
     return BlocBuilder<SignUpCubit, SignUpState>(
         buildWhen: (previous, next) =>
             previous.confirmPassword != next.confirmPassword ||
+            previous.password != next.password ||
             previous.hideConfirmPassword != next.hideConfirmPassword,
         builder: (context, state) {
           return InputField(

@@ -37,7 +37,8 @@ class LoginCubit extends Cubit<LoginState> {
       SessionController().savedUserInPreference(
           userModel?.objectId ?? '', response.result?.sessionToken ?? '');
       SessionController().getUserFromPreference();
-      emit(state.copyWith(postApiStatus: PostApiStatus.success));
+      emit(state.copyWith(
+          postApiStatus: PostApiStatus.success, userModel: userModel));
     } catch (e) {
       debugPrint(e.toString());
       emit(state.copyWith(

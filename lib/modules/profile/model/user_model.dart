@@ -17,6 +17,7 @@ class UserModel extends ParseUser implements ParseCloneable {
     return user;
   }
 
+  static const String keyTableName = '_User';
   static const String keyObjectId = 'objectId';
   static const String keyUserName = 'username';
   static const String keyFirstName = 'firstName';
@@ -40,6 +41,7 @@ class UserModel extends ParseUser implements ParseCloneable {
   static const String keyEmploymentStatus = 'employmentStatus';
   static const String keyEmploymentStatusExisting = 'existing';
   static const String keyEmploymentStatusApplying = 'applying';
+  static const String keyDeviceToken = 'deviceToken';
 
   String? get firstName => get<String>(keyFirstName);
   set firstName(String? name) => set<String?>(keyFirstName, name);
@@ -55,11 +57,11 @@ class UserModel extends ParseUser implements ParseCloneable {
   String? get email => get<String>(keyEmail);
   set email(String? email) => set<String?>(keyEmail, email);
 
-  int? get licenseNo => get<int>(keyLicenseNo);
-  set licenseNo(int? licenseNo) => set<int?>(keyLicenseNo, licenseNo);
+  String? get licenseNo => get<String>(keyLicenseNo);
+  set licenseNo(String? licenseNo) => set<String?>(keyLicenseNo, licenseNo);
 
-  int? get nlNumber => get<int>(keyNlNumber);
-  set nlNumber(int? nlNumber) => set<int?>(keyNlNumber, nlNumber);
+  String? get nlNumber => get<String>(keyNlNumber);
+  set nlNumber(String? nlNumber) => set<String?>(keyNlNumber, nlNumber);
 
   String? get linkedin => get<String>(keyLinkedin);
   set linkedin(String? linkedin) => set<String?>(keyLinkedin, linkedin);
@@ -83,4 +85,7 @@ class UserModel extends ParseUser implements ParseCloneable {
   String? get employmentStatus => get<String>(keyEmploymentStatus);
   set employmentStatus(String? employmentStatus) =>
       set<String?>(keyEmploymentStatus, employmentStatus);
+
+  set deviceToken(String? deviceToken) =>
+      set<String?>(keyDeviceToken, deviceToken);
 }

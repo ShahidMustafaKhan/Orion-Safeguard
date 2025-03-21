@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orion_safeguard/config/constants/app_text_styles.dart';
+import 'package:orion_safeguard/modules/job_application/cubit/job_application_cubit.dart';
 import 'package:orion_safeguard/modules/job_application/widget/input_form_field.dart';
 import 'package:orion_safeguard/modules/job_application/widget/primary_form_button.dart';
 
@@ -24,6 +26,19 @@ class _Step11State extends State<Step11> {
   FocusNode applicantNameFocusNode = FocusNode();
   FocusNode niNoFocusNode = FocusNode();
   FocusNode applicantSignatureFocusNode = FocusNode();
+
+  @override
+  void initState() {
+    JobApplicationCubit jobApplicationCubit =
+        context.read<JobApplicationCubit>();
+
+    submissionDate.text = jobApplicationCubit.state.submissionDate;
+    applicantName.text = jobApplicationCubit.state.applicantName;
+    niNo.text = jobApplicationCubit.state.niNo;
+    applicantSignature.text = jobApplicationCubit.state.signature;
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -185,7 +200,20 @@ class _Step11State extends State<Step11> {
         ),
         PrimaryFormButton(
           title: "Send",
-          onPressed: () {},
+          onPressed: () {
+            JobApplicationCubit jobApplicationCubit =
+                context.read<JobApplicationCubit>();
+
+            jobApplicationCubit
+                .updateJobApplicationState(jobApplicationCubit.state.copyWith(
+              applicantName: applicantName.text,
+              niNo: niNo.text,
+              signature: applicantSignature.text,
+              submissionDate: submissionDate.text,
+            ));
+
+            jobApplicationCubit.submitJobApplication();
+          },
           formKey: formKey,
         )
       ],

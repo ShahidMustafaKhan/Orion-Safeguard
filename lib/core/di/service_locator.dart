@@ -12,6 +12,8 @@ import '../../config/environment.dart';
 import '../../repository/alerts/alerts_http_repository.dart';
 import '../../repository/alerts/alerts_repository.dart';
 import '../../repository/authentication/authentication_http_repository.dart';
+import '../../repository/jobApplication/jobApplication_http_repository.dart';
+import '../../repository/jobApplication/jobApplication_repository.dart';
 import '../services/storage_service/storage_service.dart';
 
 final getIt = GetIt.instance;
@@ -38,6 +40,8 @@ void setupLocator(Environment environment) async {
   getIt.registerLazySingleton<NotificationRepository>(
       () => NotificationHttpRepository());
   getIt.registerLazySingleton<AlertsRepository>(() => AlertsHttpRepository());
+  getIt.registerLazySingleton<JobApplicationRepository>(
+      () => JobApplicationHttpRepository());
 
   /// ==================== Modules ===========================
 }

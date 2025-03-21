@@ -17,6 +17,8 @@ abstract class ProfileRepository {
 
   Future<UserModel?> updateAlert(UserModel user, bool alert);
 
+  Future<UserModel?> saveUser(UserModel user);
+
   Future<void> contactUs(
       {required String name,
       required String email,

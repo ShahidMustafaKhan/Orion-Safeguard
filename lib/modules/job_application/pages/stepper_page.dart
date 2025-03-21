@@ -14,13 +14,15 @@ class JobApplicationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<JobApplicationCubit>(
-      create: (BuildContext context) => JobApplicationCubit(),
-      child: BlocBuilder<JobApplicationCubit, JobApplicationState>(
-          buildWhen: (previous, next) =>
-              previous.currentStep != next.currentStep,
-          builder: (context, state) {
-            return OrionLayout(
+    return BlocBuilder<JobApplicationCubit, JobApplicationState>(
+        buildWhen: (previous, next) => previous.currentStep != next.currentStep,
+        builder: (context, state) {
+          return PopScope(
+            canPop: false,
+            onPopInvokedWithResult: (didPop, value) {
+              context.read<JobApplicationCubit>().previousStep();
+            },
+            child: OrionLayout(
               appBarLeading: IconButton(
                 icon: const Icon(Icons.arrow_back),
                 onPressed: context
@@ -62,8 +64,8 @@ class JobApplicationPage extends StatelessWidget {
                   ],
                 ),
               ),
-            );
-          }),
-    );
+            ),
+          );
+        });
   }
 }

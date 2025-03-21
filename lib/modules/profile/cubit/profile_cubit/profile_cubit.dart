@@ -1,9 +1,14 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:orion_safeguard/core/di/service_locator.dart';
+import 'package:parse_server_sdk/parse_server_sdk.dart';
 
 import '../../../../core/response/api_response.dart';
 import '../../../../core/services/session_controller/session_controller.dart';
+import '../../../../core/services/storage_service/storage_service.dart';
 import '../../../../repository/authentication/authentication_repository.dart';
 import '../../../../repository/profile/profile_repository.dart';
 import '../../model/user_model.dart';
@@ -13,6 +18,8 @@ part 'profile_state.dart';
 class ProfileCubit extends Cubit<ProfileState> {
   final ProfileRepository profileRepository = getIt();
   final AuthenticationRepository authenticationRepository = getIt();
+  final StorageService _localStorage =
+      StorageService(sharedPreferences: getIt());
 
   ProfileCubit() : super(ProfileState(userModel: ApiResponse.loading()));
 
@@ -20,7 +27,8 @@ class ProfileCubit extends Cubit<ProfileState> {
     emit(state.copyWith(
         userModel: currentUser == null
             ? ApiResponse.loading()
-            : ApiResponse.completed(currentUser)));
+            : ApiResponse.completed(currentUser),
+        updateType: ProfileUpdateType.none));
   }
 
   getCurrentUser() async {
@@ -34,6 +42,20 @@ class ProfileCubit extends Cubit<ProfileState> {
     } catch (e) {
       emit(state.copyWith(userModel: ApiResponse.error(e.toString())));
     }
+  }
+
+  changeAccountStatusToPending(File? image, String? nl) async {
+    UserModel userModel = state.userModel.data!;
+    userModel.accountStatus = UserModel.keyAccountStatusTypePending;
+    if (image != null) {
+      userModel.image = ParseFile(image);
+    }
+    if (nl != null) {
+      userModel.nlNumber = nl;
+    }
+    profileRepository.saveUser(state.userModel.data!).then((value) {
+      emit(state.copyWith(userModel: ApiResponse.completed(value)));
+    });
   }
 
   resetEmail(String newEmail) async {
@@ -129,6 +151,17 @@ class ProfileCubit extends Cubit<ProfileState> {
     } catch (e) {
       emit(state.copyWith(
           message: e.toString(), updateType: ProfileUpdateType.error));
+    }
+  }
+
+  addDeviceToken() async {
+    try {
+      String? deviceToken = _localStorage.getString(UserModel.keyDeviceToken);
+      UserModel userModel = state.userModel.data!;
+      userModel.deviceToken = deviceToken;
+      await profileRepository.saveUser(userModel);
+    } catch (e) {
+      debugPrint(e.toString());
     }
   }
 

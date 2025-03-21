@@ -100,9 +100,9 @@ class _Step3State extends State<Step3> {
     nationalityController.text = jobApplicationCubit.state.nationality;
 
     entryDateController.text = jobApplicationCubit.state.dateOfEntry;
-    selectedPlace = jobApplicationCubit.state.placeOfEntry.isEmpty
-        ? null
-        : jobApplicationCubit.state.placeOfEntry;
+    selectedPlace = jobApplicationCubit.state.placeOfEntry.isNotEmpty
+        ? jobApplicationCubit.state.placeOfEntry
+        : null;
 
     _selectedOption = jobApplicationCubit.state.workPermit ? "Yes" : "No";
     nicController.text = jobApplicationCubit.state.niNo;
@@ -275,6 +275,7 @@ class _Step3State extends State<Step3> {
                                     color: AppColors.black),
                                 text: 'Place',
                                 hint: "Select place",
+                                borderRadius: 18,
                                 value: selectedPlace,
                                 focusNode: placeEntryFocusNode,
                                 nextFocusNode: workPermitFocusNode,

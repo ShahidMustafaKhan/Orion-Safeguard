@@ -20,7 +20,6 @@ class UpComingShiftsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<HomeCubit>().upcomingShift();
     return BlocBuilder<HomeCubit, HomeState>(
         buildWhen: (previous, next) =>
             previous.upcomingShifts != next.upcomingShifts,

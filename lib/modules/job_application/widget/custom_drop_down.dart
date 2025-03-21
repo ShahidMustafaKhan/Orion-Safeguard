@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:orion_safeguard/config/constants/constants.dart';
-import 'package:orion_safeguard/utils/heights_and_widths.dart';
 
 class CustomDropdown<T> extends StatefulWidget {
   final String hint;
@@ -12,6 +10,13 @@ class CustomDropdown<T> extends StatefulWidget {
   final Widget? icon;
   final FocusNode? focusNode;
   final FocusNode? nextFocusNode;
+  final double fontSize;
+  final FontWeight fontWeight;
+  final Color? borderColor;
+  final Color? fillColor;
+  final double borderRadius;
+  final double horizontalPadding;
+  final double verticalPadding;
 
   const CustomDropdown({
     super.key,
@@ -23,6 +28,13 @@ class CustomDropdown<T> extends StatefulWidget {
     this.icon,
     this.focusNode,
     this.nextFocusNode,
+    this.fontSize = 14,
+    this.fontWeight = FontWeight.w400,
+    this.borderColor = AppColors.greyColor,
+    this.fillColor = AppColors.grey,
+    this.borderRadius = 20,
+    this.horizontalPadding = 16,
+    this.verticalPadding = 16,
   });
 
   @override
@@ -81,49 +93,89 @@ class _CustomDropdownState<T> extends State<CustomDropdown<T>> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          widget.text,
-          style: const TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.w500,
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 2.0,
+            vertical: 4.0,
+          ),
+          child: Text(
+            widget.text,
+            style: const TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.w500,
+                fontFamily: AssetPaths.dmSans),
           ),
         ),
-        h1,
         GestureDetector(
           onTap: _openDropdown,
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-            decoration: BoxDecoration(
-              color: AppColors.grey,
-              border: Border.all(color: Colors.grey),
-              borderRadius: BorderRadius.circular(18),
-            ),
-            child: DropdownButtonHideUnderline(
-              child: DropdownButton<T>(
-                focusNode: widget.focusNode,
-                hint: Text(
-                  widget.hint,
-                  style: const TextStyle(color: Colors.grey),
+          child: DropdownButtonFormField<T>(
+            value: widget.value, // This ensures the selected value is shown
+            isExpanded: true,
+            style: TextStyle(
+                color: Colors.black,
+                fontSize: widget.fontSize,
+                fontWeight: widget.fontWeight,
+                fontFamily: AssetPaths.dmSans),
+            decoration: InputDecoration(
+              hintText: widget.hint,
+              hintStyle: TextStyle(
+                  color: Colors.grey.shade600,
+                  fontSize: widget.fontSize,
+                  fontWeight: widget.fontWeight,
+                  fontFamily: AssetPaths.dmSans),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(widget.borderRadius),
+                borderSide: const BorderSide(
+                  color: Colors.transparent,
                 ),
-                value: widget.value,
-                icon: widget.icon ??
-                    SvgPicture.asset(AssetPaths.dropDownIcon,
-                        color: AppColors.black),
-                isExpanded: true,
-                items: widget.items.map((T item) {
-                  return DropdownMenuItem<T>(
-                    value: item,
-                    child: Text(item.toString()),
-                  );
-                }).toList(),
-                onChanged: (selectedValue) {
-                  widget.onChanged(selectedValue);
-                  if (widget.nextFocusNode != null) {
-                    FocusScope.of(context).requestFocus(widget.nextFocusNode);
-                  }
-                },
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(widget.borderRadius),
+                borderSide: BorderSide(
+                  color: widget.borderColor ?? Colors.transparent,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(widget.borderRadius),
+                borderSide: BorderSide(
+                  color: widget.borderColor ?? Colors.transparent,
+                ),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(widget.borderRadius),
+                borderSide: BorderSide(
+                  color: widget.borderColor ?? Colors.transparent,
+                ),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(widget.borderRadius),
+                borderSide: BorderSide(
+                  color: widget.borderColor ?? Colors.transparent,
+                ),
+              ),
+              filled: true,
+              fillColor: widget.fillColor,
+              isDense: true,
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: widget.horizontalPadding,
+                vertical: widget.verticalPadding,
               ),
             ),
+            onChanged: (selectedValue) {
+              widget.onChanged(selectedValue);
+              if (widget.nextFocusNode != null) {
+                FocusScope.of(context).requestFocus(widget.nextFocusNode);
+              }
+            },
+            items: widget.items.map<DropdownMenuItem<T>>((T value) {
+              return DropdownMenuItem<T>(
+                value: value,
+                child: Text(
+                  value.toString(),
+                ),
+              );
+            }).toList(),
+            validator: (value) => value == null ? 'field required' : null,
           ),
         ),
       ],

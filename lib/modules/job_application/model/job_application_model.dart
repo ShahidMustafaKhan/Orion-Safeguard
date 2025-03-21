@@ -1,26 +1,196 @@
-import 'package:orion_safeguard/modules/profile/model/user_model.dart';
+import 'package:orion_safeguard/modules/job_application/model/previous_job_model.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
 
+import '../../profile/model/user_model.dart';
+
 class JobApplicationModel extends ParseObject implements ParseCloneable {
-  JobApplicationModel() : super(_keyTableName);
+  JobApplicationModel() : super(keyTableName);
   JobApplicationModel.clone() : this();
 
-  /// Mimic a clone due to Flutter not using reflection
   @override
   clone(Map<String, dynamic> map) => JobApplicationModel.clone()..fromJson(map);
 
-  static const String _keyTableName = 'JobApplicationForm';
-  static const String keyObjectId = 'objectId';
-  static const String keyShiftName = 'name';
+  static const String keyTableName = 'JobApplicationForm';
+
+  // Personal Details
+  static const String keyProfilePicture = 'profilePicture';
+  static const String keyPositionAppliedFor = 'positionAppliedFor';
+  static const String keyAttachedDocument = 'attachedDocument';
+  static const String keyAttachedDocumentName = 'attachedDocumentName';
+  static const String keyTitle = 'title';
+  static const String keySurname = 'surname';
+  static const String keyForename = 'forename';
+  static const String keySurnameAtBirth = 'surnameAtBirth';
+
+  // Address Details
+  static const String keyPermanentAddress = 'permanentAddress';
+  static const String keyPostCode = 'postCode';
+  static const String keyPermanentAddressFromDate = 'permanentAddressFromDate';
+  static const String keyPermanentAddressToDate = 'permanentAddressToDate';
+  static const String keyPreviousAddress = 'previousAddress';
+  static const String keyPreviousAddressPostCode = 'previousAddressPostCode';
+  static const String keyPreviousAddressFromDate = 'previousAddressFromDate';
+  static const String keyPreviousAddressToDate = 'previousAddressToDate';
+
+  // Contact Details
+  static const String keyMobileNo = 'mobileNo';
   static const String keyEmail = 'email';
-  static const String keyMessage = 'message';
+  static const String keyTelephone = 'telephone';
+
+  // Work & Identification
+  static const String keyNationality = 'nationality';
+  static const String keyPlaceOfEntry = 'placeOfEntry';
+  static const String keyDateOfEntry = 'dateOfEntry';
+  static const String keyWorkPermit = 'workPermit';
+  static const String keyNiNo = 'niNo';
+  static const String keyPassportNo = 'passportNo';
+  static const String keySiaLicenseSector = 'siaLicenseSector';
+  static const String keySiaLicenseNo = 'siaLicenseNo';
+
+  // Next of Kin
+  static const String keyRelationshipKin = 'relationshipKin';
+  static const String keyNameKin = 'nameKin';
+  static const String keyTelephoneKin = 'telephoneKin';
+  static const String keyMobileNoKin = 'mobileNoKin';
+  static const String keyAddressKin = 'addressKin';
+  static const String keyPostCodeKin = 'postCodeKin';
+
+  // Driving Details
+  static const String keyDrivingType = 'drivingType';
+  static const String keyOwnTransport = 'ownTransport';
+  static const String keyDrivingLicenseNo = 'drivingLicenseNo';
+  static const String keyDvlaLicenseCheckCode = 'dvlaLicenseCheckCode';
+  static const String keyDisqualified = 'disqualified';
+  static const String keyMotoringConviction = 'motoringConviction';
+  static const String keyMotoringConvictionDetails =
+      'motoringConvictionDetails';
+
+  // Criminal Record
+  static const String keyHasCriminalConvictionRecord =
+      'hasCriminalConvictionRecord';
+  static const String keyOutStandingCriminalConviction =
+      'outStandingCriminalConviction';
+  static const String keyBankruptcy = 'bankruptcy';
+  static const String keyCourtOrders = 'courtOrders';
+  static const String keyAdditionalOffenceDetails = 'additionalOffenceDetails';
+
+  // Education
+  static const String keyInstituteType = 'instituteType';
+  static const String keyInstituteName = 'instituteName';
+  static const String keyInstituteAddress = 'instituteAddress';
+  static const String keyEducationFrom = 'educationFrom';
+  static const String keyEducationTo = 'educationTo';
+  static const String keyGrades = 'grades';
+
+  // Ethnicity
+  static const String keyEthnicOrigin = 'ethnicOrigin';
+
+  // Bank Details
+  static const String keyBankName = 'bankName';
+  static const String keyAccountHolderName = 'accountHolderName';
+  static const String keySortCode = 'sortCode';
+  static const String keyAccountNo = 'accountNo';
+
+  // Job Experience (List)
+  static const String keyJobExperience = 'jobExperience';
+
+  // Submission Details
+  static const String keyApplicantName = 'applicantName';
+  static const String keySignature = 'signature';
+  static const String keySubmissionDate = 'submissionDate';
+
   static const String keyEmployee = 'employee';
 
-  set name(String? name) => set<String?>(keyShiftName, name);
+  // Setters
+  set profilePicture(ParseFile? file) =>
+      set<ParseFile?>(keyProfilePicture, file);
+  set positionAppliedFor(String value) =>
+      set<String>(keyPositionAppliedFor, value);
+  set attachedDocument(ParseFile? file) =>
+      set<ParseFile?>(keyAttachedDocument, file);
+  set attachedDocumentName(String value) =>
+      set<String>(keyAttachedDocumentName, value);
+  set title(String value) => set<String>(keyTitle, value);
+  set surname(String value) => set<String>(keySurname, value);
+  set forename(String value) => set<String>(keyForename, value);
+  set surnameAtBirth(String value) => set<String>(keySurnameAtBirth, value);
 
-  set email(String? email) => set<String?>(keyEmail, email);
+  set permanentAddress(String value) => set<String>(keyPermanentAddress, value);
+  set postCode(String value) => set<String>(keyPostCode, value);
+  set permanentAddressFromDate(String value) =>
+      set<String>(keyPermanentAddressFromDate, value);
+  set permanentAddressToDate(String value) =>
+      set<String>(keyPermanentAddressToDate, value);
+  set previousAddress(String value) => set<String>(keyPreviousAddress, value);
+  set previousAddressPostCode(String value) =>
+      set<String>(keyPreviousAddressPostCode, value);
+  set previousAddressFromDate(String value) =>
+      set<String>(keyPreviousAddressFromDate, value);
+  set previousAddressToDate(String value) =>
+      set<String>(keyPreviousAddressToDate, value);
 
-  set message(String? message) => set<String?>(keyMessage, message);
+  set mobileNo(String value) => set<String>(keyMobileNo, value);
+  set email(String value) => set<String>(keyEmail, value);
+  set telephone(String value) => set<String>(keyTelephone, value);
 
-  set employee(UserModel? employee) => set<UserModel?>(keyEmployee, employee);
+  set nationality(String value) => set<String>(keyNationality, value);
+  set placeOfEntry(String value) => set<String>(keyPlaceOfEntry, value);
+  set dateOfEntry(String value) => set<String>(keyDateOfEntry, value);
+  set workPermit(bool value) => set<bool>(keyWorkPermit, value);
+  set niNo(String value) => set<String>(keyNiNo, value);
+  set passportNo(String value) => set<String>(keyPassportNo, value);
+  set siaLicenseSector(String value) => set<String>(keySiaLicenseSector, value);
+  set siaLicenseNo(String value) => set<String>(keySiaLicenseNo, value);
+
+  set relationshipKin(String value) => set<String>(keyRelationshipKin, value);
+  set nameKin(String value) => set<String>(keyNameKin, value);
+  set telephoneKin(String value) => set<String>(keyTelephoneKin, value);
+  set mobileNoKin(String value) => set<String>(keyMobileNoKin, value);
+  set addressKin(String value) => set<String>(keyAddressKin, value);
+  set postCodeKin(String value) => set<String>(keyPostCodeKin, value);
+
+  set drivingType(String value) => set<String>(keyDrivingType, value);
+  set ownTransport(bool value) => set<bool>(keyOwnTransport, value);
+  set drivingLicenseNo(String value) => set<String>(keyDrivingLicenseNo, value);
+  set dvlaLicenseCheckCode(String value) =>
+      set<String>(keyDvlaLicenseCheckCode, value);
+  set disqualified(bool value) => set<bool>(keyDisqualified, value);
+  set motoringConviction(bool value) => set<bool>(keyMotoringConviction, value);
+  set motoringConvictionDetails(String value) =>
+      set<String>(keyMotoringConvictionDetails, value);
+
+  set hasCriminalConvictionRecord(bool value) =>
+      set<bool>(keyHasCriminalConvictionRecord, value);
+  set outStandingCriminalConviction(bool value) =>
+      set<bool>(keyOutStandingCriminalConviction, value);
+  set bankruptcy(bool value) => set<bool>(keyBankruptcy, value);
+  set courtOrders(bool value) => set<bool>(keyCourtOrders, value);
+  set additionalOffenceDetails(String value) =>
+      set<String>(keyAdditionalOffenceDetails, value);
+
+  set instituteType(String value) => set<String>(keyInstituteType, value);
+  set instituteName(String value) => set<String>(keyInstituteName, value);
+  set instituteAddress(String value) => set<String>(keyInstituteAddress, value);
+  set educationFrom(String value) => set<String>(keyEducationFrom, value);
+  set educationTo(String value) => set<String>(keyEducationTo, value);
+  set grades(String value) => set<String>(keyGrades, value);
+
+  set ethnicOrigin(String value) => set<String>(keyEthnicOrigin, value);
+
+  set bankName(String value) => set<String>(keyBankName, value);
+  set accountHolderName(String value) =>
+      set<String>(keyAccountHolderName, value);
+  set sortCode(String value) => set<String>(keySortCode, value);
+  set accountNo(String value) => set<String>(keyAccountNo, value);
+
+  set jobExperience(List<JobExperience> experiences) {
+    set<List<Map<String, dynamic>>>(
+        keyJobExperience, experiences.map((e) => e.toJson()).toList());
+  }
+
+  set applicantName(String value) => set<String>(keyApplicantName, value);
+  set signature(String value) => set<String>(keySignature, value);
+  set submissionDate(String value) => set<String>(keySubmissionDate, value);
+
+  set employee(UserModel userModel) => set<UserModel>(keyEmployee, userModel);
 }

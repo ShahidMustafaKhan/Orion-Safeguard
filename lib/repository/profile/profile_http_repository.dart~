@@ -108,12 +108,12 @@ class ProfileHttpRepository implements ProfileRepository {
       {required String name,
       required String email,
       required String message,
-      required String objectId}) async {
+      required UserModel? userModel}) async {
     ContactUsModel contactUsModel = ContactUsModel();
     contactUsModel.name = name;
     contactUsModel.email = email;
     contactUsModel.message = message;
-    contactUsModel.objectId = objectId;
+    contactUsModel.employee = userModel;
     ParseResponse response = await contactUsModel.create();
     if (response.success && response.result != null) {
       return;

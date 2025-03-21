@@ -52,10 +52,10 @@ class Step2 extends StatelessWidget {
     return BlocConsumer<JobApplicationCubit, JobApplicationState>(
         listenWhen: (previous, next) =>
             previous.validationStatus != next.validationStatus ||
-            previous.errorMessage != next.errorMessage,
+            previous.errorValidationMessage != next.errorValidationMessage,
         listener: (context, state) {
           if (state.validationStatus == ValidationStatus.error) {
-            DisplayUtils.showErrorToast(context, state.errorMessage);
+            DisplayUtils.showErrorToast(context, state.errorValidationMessage);
           }
         },
         buildWhen: (previous, next) => true,
@@ -209,7 +209,7 @@ class Step2 extends StatelessWidget {
   }
 
   void removeFile(jobApplicationCubit) {
-    jobApplicationCubit.updateJobApplicationState(JobApplicationState()
+    jobApplicationCubit.updateJobApplicationState(jobApplicationCubit.state
         .copyWith(attachedDocument: null, attachedDocumentName: ""));
   }
 
@@ -221,7 +221,7 @@ class Step2 extends StatelessWidget {
     );
 
     if (result != null && result.files.isNotEmpty) {
-      jobApplicationCubit.updateJobApplicationState(JobApplicationState()
+      jobApplicationCubit.updateJobApplicationState(jobApplicationCubit.state
           .copyWith(
               attachedDocument: File(result.files.single.path ?? ''),
               attachedDocumentName: result.files.single.name));

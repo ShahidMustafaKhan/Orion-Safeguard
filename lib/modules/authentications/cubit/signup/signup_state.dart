@@ -15,6 +15,7 @@ class SignUpState extends Equatable {
   final String message;
   final PostApiStatus postApiStatus;
   final EmploymentStatus employmentStatus;
+  final UserModel? userModel;
 
   const SignUpState(
       {this.email = '',
@@ -28,7 +29,8 @@ class SignUpState extends Equatable {
       this.hideConfirmPassword = true,
       this.message = '',
       this.postApiStatus = PostApiStatus.initial,
-      this.employmentStatus = EmploymentStatus.none});
+      this.employmentStatus = EmploymentStatus.none,
+      this.userModel});
 
   SignUpState copyWith(
       {String? email,
@@ -42,7 +44,8 @@ class SignUpState extends Equatable {
       String? licenseNo,
       String? niNumber,
       PostApiStatus? postApiStatus,
-      EmploymentStatus? employmentStatus}) {
+      EmploymentStatus? employmentStatus,
+      UserModel? userModel}) {
     return SignUpState(
         email: email ?? this.email,
         password: password ?? this.password,
@@ -55,7 +58,8 @@ class SignUpState extends Equatable {
         hidePassword: hidePassword ?? this.hidePassword,
         hideConfirmPassword: hideConfirmPassword ?? this.hideConfirmPassword,
         postApiStatus: postApiStatus ?? this.postApiStatus,
-        employmentStatus: employmentStatus ?? this.employmentStatus);
+        employmentStatus: employmentStatus ?? this.employmentStatus,
+        userModel: userModel ?? this.userModel);
   }
 
   @override
@@ -71,6 +75,7 @@ class SignUpState extends Equatable {
         hidePassword,
         hideConfirmPassword,
         confirmPassword,
-        employmentStatus
+        employmentStatus,
+        userModel
       ];
 }

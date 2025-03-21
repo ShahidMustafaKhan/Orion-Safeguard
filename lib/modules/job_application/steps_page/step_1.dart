@@ -25,10 +25,10 @@ class Step1 extends StatelessWidget {
     return BlocConsumer<JobApplicationCubit, JobApplicationState>(
         listenWhen: (previous, next) =>
             previous.validationStatus != next.validationStatus ||
-            previous.errorMessage != next.errorMessage,
+            previous.errorValidationMessage != next.errorValidationMessage,
         listener: (context, state) {
           if (state.validationStatus == ValidationStatus.error) {
-            DisplayUtils.showErrorToast(context, state.errorMessage);
+            DisplayUtils.showErrorToast(context, state.errorValidationMessage);
           }
         },
         buildWhen: (previous, next) => previous != next,

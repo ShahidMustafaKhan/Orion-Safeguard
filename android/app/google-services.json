@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "46364379854",
+    "project_id": "orion-47dbb",
+    "storage_bucket": "orion-47dbb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:46364379854:android:a20b71a2e35a0d8b579e9f",
+        "android_client_info": {
+          "package_name": "com.orion_safeguard.orion_safeguard"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADEcZVOHEZuAzWCfjHKew6VrEQHaIKH_8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

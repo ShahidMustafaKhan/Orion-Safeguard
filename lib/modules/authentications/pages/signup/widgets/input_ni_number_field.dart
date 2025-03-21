@@ -27,7 +27,6 @@ class InputNiNumber extends StatelessWidget {
             boxConstraints: 12,
             verticalPadding: 17.0,
             focusNode: niNumberFocusNode,
-            keyboardType: TextInputType.number,
             onChange: (value) =>
                 context.read<SignUpCubit>().onNiNumberChanged(value),
             onFieldSubmitted: (_) => Utils.focusNextField(

@@ -76,6 +76,9 @@ class JobApplicationState extends Equatable {
 
   final int currentStep;
   final ValidationStatus validationStatus;
+  final String? errorValidationMessage;
+
+  final PostApiStatus submissionStatus;
   final String? errorMessage;
 
   const JobApplicationState({
@@ -141,6 +144,8 @@ class JobApplicationState extends Equatable {
     this.submissionDate = '',
     this.currentStep = 0,
     this.validationStatus = ValidationStatus.none,
+    this.errorValidationMessage,
+    this.submissionStatus = PostApiStatus.initial,
     this.errorMessage,
   });
 
@@ -207,6 +212,8 @@ class JobApplicationState extends Equatable {
     String? submissionDate,
     int? currentStep,
     ValidationStatus? validationStatus,
+    String? errorValidationMessage,
+    PostApiStatus? submissionStatus,
     String? errorMessage,
   }) {
     return JobApplicationState(
@@ -281,6 +288,9 @@ class JobApplicationState extends Equatable {
       submissionDate: submissionDate ?? this.submissionDate,
       currentStep: currentStep ?? this.currentStep,
       validationStatus: validationStatus ?? this.validationStatus,
+      errorValidationMessage:
+          errorValidationMessage ?? this.errorValidationMessage,
+      submissionStatus: submissionStatus ?? this.submissionStatus,
       errorMessage: errorMessage ?? this.errorMessage,
     );
   }
@@ -349,6 +359,8 @@ class JobApplicationState extends Equatable {
         submissionDate,
         currentStep,
         validationStatus,
+        errorValidationMessage,
+        submissionStatus,
         errorMessage,
       ];
 }

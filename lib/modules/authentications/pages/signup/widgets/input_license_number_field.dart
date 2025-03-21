@@ -26,7 +26,6 @@ class InputLicenseNo extends StatelessWidget {
             borderColor: Colors.black,
             boxConstraints: 12,
             verticalPadding: 17.0,
-            keyboardType: TextInputType.number,
             onChange: (value) =>
                 context.read<SignUpCubit>().onLicenseNoChanged(value),
             focusNode: licenseNoFocusNode,

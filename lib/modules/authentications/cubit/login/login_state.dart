@@ -5,6 +5,7 @@ class LoginState extends Equatable {
   final String password;
   final String message;
   final bool hidePassword;
+  final UserModel? userModel;
   final PostApiStatus postApiStatus;
 
   const LoginState(
@@ -12,6 +13,7 @@ class LoginState extends Equatable {
       this.password = '',
       this.message = '',
       this.hidePassword = true,
+      this.userModel,
       this.postApiStatus = PostApiStatus.initial});
 
   LoginState copyWith(
@@ -19,16 +21,18 @@ class LoginState extends Equatable {
       String? password,
       String? message,
       bool? hidePassword,
+      UserModel? userModel,
       PostApiStatus? postApiStatus}) {
     return LoginState(
         email: email ?? this.email,
         password: password ?? this.password,
         message: message ?? this.message,
         hidePassword: hidePassword ?? this.hidePassword,
+        userModel: userModel ?? this.userModel,
         postApiStatus: postApiStatus ?? this.postApiStatus);
   }
 
   @override
   List<Object?> get props =>
-      [email, password, message, postApiStatus, hidePassword];
+      [email, password, message, postApiStatus, userModel, hidePassword];
 }

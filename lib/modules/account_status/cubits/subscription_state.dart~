@@ -1,0 +1,32 @@
+import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
+import 'package:parse_server_sdk_flutter/parse_server_sdk_flutter.dart';
+
+part 'subscription_state.dart';
+
+class SubscriptionCubit extends Cubit<SubscriptionState> {
+  SubscriptionCubit() : super(SubscriptionInitial());
+
+  ParseLiveQuery liveQuery = ParseLiveQuery();
+  Subscription? subscription;
+
+  Future<void> subscribeToUserStatus(String userId) async {
+    final query = QueryBuilder<ParseObject>(ParseObject('UserModel'))
+      ..whereEqualTo('objectId', userId);
+
+    subscription = await liveQuery.client.subscribe(query);
+
+    subscription?.on(LiveQueryEvent.update, (value) {
+      final accountStatus = value.get<String>('accountStatus');
+      if (accountStatus == 'approved' || accountStatus == 'rejected') {
+        emit(SubscriptionUpdated(accountStatus));
+      }
+    });
+  }
+
+  @override
+  Future<void> close() {
+    subscription?.unsubscribe();
+    return super.close();
+  }
+}

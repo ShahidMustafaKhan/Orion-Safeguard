@@ -3,14 +3,14 @@ import 'package:parse_server_sdk/parse_server_sdk.dart';
 import '../../../profile/model/user_model.dart';
 
 class ShiftModel extends ParseObject implements ParseCloneable {
-  ShiftModel() : super(_keyTableName);
+  ShiftModel() : super(keyTableName);
   ShiftModel.clone() : this();
 
   /// Mimic a clone due to Flutter not using reflection
   @override
   clone(Map<String, dynamic> map) => ShiftModel.clone()..fromJson(map);
 
-  static const String _keyTableName = 'Shifts';
+  static const String keyTableName = 'Shifts';
   static const String keyObjectId = 'objectId';
   static const String keyShiftName = 'name';
   static const String keyDescription = 'description';

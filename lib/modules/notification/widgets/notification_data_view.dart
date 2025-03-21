@@ -63,5 +63,5 @@ String? returnIcon(String type) {
   } else if (type == NotificationModel.keyTypeAnnouncement) {
     return Assets.svgUserAdd;
   }
-  return null;
+  return Assets.svgUserAdd;
 }

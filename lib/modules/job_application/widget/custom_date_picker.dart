@@ -81,9 +81,6 @@ class _DatePickerTextFieldState extends State<DatePickerTextField> {
       if (widget.nextFocusNode != null) {
         FocusScope.of(context).requestFocus(widget.nextFocusNode);
       }
-    } else {
-      // If no date is picked, keep focus on the field
-      FocusScope.of(context).requestFocus(widget.focusNode);
     }
   }
 

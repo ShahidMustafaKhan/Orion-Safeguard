@@ -117,7 +117,7 @@ class _ApplyForAccountApprovalDialogueState
             Padding(
               padding: EdgeInsets.all(10.sp),
               child: Text(
-                "Select between the two options: Are you an existing employee or applying for a new job?",
+                "Are you sure you are an existing employee and want to apply for the account approval?",
                 textAlign: TextAlign.center,
                 maxLines: 2,
                 style: AppTextStyles.robotoMedium(

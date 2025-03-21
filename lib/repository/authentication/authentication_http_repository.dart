@@ -31,8 +31,8 @@ class AuthenticationHttpRepository implements AuthenticationRepository {
     var user = UserModel(email, password, email);
     user.firstName = firstName;
     user.lastName = lastName;
-    user.licenseNo = int.parse(licenseNo);
-    user.nlNumber = int.parse(niNumber);
+    user.licenseNo = licenseNo;
+    user.nlNumber = niNumber;
     user.email = email;
     user.password = password;
     user.accountStatus = UserModel.keyAccountStatusTypeApplying;

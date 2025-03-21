@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orion_safeguard/modules/alerts_announcements/pages/alerts_page.dart';
 import 'package:orion_safeguard/modules/records/pages/record_screen.dart';
 
+import '../../profile/cubit/profile_cubit/profile_cubit.dart';
 import '../../screen_layout_widget/navbar.dart';
 import '../cubits/dashboard_cubits/dashboard_cubit.dart';
 import '../cubits/dashboard_cubits/dashboard_state.dart';
@@ -17,6 +18,12 @@ class BaseScreen extends StatefulWidget {
 }
 
 class _BaseScreenState extends State<BaseScreen> {
+  @override
+  void initState() {
+    context.read<ProfileCubit>().addDeviceToken();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DashboardCubit, DashboardState>(

@@ -103,3 +103,6 @@ List<String> ethnicOrigin() => [
       "White",
       "Other",
     ];
+
+List<String> positionsList() =>
+    ["Father", "Mom", "Brother", "Sister", "Uncle", "Son"];

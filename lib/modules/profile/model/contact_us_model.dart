@@ -2,14 +2,14 @@ import 'package:orion_safeguard/modules/profile/model/user_model.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
 
 class ContactUsModel extends ParseObject implements ParseCloneable {
-  ContactUsModel() : super(_keyTableName);
+  ContactUsModel() : super(keyTableName);
   ContactUsModel.clone() : this();
 
   /// Mimic a clone due to Flutter not using reflection
   @override
   clone(Map<String, dynamic> map) => ContactUsModel.clone()..fromJson(map);
 
-  static const String _keyTableName = 'ContactUs';
+  static const String keyTableName = 'ContactUs';
   static const String keyObjectId = 'objectId';
   static const String keyShiftName = 'name';
   static const String keyEmail = 'email';
