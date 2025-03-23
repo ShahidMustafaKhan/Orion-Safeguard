@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:orion_safeguard/config/constants/app_colors.dart';
 import 'package:orion_safeguard/generated/assets.dart';
-import 'package:orion_safeguard/utils/heights_and_widths.dart';
 
 import '../../../ui/input/input_field.dart';
+import '../../../utils/heights_and_widths.dart';
 
 class DatePickerTextField extends StatefulWidget {
   final String hintText;
@@ -12,6 +12,16 @@ class DatePickerTextField extends StatefulWidget {
   final TextEditingController controller;
   final FocusNode? focusNode;
   final FocusNode? nextFocusNode;
+  final Color fillColor;
+  final Color borderColor;
+  final Color iconColor;
+  final double verticalPadding;
+  final double titleSize;
+  final double borderRadius;
+  final String? fieldTitle;
+  final Function(String)? onChange;
+  final FormFieldValidator<String>? validator;
+  final ValueChanged<String>? onFieldSubmitted;
 
   const DatePickerTextField({
     super.key,
@@ -20,6 +30,16 @@ class DatePickerTextField extends StatefulWidget {
     required this.text,
     this.focusNode,
     this.nextFocusNode,
+    this.fillColor = AppColors.grey,
+    this.borderColor = AppColors.greyColor,
+    this.verticalPadding = 17.0,
+    this.titleSize = 14.0,
+    this.borderRadius = 18.0,
+    this.fieldTitle,
+    this.iconColor = AppColors.greyColor,
+    this.onChange,
+    this.validator,
+    this.onFieldSubmitted,
   });
 
   @override
@@ -89,38 +109,46 @@ class _DatePickerTextFieldState extends State<DatePickerTextField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          widget.text,
-          style: const TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.w500,
+        if (widget.fieldTitle == null)
+          Column(
+            children: [
+              Text(
+                widget.text,
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              h1,
+            ],
           ),
-        ),
-        h1,
         GestureDetector(
           onTap: _openDatePicker,
           child: InputField(
-            fillColor: AppColors.grey,
+            fillColor: widget.fillColor,
             readOnly: true,
-            titleSize: 14.0,
+            titleSize: widget.titleSize,
             controller: widget.controller,
             suffixIcon: SvgPicture.asset(
               Assets.svgCalender,
               height: 24,
               width: 24,
-              color: AppColors.greyColor,
+              color: widget.iconColor,
             ),
-            validator: (value) {
-              if (value!.isEmpty) {
-                return "Required";
-              }
-              return null;
-            },
+            validator: widget.validator ??
+                (value) {
+                  if (value!.isEmpty) {
+                    return "Required";
+                  }
+                  return null;
+                },
+            onChange: widget.onChange,
             label: widget.hintText,
-            borderRadius: 18.0,
-            borderColor: AppColors.greyColor,
+            borderRadius: widget.borderRadius,
+            borderColor: widget.borderColor,
             boxConstraints: 12,
-            verticalPadding: 17.0,
+            fieldTitle: widget.fieldTitle ?? '',
+            verticalPadding: widget.verticalPadding,
             hintColor: Colors.grey.shade600,
           ),
         ),

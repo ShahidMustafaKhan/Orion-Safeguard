@@ -169,7 +169,7 @@ class _Step3State extends State<Step3> {
                             Expanded(
                               child: DatePickerTextField(
                                 text: 'To',
-                                hintText: 'From Date',
+                                hintText: 'To Date',
                                 controller: toDateController,
                                 focusNode: toDateFocusNode,
                                 nextFocusNode: previousAddressFocusNode,
@@ -209,7 +209,7 @@ class _Step3State extends State<Step3> {
                             Expanded(
                               child: DatePickerTextField(
                                 text: 'To',
-                                hintText: 'From Date',
+                                hintText: 'To Date',
                                 controller: toDatePreviousAddressController,
                                 focusNode: toPreviousADateFocusNode,
                                 nextFocusNode: emailFocusNode,

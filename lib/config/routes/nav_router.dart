@@ -44,13 +44,13 @@ class NavRouter {
   }
 
   /// Push and remove until
-  static Future pushAndRemoveUntil(BuildContext context, Widget route) {
-    return Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (_) => route,
-        ),
-        (Route<dynamic> route) => false);
+  static Future pushAndRemoveUntil(BuildContext context, Widget route,
+      {bool rootNavigator = false}) {
+    return Navigator.of(context, rootNavigator: rootNavigator)
+        .pushAndRemoveUntil(
+      MaterialPageRoute(builder: (_) => route),
+      (Route<dynamic> route) => false,
+    );
   }
 
   /// Push and remove until

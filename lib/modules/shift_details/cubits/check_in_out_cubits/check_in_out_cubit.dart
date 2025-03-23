@@ -18,8 +18,7 @@ class CheckInOutCubit extends Cubit<CheckInOutState> {
   ShiftModel? shift;
   Timer? _timer;
 
-  CheckInOutCubit({required this.shift})
-      : super(CheckInOutState(shift: shift, now: DateTime.now()));
+  CheckInOutCubit({required this.shift}) : super(CheckInOutState(shift: shift));
 
   Future<ShiftModel?> checkInApi(ShiftModel? shiftModel) async {
     emit(state.copyWith(postApiStatus: PostApiStatus.loading));
@@ -47,33 +46,41 @@ class CheckInOutCubit extends Cubit<CheckInOutState> {
     emit(state.copyWith(file: file));
   }
 
+  void updateCurrentTime() {
+    emit(state.copyWith(now: DateTime.now()));
+  }
+
   Future<void> checkInFunc() async {
     if (isDatePassed(state.shift?.startDate) == true) {
       if (isDatePassedNotReached(state.shift?.endDate) == true) {
         if (state.file != null) {
+          updateCurrentTime();
           await checkInApi(state.shift!).then((value) {
             emit(state.copyWith(
               file: null,
               resetFile: true,
               shift: value,
             ));
-            startTimer();
+            // startTimer();
           }).onError((error, stacktrace) {
             emit(state.copyWith(
                 postApiStatus: PostApiStatus.error,
                 errorMessage: error.toString()));
           });
         } else {
+          emit(state.copyWith(postApiStatus: PostApiStatus.initial));
           emit(state.copyWith(
               postApiStatus: PostApiStatus.error,
               errorMessage: "Please upload selfie"));
         }
       } else {
+        emit(state.copyWith(postApiStatus: PostApiStatus.initial));
         emit(state.copyWith(
             postApiStatus: PostApiStatus.error,
             errorMessage: "Shift has ended"));
       }
     } else {
+      emit(state.copyWith(postApiStatus: PostApiStatus.initial));
       emit(state.copyWith(
           postApiStatus: PostApiStatus.error,
           errorMessage:
@@ -84,9 +91,13 @@ class CheckInOutCubit extends Cubit<CheckInOutState> {
   Future<void> checkOutFunc(Function() earlyCheckOutRequest) async {
     if (state.file != null) {
       if (isDatePassed(state.shift?.endDate) == true) {
+        stopTimer();
         await checkOutApi(state.shift!).then((value) {
           emit(state.copyWith(
-              file: null, shift: value, postApiStatus: PostApiStatus.success));
+              resetFile: true,
+              file: null,
+              shift: value,
+              postApiStatus: PostApiStatus.success));
         }).onError((error, stacktrace) {
           emit(state.copyWith(
               postApiStatus: PostApiStatus.error,
@@ -96,6 +107,7 @@ class CheckInOutCubit extends Cubit<CheckInOutState> {
         earlyCheckOutRequest();
       }
     } else {
+      emit(state.copyWith(postApiStatus: PostApiStatus.initial));
       emit(state.copyWith(
           postApiStatus: PostApiStatus.error,
           errorMessage: "Please upload a selfie"));
@@ -133,7 +145,9 @@ class CheckInOutCubit extends Cubit<CheckInOutState> {
   }
 
   void stopTimer() {
-    _timer?.cancel();
+    if (_timer != null) {
+      _timer!.cancel();
+    }
   }
 
   @override

@@ -15,6 +15,7 @@ class InputFormField extends StatelessWidget {
   final bool readOnly;
   final int maxLines;
   final bool validate;
+  final double horizontalPadding;
 
   const InputFormField({
     super.key,
@@ -28,6 +29,7 @@ class InputFormField extends StatelessWidget {
     this.suffixIcon,
     this.maxLines = 1,
     this.validate = true,
+    this.horizontalPadding = 20,
   });
 
   @override
@@ -61,6 +63,7 @@ class InputFormField extends StatelessWidget {
       borderColor: AppColors.greyColor,
       boxConstraints: 12,
       verticalPadding: 17.0,
+      horizontalPadding: horizontalPadding,
       fieldTitle: fieldTitle,
       hintColor: Colors.grey.shade600,
       // titleWeight: FontWeight.w600,

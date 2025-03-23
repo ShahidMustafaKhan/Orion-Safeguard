@@ -202,7 +202,7 @@ class _InputFieldState extends State<InputField> {
                   : widget.suffixIconRightPadding,
               top: widget.suffixIcon is IconButton ||
                       widget.suffixIcon is PasswordSuffixIcon
-                  ? 0
+                  ? 5
                   : widget.suffixIconTopPadding,
               child: Align(
                 alignment: Alignment.center,

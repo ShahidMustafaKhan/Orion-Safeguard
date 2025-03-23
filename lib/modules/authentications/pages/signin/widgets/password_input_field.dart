@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../ui/input/input_field.dart';
+import '../../../../../ui/widgets/password_suffix_widget.dart';
 import '../../../cubit/login/login_cubit.dart';
 
 class InputPasswordField extends StatelessWidget {
@@ -32,13 +33,10 @@ class InputPasswordField extends StatelessWidget {
               boxConstraints: 12,
               verticalPadding: 17.0,
               fieldTitle: "Password",
-              suffixIcon: IconButton(
-                icon: Icon(state.hidePassword
-                    ? Icons.visibility_off_outlined
-                    : Icons.visibility),
-                onPressed: () {
-                  context.read<LoginCubit>().onPasswordVisibilityChanged();
-                },
+              suffixIcon: PasswordSuffixIcon(
+                isPasswordVisible: state.hidePassword == false,
+                onTap: () =>
+                    context.read<LoginCubit>().onPasswordVisibilityChanged(),
               ),
               hintColor: Colors.grey.shade600,
               titleSize: 15.0,

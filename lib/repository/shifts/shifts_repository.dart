@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:parse_server_sdk/parse_server_sdk.dart';
+
 import '../../modules/dashboard/model/shifts_model/shifts_model.dart';
 
 abstract class ShiftsRepository {
@@ -17,6 +19,7 @@ abstract class ShiftsRepository {
 
   Future<List<ShiftModel>> getCompletedShifts(String? objectId, {int skip = 0});
   Future<List<ShiftModel>> getActiveShifts(String? objectId, {int skip = 0});
+  QueryBuilder<ShiftModel> activeShiftsQuery(String? objectId, {int skip = 0});
 
   Future<List<ShiftModel>> getRecords(String? objectId, {int skip = 0});
   Future<ShiftModel?> getShiftDetail(ShiftModel? shiftModel);

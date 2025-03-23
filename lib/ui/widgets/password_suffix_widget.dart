@@ -21,8 +21,8 @@ class PasswordSuffixIcon extends StatelessWidget {
         isPasswordVisible
             ? Icons.visibility_outlined
             : Icons.visibility_off_outlined,
-        color: AppColors.grey,
-        size: 24,
+        color: AppColors.black,
+        size: 26,
       ),
     );
   }

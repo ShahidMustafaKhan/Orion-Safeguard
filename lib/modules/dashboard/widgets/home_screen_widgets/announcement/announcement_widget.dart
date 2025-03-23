@@ -19,7 +19,6 @@ class AnnouncementWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<AlertsCubit>().latestAnnouncement();
     return BlocBuilder<AlertsCubit, AlertsState>(
         buildWhen: (previous, next) =>
             previous.latestAnnouncement != next.latestAnnouncement,

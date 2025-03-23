@@ -36,7 +36,7 @@ class InputEmailField extends StatelessWidget {
               fieldTitle: "Email",
               hintColor: Colors.grey.shade600,
               onChange: (value) {
-                context.read<LoginCubit>().onEmailChanged(value.trim());
+                context.read<LoginCubit>().onEmailChanged(value);
               },
               onFieldSubmitted: (_) {
                 if (passwordFocusNode != null) {
@@ -49,7 +49,7 @@ class InputEmailField extends StatelessWidget {
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter an email';
-                } else if (!EmailValidator.validate(value.trim())) {
+                } else if (!EmailValidator.validate(value)) {
                   return 'Please enter a valid email';
                 }
                 return null;

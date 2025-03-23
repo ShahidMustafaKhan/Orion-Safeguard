@@ -16,10 +16,12 @@ import '../../../generated/assets.dart';
 import '../../../utils/enums.dart';
 import '../../../utils/heights_and_widths.dart';
 import '../../../utils/time_utils.dart';
+import '../../profile/model/user_model.dart';
 
 class AlertWidget extends StatelessWidget {
   final AnnouncementModel? announcementModel;
-  const AlertWidget({super.key, this.announcementModel});
+  final UserModel? userModel;
+  const AlertWidget({super.key, this.announcementModel, this.userModel});
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +135,8 @@ class AlertWidget extends StatelessWidget {
                                 .then((value) {
                               if (value?["status"] == "submitted") {
                                 context.read<AlertsCubit>().decline(
-                                    announcementModel, value["reason"] ?? '');
+                                    announcementModel, value["reason"] ?? '',
+                                    userModel: userModel);
                               }
                             });
                           },
@@ -151,9 +154,9 @@ class AlertWidget extends StatelessWidget {
                           backgroundColor: AppColors.primaryColor,
                           borderRadius: 16.0,
                           onPressed: () {
-                            context
-                                .read<AlertsCubit>()
-                                .approve(announcementModel);
+                            context.read<AlertsCubit>().approve(
+                                announcementModel,
+                                userModel: userModel);
                           },
                           title: "Approve",
                         )),

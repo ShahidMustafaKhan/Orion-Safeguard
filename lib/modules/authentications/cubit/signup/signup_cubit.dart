@@ -35,6 +35,10 @@ class SignUpCubit extends Cubit<SignUpState> {
     emit(state.copyWith(niNumber: niNumber));
   }
 
+  void onDateBirthChanged(String dateBirth) {
+    emit(state.copyWith(dateBirth: dateBirth));
+  }
+
   void onPasswordChanged(String password) {
     emit(state.copyWith(password: password));
   }
@@ -63,15 +67,20 @@ class SignUpCubit extends Cubit<SignUpState> {
     emit(state.copyWith(postApiStatus: PostApiStatus.loading));
     try {
       UserModel? userModel = await authenticationRepository.signup(
-          state.email,
-          state.password,
-          state.firstName,
-          state.lastName,
-          state.licenseNo,
-          state.niNumber,
-          state.employmentStatus == EmploymentStatus.applying
-              ? UserModel.keyEmploymentStatusApplying
-              : UserModel.keyEmploymentStatusExisting);
+        state.email,
+        state.password,
+        state.firstName,
+        state.lastName,
+        state.licenseNo,
+        state.dateBirth,
+        state.niNumber,
+        state.employmentStatus == EmploymentStatus.applying
+            ? UserModel.keyEmploymentStatusApplying
+            : UserModel.keyEmploymentStatusExisting,
+        state.employmentStatus == EmploymentStatus.applying
+            ? UserModel.keyAccountStatusTypeApplying
+            : UserModel.keyAccountStatusTypePending,
+      );
       ParseResponse response = await ParseSession().save();
       SessionController().savedUserInPreference(
           userModel?.objectId ?? '', response.result?.sessionToken ?? '');

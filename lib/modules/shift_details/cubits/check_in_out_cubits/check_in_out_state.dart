@@ -6,7 +6,7 @@ class CheckInOutState extends Equatable {
   final PostApiStatus? approvalPostStatus;
   final String? errorMessage;
   final File? file;
-  final DateTime now;
+  final DateTime? now;
 
   const CheckInOutState(
       {this.shift,
@@ -14,7 +14,7 @@ class CheckInOutState extends Equatable {
       this.errorMessage,
       this.file,
       this.approvalPostStatus,
-      required this.now});
+      this.now});
 
   CheckInOutState copyWith(
       {ShiftModel? shift,

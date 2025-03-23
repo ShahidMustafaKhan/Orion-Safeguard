@@ -9,11 +9,11 @@ class InputNiNumber extends StatelessWidget {
   const InputNiNumber({
     super.key,
     required this.niNumberFocusNode,
-    required this.emailFocusNode,
+    required this.dateBirthFocusNode,
   });
 
   final FocusNode niNumberFocusNode;
-  final FocusNode emailFocusNode;
+  final FocusNode dateBirthFocusNode;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class InputNiNumber extends StatelessWidget {
             onFieldSubmitted: (_) => Utils.focusNextField(
                 context: context,
                 currentFocus: niNumberFocusNode,
-                nextFocus: emailFocusNode),
+                nextFocus: dateBirthFocusNode),
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please enter your NI number';

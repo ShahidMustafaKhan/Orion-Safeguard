@@ -67,7 +67,7 @@ String timeDifferenceTillNow(DateTime? fromTime, DateTime? now,
   fromTime = fromTime.toLocal();
 
   if (difference.isNegative) {
-    return showAsClockFormat ? "00:00:00" : "0 Minutes"; // Handle past times
+    return showAsClockFormat ? "00:00:00" : "0 Seconds"; // Handle past times
   }
 
   int hours = difference.inHours;
@@ -79,7 +79,9 @@ String timeDifferenceTillNow(DateTime? fromTime, DateTime? now,
         "${minutes.toString().padLeft(2, '0')}:"
         "${seconds.toString().padLeft(2, '0')}";
   } else {
-    if (hours == 0) {
+    if (minutes == 0 && hours == 0) {
+      return "$seconds Seconds"; // Only seconds if no minutes or hours
+    } else if (hours == 0) {
       return showSeconds
           ? "$minutes Min $seconds Seconds"
           : "$minutes Minutes"; // Only minutes if no hours
@@ -91,14 +93,18 @@ String timeDifferenceTillNow(DateTime? fromTime, DateTime? now,
   }
 }
 
-String timeLeftUntil(DateTime toTime, DateTime now,
+String timeLeftUntil(DateTime toTime, DateTime? now,
     {bool showAsClockFormat = false}) {
   toTime = toTime.toLocal();
+
+  if (now == null) {
+    return showAsClockFormat ? "00:00:00" : "0 Seconds"; // Handle past times
+  }
 
   Duration difference = toTime.difference(now);
 
   if (difference.isNegative) {
-    return showAsClockFormat ? "00:00:00" : "0 Minutes"; // Handle past times
+    return showAsClockFormat ? "00:00:00" : "0 Seconds"; // Handle past times
   }
 
   int hours = difference.inHours;
@@ -110,7 +116,9 @@ String timeLeftUntil(DateTime toTime, DateTime now,
         "${minutes.toString().padLeft(2, '0')}:"
         "${seconds.toString().padLeft(2, '0')}";
   } else {
-    if (hours == 0) {
+    if (minutes == 0 && hours == 0) {
+      return "$seconds Seconds"; // Only seconds if no minutes or hours
+    } else if (hours == 0) {
       return "$minutes Minutes"; // Only minutes if no hours
     } else {
       return "$hours Hours $minutes Minutes"; // Full format
@@ -118,8 +126,10 @@ String timeLeftUntil(DateTime toTime, DateTime now,
   }
 }
 
-String timeAddedToNow(DateTime fromTime, DateTime now,
+String timeAddedToNow(DateTime fromTime, DateTime? now,
     {bool showAsClockFormat = false}) {
+  if (now == null) return '';
+
   fromTime = fromTime.toLocal();
   Duration difference = now.difference(fromTime);
   DateTime addedTime = now.add(difference);

@@ -33,14 +33,6 @@ Widget customVerticalDivider({
   );
 }
 
-// Future<void> openSocialMedia(String platform, String url) async {
-//   if (await canLaunch(url)) {
-//     await launch(url);
-//   } else {
-//     throw 'Could not open $platform';
-//   }
-// }
-
 Future<void> openSocialMedia(String platform, String url) async {
   try {
     if (await canLaunch(url)) {

@@ -23,8 +23,7 @@ class _LogoutButtonState extends State<LogoutButton> {
         listenWhen: (previous, next) => previous != next,
         listener: (context, state) {
           if (state.updateType == ProfileUpdateType.logout) {
-            NavRouter.pushAndRemoveUntil(context, const LoginScreen(),
-                rootNavigator: true);
+            NavRouter.pushAndRemoveUntil(context, const LoginScreen(), rootNavigator: true);
           }
           if (state.updateType == ProfileUpdateType.error) {
             DisplayUtils.showErrorToast(context, state.message ?? "");

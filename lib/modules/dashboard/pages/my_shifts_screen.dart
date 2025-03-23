@@ -9,13 +9,31 @@ import '../../../utils/heights_and_widths.dart';
 import '../../screen_layout_widget/base_view_layout.dart';
 import '../cubits/my_shifts_cubits/my_shifts_cubit.dart';
 
-class MyShiftsScreen extends StatelessWidget {
+class MyShiftsScreen extends StatefulWidget {
   const MyShiftsScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  State<MyShiftsScreen> createState() => _MyShiftsScreenState();
+}
+
+class _MyShiftsScreenState extends State<MyShiftsScreen> {
+  @override
+  void initState() {
     context.read<MyShiftsCubit>().activeShifts();
     context.read<MyShiftsCubit>().completedShifts();
+    context.read<MyShiftsCubit>().subscribeToActiveShifts();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    debugPrint('canceling subscription');
+    context.read<MyShiftsCubit>().cancelSubscription();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return BaseViewLayout(
       pageTitle: 'My Shifts',
       child: DefaultTabController(

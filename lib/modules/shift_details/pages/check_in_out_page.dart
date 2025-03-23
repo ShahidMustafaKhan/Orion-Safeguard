@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:orion_safeguard/modules/dashboard/cubits/home_cubits/home_cubit.dart';
 import 'package:orion_safeguard/modules/screen_layout_widget/screen_layout.dart';
 import 'package:orion_safeguard/utils/display/display_utils.dart';
 
@@ -12,14 +11,33 @@ import '../widgets/check_in_out_widgets/check_in_out_button.dart';
 import '../widgets/check_in_out_widgets/selfie_widget.dart';
 import '../widgets/check_in_out_widgets/shift_time_box.dart';
 
-class CheckInOutPage extends StatelessWidget {
+class CheckInOutPage extends StatefulWidget {
   final ShiftModel? shiftsModel;
   const CheckInOutPage({super.key, required this.shiftsModel});
 
   @override
+  State<CheckInOutPage> createState() => _CheckInOutPageState();
+}
+
+class _CheckInOutPageState extends State<CheckInOutPage> {
+  late CheckInOutCubit checkInOutCubit;
+
+  @override
+  void initState() {
+    checkInOutCubit = CheckInOutCubit(shift: widget.shiftsModel);
+    checkInOutCubit.updateCurrentTime();
+    checkInOutCubit.startTimer();
+    super.initState();
+  }
+
+  @override
+  dispose() {
+    checkInOutCubit.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    CheckInOutCubit checkInOutCubit = CheckInOutCubit(shift: shiftsModel);
-    context.read<HomeCubit>().ongoingShift();
     return BlocProvider<CheckInOutCubit>(
       create: (BuildContext context) => checkInOutCubit,
       child: BlocConsumer<CheckInOutCubit, CheckInOutState>(
@@ -42,7 +60,6 @@ class CheckInOutPage extends StatelessWidget {
                 context,
                 "You have successfully checked out from your shift",
               );
-              context.read<CheckInOutCubit>().stopTimer();
               context.read<CheckInOutCubit>().resetApprovalPostStatus();
               return;
             }
@@ -73,7 +90,7 @@ class CheckInOutPage extends StatelessWidget {
                       Expanded(
                         flex: 2,
                         child: ShiftTimeBox(
-                          shiftsModel: shiftsModel,
+                          shiftsModel: widget.shiftsModel,
                         ),
                       ),
                       h1,
@@ -84,7 +101,7 @@ class CheckInOutPage extends StatelessWidget {
                           )),
                       CheckInOutButton(
                         shift: state.shift,
-                      )
+                      ),
                     ],
                   ),
                 ));

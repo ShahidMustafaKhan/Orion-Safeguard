@@ -44,7 +44,9 @@ class SessionController {
 
   Future<void> clearPreference() async {
     try {
-      await localStorage.clear();
+      localStorage.setString("token", "");
+      localStorage.setString("objectId", "");
+      localStorage.setBool("isLogin", false);
       SessionController().isLogin = false;
       SessionController().objectId = '';
       SessionController().token = '';

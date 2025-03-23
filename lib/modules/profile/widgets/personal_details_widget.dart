@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:orion_safeguard/config/config.dart';
 import 'package:orion_safeguard/modules/common_modules/custom_dialogues/input_text_dialogue.dart';
 import 'package:orion_safeguard/modules/profile/cubit/profile_cubit/profile_cubit.dart';
 import 'package:orion_safeguard/utils/display/display_utils.dart';
@@ -10,6 +11,7 @@ import '../../../generated/assets.dart';
 import '../../../utils/enums.dart';
 import '../../../utils/heights_and_widths.dart';
 import '../../../utils/helper_widgets.dart';
+import '../../authentications/pages/signIn/signin_screen.dart';
 
 class PersonalDetailsWidget extends StatelessWidget {
   const PersonalDetailsWidget({super.key});
@@ -28,12 +30,15 @@ class PersonalDetailsWidget extends StatelessWidget {
               state.updateType == ProfileUpdateType.password) {
             DisplayUtils.showSuccessToast(
                 context, "Password updated successfully");
+            Future.delayed(const Duration(seconds: 2), () {
+              NavRouter.pushAndRemoveUntil(context, LoginScreen());
+            });
           }
           if (state.updateType == ProfileUpdateType.error) {
             DisplayUtils.showErrorToast(context, state.message ?? "");
           }
         },
-        buildWhen: (previous, next) => previous != next,
+        buildWhen: (previous, next) => previous.userModel != next.userModel,
         builder: (context, state) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,

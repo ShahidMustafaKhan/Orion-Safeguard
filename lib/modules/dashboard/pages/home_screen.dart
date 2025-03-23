@@ -4,7 +4,9 @@ import 'package:orion_safeguard/modules/dashboard/widgets/home_screen_widgets/ho
 import 'package:sizer/sizer.dart';
 
 import '../../../utils/heights_and_widths.dart';
+import '../../alerts_announcements/cubits/alerts_cubit.dart';
 import '../../profile/cubit/profile_cubit/profile_cubit.dart';
+import '../../profile/model/user_model.dart';
 import '../../screen_layout_widget/base_view_layout.dart';
 import '../cubits/home_cubits/home_cubit.dart';
 import '../widgets/home_screen_widgets/announcement/announcement_widget.dart';
@@ -21,21 +23,27 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late HomeCubit homeCubit;
+  late AlertsCubit alertsCubit;
 
   @override
   void initState() {
     homeCubit = context.read<HomeCubit>();
+    alertsCubit = context.read<AlertsCubit>();
     context.read<ProfileCubit>().getCurrentUser();
     homeCubit.ongoingShift();
     homeCubit.upcomingShift();
     homeCubit.previousShift();
     homeCubit.subscribeToShifts();
+    UserModel? userModel = context.read<ProfileCubit>().state.userModel.data;
+    alertsCubit.latestAnnouncement(userModel);
+    alertsCubit.subscribeToAlerts(userModel);
     super.initState();
   }
 
   @override
   void dispose() {
     homeCubit.cancelSubscription();
+    alertsCubit.cancelSubscription();
     super.dispose();
   }
 

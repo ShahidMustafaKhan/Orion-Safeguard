@@ -27,6 +27,7 @@ class UserModel extends ParseUser implements ParseCloneable {
   static const String keyPassword = 'password';
   static const String keyLicenseNo = 'licenseNo';
   static const String keyNlNumber = 'nlNumber';
+  static const String keyDateBirth = 'dateBirth';
   static const String keyLinkedin = 'linkedin';
   static const String keyFacebook = 'facebook';
   static const String keyInstagram = 'instagram';
@@ -62,6 +63,9 @@ class UserModel extends ParseUser implements ParseCloneable {
 
   String? get nlNumber => get<String>(keyNlNumber);
   set nlNumber(String? nlNumber) => set<String?>(keyNlNumber, nlNumber);
+
+  String? get dateBirth => get<String>(keyDateBirth);
+  set dateBirth(String? dateBirth) => set<String?>(keyDateBirth, dateBirth);
 
   String? get linkedin => get<String>(keyLinkedin);
   set linkedin(String? linkedin) => set<String?>(keyLinkedin, linkedin);

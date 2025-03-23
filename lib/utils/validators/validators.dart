@@ -92,4 +92,30 @@ abstract class Validators {
 
     return null;
   }
+
+  static String? validateAge(String dateOfBirth) {
+    if (isEighteenOrOlder(dateOfBirth)) {
+      return null;
+    } else {
+      return "You must be at least 18 years old.";
+    }
+  }
+
+  static bool isEighteenOrOlder(String dateOfBirth) {
+    try {
+      DateTime dob = DateTime.parse(dateOfBirth);
+      DateTime today = DateTime.now();
+      int age = today.year - dob.year;
+
+      // Adjust age if birthday hasn't occurred yet this year
+      if (today.month < dob.month ||
+          (today.month == dob.month && today.day < dob.day)) {
+        age--;
+      }
+
+      return age >= 18;
+    } catch (e) {
+      return false; // Invalid date format
+    }
+  }
 }

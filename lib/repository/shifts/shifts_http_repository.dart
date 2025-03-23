@@ -188,9 +188,8 @@ class ShiftsHttpRepository implements ShiftsRepository {
   }
 
   @override
-  Future<List<ShiftModel>> getActiveShifts(String? objectId,
-      {int skip = 0}) async {
-    final queryBuilder = QueryBuilder<ShiftModel>(ShiftModel())
+  QueryBuilder<ShiftModel> activeShiftsQuery(String? objectId, {int skip = 0}) {
+    return QueryBuilder<ShiftModel>(ShiftModel())
       ..whereEqualTo('employee', {
         '__type': 'Pointer',
         'className': '_User',
@@ -207,7 +206,12 @@ class ShiftsHttpRepository implements ShiftsRepository {
       ..includeObject([
         ShiftModel.keyEmployee,
       ]);
+  }
 
+  @override
+  Future<List<ShiftModel>> getActiveShifts(String? objectId,
+      {int skip = 0}) async {
+    final queryBuilder = activeShiftsQuery(objectId, skip: skip);
     final response = await queryBuilder.query();
 
     if (response.success && response.results != null) {

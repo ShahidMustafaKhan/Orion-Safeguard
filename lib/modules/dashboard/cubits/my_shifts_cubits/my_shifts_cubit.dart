@@ -5,6 +5,7 @@ import 'package:orion_safeguard/core/di/service_locator.dart';
 import 'package:orion_safeguard/modules/dashboard/model/shifts_model/shifts_model.dart';
 import 'package:orion_safeguard/repository/shifts/shifts_repository.dart';
 import 'package:orion_safeguard/utils/enums.dart';
+import 'package:parse_server_sdk/parse_server_sdk.dart';
 
 import '../../../../core/response/api_response.dart';
 import '../../../../core/services/session_controller/session_controller.dart';
@@ -15,6 +16,8 @@ class MyShiftsCubit extends Cubit<MyShiftsState> {
   final ShiftsRepository shiftsRepository = getIt();
   bool isLoadingMoreActiveShift = false; //flag
   bool isLoadingMoreCompletedShift = false;
+  LiveQuery liveQuery = LiveQuery();
+  Subscription? subscription;
 
   MyShiftsCubit()
       : super(MyShiftsState(
@@ -117,6 +120,35 @@ class MyShiftsCubit extends Cubit<MyShiftsState> {
           declineStatus: PostApiStatus.error,
           message: e.toString(),
           resetDeclineLoadingItemId: true));
+    }
+  }
+
+  Future<void> subscribeToActiveShifts() async {
+    String? userId = SessionController().objectId;
+
+    final query = shiftsRepository.activeShiftsQuery(userId);
+
+    subscription = await liveQuery.client.subscribe(query);
+
+    subscription?.on(LiveQueryEvent.update, (value) {
+      debugPrint(value.get<String>(ShiftModel.keyShiftStatus));
+      activeShifts();
+    });
+
+    subscription?.on(LiveQueryEvent.create, (value) {
+      debugPrint(value.get<String>(ShiftModel.keyShiftStatus));
+      activeShifts();
+    });
+
+    subscription?.on(LiveQueryEvent.leave, (value) {
+      debugPrint(value.get<String>(ShiftModel.keyShiftStatus));
+      activeShifts();
+    });
+  }
+
+  cancelSubscription() async {
+    if (subscription != null) {
+      liveQuery.client.unSubscribe(subscription!);
     }
   }
 }

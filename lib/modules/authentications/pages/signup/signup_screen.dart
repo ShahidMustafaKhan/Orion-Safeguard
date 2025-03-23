@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orion_safeguard/config/constants/app_text_styles.dart';
 import 'package:orion_safeguard/modules/authentications/pages/signup/widgets/input_confrim_password.dart';
+import 'package:orion_safeguard/modules/authentications/pages/signup/widgets/input_date_birth_field.dart';
 import 'package:orion_safeguard/modules/authentications/pages/signup/widgets/input_email_field.dart';
 import 'package:orion_safeguard/modules/authentications/pages/signup/widgets/input_first_Name_field.dart';
 import 'package:orion_safeguard/modules/authentications/pages/signup/widgets/input_last_Name_field.dart';
@@ -31,6 +32,7 @@ class _SignupScreenState extends State<SignupScreen> {
   FocusNode lastNameFocusNode = FocusNode();
   FocusNode licenseNoFocusNode = FocusNode();
   FocusNode niNumberFocusNode = FocusNode();
+  FocusNode dateBirthFocusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -76,6 +78,10 @@ class _SignupScreenState extends State<SignupScreen> {
                           h0P5,
                           InputNiNumber(
                               niNumberFocusNode: niNumberFocusNode,
+                              dateBirthFocusNode: dateBirthFocusNode),
+                          h0P5,
+                          InputDateBirth(
+                              dateBirthFocusNode: dateBirthFocusNode,
                               emailFocusNode: emailFocusNode),
                           h0P5,
                           InputEmail(

@@ -8,10 +8,12 @@ import 'alerts_repository.dart';
 
 class AlertsHttpRepository implements AlertsRepository {
   @override
-  Future<List<AnnouncementModel>> getAlerts({int skip = 0}) async {
+  Future<List<AnnouncementModel>> getAlerts(
+      {int skip = 0, UserModel? userModel}) async {
     final queryBuilder = QueryBuilder<AnnouncementModel>(AnnouncementModel())
       ..setAmountToSkip(skip)
       ..setLimit(7)
+      ..whereGreaterThan(AnnouncementModel.keyCreatedAt, userModel?.createdAt)
       ..orderByDescending(AnnouncementModel.keyCreatedAt);
 
     final response = await queryBuilder.query();
@@ -55,14 +57,8 @@ class AlertsHttpRepository implements AlertsRepository {
   }
 
   @override
-  Future<AnnouncementModel?> latestAnnouncement() async {
-    final queryBuilder = QueryBuilder<AnnouncementModel>(AnnouncementModel())
-      ..orderByDescending(AnnouncementModel.keyCreatedAt)
-      ..whereNotEqualTo(
-          AnnouncementModel.keyApproveList, SessionController().objectId)
-      ..whereNotEqualTo(
-          AnnouncementModel.keyDeclineList, SessionController().objectId)
-      ..setLimit(1);
+  Future<AnnouncementModel?> latestAnnouncement(UserModel? userModel) async {
+    final queryBuilder = latestAnnouncementQuery(userModel);
 
     final response = await queryBuilder.query();
 
@@ -72,5 +68,17 @@ class AlertsHttpRepository implements AlertsRepository {
       throw AppException(
           response.error?.message ?? 'Failed to fetch latest announcement');
     }
+  }
+
+  @override
+  QueryBuilder latestAnnouncementQuery(UserModel? userModel) {
+    return QueryBuilder<AnnouncementModel>(AnnouncementModel())
+      ..orderByDescending(AnnouncementModel.keyCreatedAt)
+      ..whereGreaterThan(AnnouncementModel.keyCreatedAt, userModel?.createdAt)
+      ..whereNotEqualTo(
+          AnnouncementModel.keyApproveList, SessionController().objectId)
+      ..whereNotEqualTo(
+          AnnouncementModel.keyDeclineList, SessionController().objectId)
+      ..setLimit(1);
   }
 }

@@ -6,8 +6,8 @@ import '../../../../../config/routes/nav_router.dart';
 import '../../../../../ui/button/primary_button.dart';
 import '../../../../../utils/display/display_utils.dart';
 import '../../../../../utils/enums.dart';
+import '../../../../account_status/pages/under_review_page.dart';
 import '../../../../common_modules/custom_dialogues/select_user_dialogue.dart';
-import '../../../../dashboard/pages/base_screen.dart';
 import '../../../../job_application/pages/stepper_view.dart';
 import '../../../../profile/cubit/profile_cubit/profile_cubit.dart';
 import '../../../cubit/signup/signup_cubit.dart';
@@ -32,7 +32,7 @@ class SignUpButton extends StatelessWidget {
           if (state.employmentStatus == EmploymentStatus.applying) {
             NavRouter.pushAndRemoveUntil(context, const JobApplicationView());
           } else if (state.employmentStatus == EmploymentStatus.existing) {
-            NavRouter.pushAndRemoveUntil(context, const BaseScreen());
+            NavRouter.pushAndRemoveUntil(context, const UnderReviewPage());
           }
         } else if (state.postApiStatus == PostApiStatus.error) {
           DisplayUtils.showErrorToast(context, state.message);

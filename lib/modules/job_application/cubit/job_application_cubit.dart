@@ -50,8 +50,10 @@ class JobApplicationCubit extends Cubit<JobApplicationState> {
           return true;
         } else {
           emit(state.copyWith(
+              validationStatus: ValidationStatus.none)); // Reset state
+          emit(state.copyWith(
               validationStatus: ValidationStatus.error,
-              errorMessage: 'Please select a profile picture'));
+              errorValidationMessage: 'Please select a profile picture'));
           return false;
         }
       case 1:
@@ -59,9 +61,10 @@ class JobApplicationCubit extends Cubit<JobApplicationState> {
           emit(state.copyWith(validationStatus: ValidationStatus.validated));
           return true;
         } else {
+          emit(state.copyWith(validationStatus: ValidationStatus.none));
           emit(state.copyWith(
               validationStatus: ValidationStatus.error,
-              errorMessage: 'Please attach a document'));
+              errorValidationMessage: 'Please attach a document'));
           return false;
         }
 

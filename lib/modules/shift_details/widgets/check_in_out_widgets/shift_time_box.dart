@@ -15,9 +15,7 @@ class ShiftTimeBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<CheckInOutCubit>().startTimer();
     return Container(
-      height: 400,
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 10),
       decoration: BoxDecoration(
@@ -33,24 +31,31 @@ class ShiftTimeBox extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "Your Shift ${shiftsModel?.shiftStatus == ShiftModel.keyShiftStatusOngoing ? "ends" : "starts"} in",
+                  shiftsModel?.shiftStatus == ShiftModel.keyShiftStatusCompleted
+                      ? 'Shift Completed'
+                      : "Your Shift ${shiftsModel?.shiftStatus == ShiftModel.keyShiftStatusOngoing ? "ends" : "starts"} in",
                   style: AppTextStyles.robotoBold(
                     fontSize: 15.sp,
                   ),
                 ),
-                Text(
-                  shiftsModel?.shiftStatus == ShiftModel.keyShiftStatusOngoing
-                      ? timeDifferenceTillNow(shiftsModel?.endDate, state.now)
-                      : timeLeftUntil(shiftsModel!.startDate!, state.now,
-                          showAsClockFormat: false),
-                  style: AppTextStyles.robotoSemiBold(
-                    fontSize: 15.sp,
-                    color: Colors.grey.shade600,
+                if (shiftsModel?.shiftStatus !=
+                    ShiftModel.keyShiftStatusCompleted)
+                  Text(
+                    shiftsModel?.shiftStatus == ShiftModel.keyShiftStatusOngoing
+                        ? timeDifferenceTillNow(shiftsModel?.endDate, state.now)
+                        : timeLeftUntil(shiftsModel!.startDate!, state.now,
+                            showAsClockFormat: false),
+                    style: AppTextStyles.robotoSemiBold(
+                      fontSize: 15.sp,
+                      color: Colors.grey.shade600,
+                    ),
                   ),
-                ),
                 h1,
                 Text(
-                  shiftsModel?.shiftStatus == ShiftModel.keyShiftStatusOngoing
+                  shiftsModel?.shiftStatus ==
+                              ShiftModel.keyShiftStatusOngoing ||
+                          shiftsModel?.shiftStatus ==
+                              ShiftModel.keyShiftStatusCompleted
                       ? timeAddedToNow(shiftsModel!.checkInTime!, state.now,
                           showAsClockFormat: true)
                       : "00:00:00",
@@ -63,7 +68,10 @@ class ShiftTimeBox extends StatelessWidget {
                 Text(
                   shiftsModel?.shiftStatus == ShiftModel.keyShiftStatusOngoing
                       ? "You can’t check-out before ${formatDateTimeIn12HourFormat(shiftsModel?.endDate)}"
-                      : "You can’t check-in before ${formatDateTimeIn12HourFormat(shiftsModel?.startDate)}",
+                      : shiftsModel?.shiftStatus ==
+                              ShiftModel.keyShiftStatusCompleted
+                          ? "You have checked out of this shift"
+                          : "You can’t check-in before ${formatDateTimeIn12HourFormat(shiftsModel?.startDate)}",
                   style: AppTextStyles.robotoSemiBold(
                     fontSize: 15.sp,
                     color: Colors.grey.shade600,

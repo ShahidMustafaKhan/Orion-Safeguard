@@ -15,7 +15,7 @@ class NavigationHelper {
         if (user?.employmentStatus == UserModel.keyEmploymentStatusApplying) {
           NavRouter.pushAndRemoveUntil(context, const JobApplicationView());
         } else {
-          NavRouter.pushAndRemoveUntil(context, const JobApplicationView());
+          NavRouter.pushAndRemoveUntil(context, const UnderReviewPage());
         }
         break;
       case UserModel.keyAccountStatusTypePending:

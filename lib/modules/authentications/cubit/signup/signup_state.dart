@@ -9,6 +9,7 @@ class SignUpState extends Equatable {
   final String password;
   final String licenseNo;
   final String niNumber;
+  final String dateBirth;
   final String confirmPassword;
   final bool hidePassword;
   final bool hideConfirmPassword;
@@ -24,6 +25,7 @@ class SignUpState extends Equatable {
       this.confirmPassword = '',
       this.licenseNo = "",
       this.niNumber = "",
+      this.dateBirth = "",
       this.password = '',
       this.hidePassword = true,
       this.hideConfirmPassword = true,
@@ -43,6 +45,7 @@ class SignUpState extends Equatable {
       String? confirmPassword,
       String? licenseNo,
       String? niNumber,
+      String? dateBirth,
       PostApiStatus? postApiStatus,
       EmploymentStatus? employmentStatus,
       UserModel? userModel}) {
@@ -55,6 +58,7 @@ class SignUpState extends Equatable {
         confirmPassword: confirmPassword ?? this.confirmPassword,
         licenseNo: licenseNo ?? this.licenseNo,
         niNumber: niNumber ?? this.niNumber,
+        dateBirth: dateBirth ?? this.dateBirth,
         hidePassword: hidePassword ?? this.hidePassword,
         hideConfirmPassword: hideConfirmPassword ?? this.hideConfirmPassword,
         postApiStatus: postApiStatus ?? this.postApiStatus,
@@ -72,6 +76,7 @@ class SignUpState extends Equatable {
         lastName,
         licenseNo,
         niNumber,
+        dateBirth,
         hidePassword,
         hideConfirmPassword,
         confirmPassword,

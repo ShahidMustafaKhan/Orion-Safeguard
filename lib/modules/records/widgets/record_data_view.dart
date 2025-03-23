@@ -36,7 +36,7 @@ class RecordDataView extends StatelessWidget {
                   name: records[index].shiftName,
                   location: records[index].location,
                   date: formatDateTimeRange(
-                      records[index].startDate, records[index].startDate),
+                      records[index].startDate, records[index].endDate),
                   isCompleted: records[index].shiftStatus ==
                           ShiftModel.keyShiftStatusCompleted
                       ? true

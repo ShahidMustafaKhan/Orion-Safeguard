@@ -26,16 +26,19 @@ class AuthenticationHttpRepository implements AuthenticationRepository {
       String firstName,
       String lastName,
       String licenseNo,
+      String dateBirth,
       String niNumber,
-      String employmentType) async {
+      String employmentType,
+      String accountStatus) async {
     var user = UserModel(email, password, email);
     user.firstName = firstName;
     user.lastName = lastName;
     user.licenseNo = licenseNo;
+    user.dateBirth = dateBirth;
     user.nlNumber = niNumber;
     user.email = email;
     user.password = password;
-    user.accountStatus = UserModel.keyAccountStatusTypeApplying;
+    user.accountStatus = accountStatus;
     user.employmentStatus = employmentType;
 
     var response =
@@ -77,7 +80,7 @@ class AuthenticationHttpRepository implements AuthenticationRepository {
 
   @override
   Future<void> forgetPassword(String? email) async {
-    var user = ParseUser(null, null, email);
+    var user = ParseUser(email, null, email);
     ParseResponse response = await user.requestPasswordReset();
     if (response.success) {
       return;

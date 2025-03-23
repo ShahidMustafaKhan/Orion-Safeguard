@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:orion_safeguard/modules/profile/cubit/profile_cubit/profile_cubit.dart';
+import 'package:orion_safeguard/modules/profile/model/user_model.dart';
 import 'package:orion_safeguard/modules/screen_layout_widget/screen_layout.dart';
 
 import '../../../config/constants/app_colors.dart';
@@ -23,8 +25,10 @@ class FullAlertScreen extends StatefulWidget {
 }
 
 class _FullAlertScreenState extends State<FullAlertScreen> {
+  UserModel? userModel;
   @override
   void initState() {
+    userModel = context.read<ProfileCubit>().state.userModel.data;
     context.read<AlertsCubit>().updateSelectedAlert(widget.announcementModel);
     super.initState();
   }
@@ -127,7 +131,8 @@ class _FullAlertScreenState extends State<FullAlertScreen> {
                             onPressed: () {
                               context.read<AlertsCubit>().approve(
                                   state.selectedAlert,
-                                  selectedAlert: true);
+                                  selectedAlert: true,
+                                  userModel: userModel);
                             },
                             title: "Approve",
                           ),
@@ -147,7 +152,8 @@ class _FullAlertScreenState extends State<FullAlertScreen> {
                                   context.read<AlertsCubit>().decline(
                                       state.selectedAlert,
                                       value["reason"] ?? '',
-                                      selectedAlert: true);
+                                      selectedAlert: true,
+                                      userModel: userModel);
                                 }
                               });
                             },

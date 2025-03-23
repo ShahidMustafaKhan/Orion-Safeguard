@@ -30,7 +30,7 @@ class InputEmail extends StatelessWidget {
             fieldTitle: "Email",
             focusNode: emailFocusNode,
             onChange: (value) =>
-                context.read<SignUpCubit>().onEmailChanged(value),
+                context.read<SignUpCubit>().onEmailChanged(value.trim()),
             onFieldSubmitted: (_) => Utils.focusNextField(
                 context: context,
                 currentFocus: emailFocusNode,
@@ -39,7 +39,7 @@ class InputEmail extends StatelessWidget {
               if (value == null || value.isEmpty) {
                 return 'Please enter your email';
               }
-              if (!EmailValidator.validate(value)) {
+              if (!EmailValidator.validate(value.trim())) {
                 return 'Please enter a valid email';
               }
               return null;
