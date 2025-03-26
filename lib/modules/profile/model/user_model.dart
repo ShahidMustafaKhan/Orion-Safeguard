@@ -43,6 +43,7 @@ class UserModel extends ParseUser implements ParseCloneable {
   static const String keyEmploymentStatusExisting = 'existing';
   static const String keyEmploymentStatusApplying = 'applying';
   static const String keyDeviceToken = 'deviceToken';
+  static const String keyNotificationEnabled = 'isNotificationDisabled';
 
   String? get firstName => get<String>(keyFirstName);
   set firstName(String? name) => set<String?>(keyFirstName, name);

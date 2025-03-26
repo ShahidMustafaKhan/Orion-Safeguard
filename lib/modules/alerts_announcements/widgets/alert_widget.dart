@@ -129,10 +129,9 @@ class AlertWidget extends StatelessWidget {
                           borderColor: AppColors.primaryColor,
                           onPressed: () {
                             showDialog(
-                                    context: context,
-                                    builder: (context) =>
-                                        const DeclineReasonDialogue())
-                                .then((value) {
+                                context: context,
+                                builder: (context) =>
+                                    const InputReasonDialogue()).then((value) {
                               if (value?["status"] == "submitted") {
                                 context.read<AlertsCubit>().decline(
                                     announcementModel, value["reason"] ?? '',

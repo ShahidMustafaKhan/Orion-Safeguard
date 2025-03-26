@@ -22,10 +22,11 @@ class AlertsHttpRepository implements AlertsRepository {
       return response.results!
           .map((json) => json as AnnouncementModel)
           .toList();
-    } else if (response.statusCode == 200 &&
-        (response.results?.isEmpty ?? true)) {
-      return [];
-    } else {
+    }
+    else if(response.statusCode == 200 && (response.results?.isEmpty ?? true)) {
+       return [];
+    }
+    else {
       throw AppException(response.error?.message ?? 'Failed to fetch alerts');
     }
   }

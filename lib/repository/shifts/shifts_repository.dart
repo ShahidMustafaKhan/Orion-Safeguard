@@ -15,7 +15,8 @@ abstract class ShiftsRepository {
   Future<ShiftModel?> checkIn(ShiftModel shiftModel, File file);
   Future<ShiftModel?> checkOut(ShiftModel shiftModel, File file);
 
-  Future<ShiftModel?> checkOutApproval(ShiftModel shiftModel, File file);
+  Future<ShiftModel?> checkOutApproval(
+      ShiftModel shiftModel, File file, String reason);
 
   Future<List<ShiftModel>> getCompletedShifts(String? objectId, {int skip = 0});
   Future<List<ShiftModel>> getActiveShifts(String? objectId, {int skip = 0});

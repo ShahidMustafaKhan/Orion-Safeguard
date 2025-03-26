@@ -37,6 +37,7 @@ class UpComingShiftWidget extends StatelessWidget {
           children: [
             Text(
               shiftName,
+              maxLines: 1,
               style: AppTextStyles.robotoMedium(
                   fontSize: 14.0, fontWeight: FontWeight.w600),
             ),

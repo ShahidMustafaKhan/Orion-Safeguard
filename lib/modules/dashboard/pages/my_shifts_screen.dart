@@ -17,18 +17,21 @@ class MyShiftsScreen extends StatefulWidget {
 }
 
 class _MyShiftsScreenState extends State<MyShiftsScreen> {
+  late MyShiftsCubit myShiftsCubit;
+
   @override
   void initState() {
-    context.read<MyShiftsCubit>().activeShifts();
-    context.read<MyShiftsCubit>().completedShifts();
-    context.read<MyShiftsCubit>().subscribeToActiveShifts();
+    myShiftsCubit = context.read<MyShiftsCubit>();
+    myShiftsCubit.activeShifts();
+    myShiftsCubit.completedShifts();
+    myShiftsCubit.subscribeToActiveShifts();
     super.initState();
   }
 
   @override
   void dispose() {
     debugPrint('canceling subscription');
-    context.read<MyShiftsCubit>().cancelSubscription();
+    myShiftsCubit.cancelSubscription();
     super.dispose();
   }
 

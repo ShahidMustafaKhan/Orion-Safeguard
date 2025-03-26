@@ -190,23 +190,32 @@ bool isDatePassedNotReached(DateTime? date) {
   return now.isBefore(date);
 }
 
-String timeAgo(DateTime? dateTime) {
+String timeAgo(DateTime? dateTime, {bool shortFormat = false}) {
   if (dateTime == null) return '';
   final Duration difference = DateTime.now().difference(dateTime);
 
   if (difference.inSeconds < 60) {
-    return '${difference.inSeconds} sec';
+    return shortFormat ? '${difference.inSeconds} sec' : 'Today';
   } else if (difference.inMinutes < 60) {
-    return '${difference.inMinutes} min';
+    return shortFormat ? '${difference.inMinutes} min' : "Today";
   } else if (difference.inHours < 24) {
-    return '${difference.inHours} hours';
+    return shortFormat ? '${difference.inHours} hr' : "Today";
+  } else if (difference.inDays == 1) {
+    return shortFormat ? '${difference.inDays} d' : 'Yesterday';
   } else if (difference.inDays < 7) {
-    return '${difference.inDays} days';
+    return shortFormat
+        ? '${difference.inDays} d'
+        : '${difference.inDays} days ago';
   } else if (difference.inDays < 30) {
-    return '${(difference.inDays / 7).floor()} weeks';
+    int weeks = (difference.inDays / 7).floor();
+    return shortFormat ? '$weeks w' : '$weeks week${weeks > 1 ? 's' : ''} ago';
   } else if (difference.inDays < 365) {
-    return '${(difference.inDays / 30).floor()} months';
+    int months = (difference.inDays / 30).floor();
+    return shortFormat
+        ? '$months mo'
+        : '$months month${months > 1 ? 's' : ''} ago';
   } else {
-    return '${(difference.inDays / 365).floor()} years';
+    int years = (difference.inDays / 365).floor();
+    return shortFormat ? '$years yr' : '$years year${years > 1 ? 's' : ''} ago';
   }
 }

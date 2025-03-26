@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orion_safeguard/modules/notification/cubits/notification_cubit.dart';
+import 'package:orion_safeguard/utils/time_utils.dart';
 
 import '../../../config/constants/app_colors.dart';
 import '../../../utils/display/display_utils.dart';
@@ -45,7 +46,12 @@ class NotificationScreen extends StatelessWidget {
                   children: [
                     h1,
                     CustomSeeAllRowWidget(
-                      text: 'Today'.toUpperCase(),
+                      text: state.notifications.status == Status.completed
+                          ? timeAgo(notifications.isNotEmpty
+                                  ? notifications[0].createdAt
+                                  : null)
+                              .toUpperCase()
+                          : '',
                       secondText: 'Mark all as read',
                       textColor: AppColors.greyColor,
                       fun: () {

@@ -9,6 +9,7 @@ import 'package:orion_safeguard/modules/screen_layout_widget/screen_layout.dart'
 import '../../../generated/assets.dart';
 import '../../../utils/enums.dart';
 import '../../../utils/heights_and_widths.dart';
+import '../cubit/company_details/company_details_cubit.dart';
 import '../widgets/contact_us/input_message_field.dart';
 import '../widgets/contact_us/input_name_field.dart';
 import '../widgets/contact_us/send_message_button.dart';
@@ -92,26 +93,35 @@ class ContactDetailsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        const ContactDetailInfo(
-          fieldName: '+ 44 563 4568',
-          fieldSvg: Assets.svgCall,
-        ),
-        h1,
-        const ContactDetailInfo(
-          fieldName: 'Orionsafeguard@gmail.com',
-          fieldSvg: Assets.svgSms,
-        ),
-        h1,
-        const ContactDetailInfo(
-          fieldName: '123 Dummy Address New York, USA',
-          fieldSvg: Assets.svgLocation,
-        ),
-        h1,
-      ],
-    );
+    CompanyDetailsCubit companyDetailsCubit =
+        context.read<CompanyDetailsCubit>();
+    if (companyDetailsCubit.state.companyDetailsModel.data == null) {
+      companyDetailsCubit.fetchCompanyDetails();
+    }
+    return BlocBuilder<CompanyDetailsCubit, CompanyDetailsState>(
+        buildWhen: (previous, next) => previous != next,
+        builder: (context, state) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ContactDetailInfo(
+                fieldName: state.companyDetailsModel.data?.phone ?? '',
+                fieldSvg: Assets.svgCall,
+              ),
+              h1,
+              ContactDetailInfo(
+                fieldName: state.companyDetailsModel.data?.email ?? '',
+                fieldSvg: Assets.svgSms,
+              ),
+              h1,
+              ContactDetailInfo(
+                fieldName: state.companyDetailsModel.data?.address ?? '',
+                fieldSvg: Assets.svgLocation,
+              ),
+              h1,
+            ],
+          );
+        });
   }
 }
 

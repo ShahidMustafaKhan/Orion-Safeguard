@@ -34,7 +34,7 @@ class ProfileState extends Equatable {
       updateType: updateType ?? this.updateType,
       message: message ?? this.message,
       isNotificationsEnabled:
-          isNotificationsEnabled ?? this.isNotificationsEnabled,
+      isNotificationsEnabled ?? this.isNotificationsEnabled,
     );
   }
 

@@ -21,7 +21,10 @@ class ProfileCubit extends Cubit<ProfileState> {
   final StorageService _localStorage =
       StorageService(sharedPreferences: getIt());
 
-  ProfileCubit() : super(ProfileState(userModel: ApiResponse.loading()));
+  ProfileCubit()
+      : super(ProfileState(
+          userModel: ApiResponse.loading(),
+        ));
 
   void updateUserModel(UserModel? currentUser) {
     emit(state.copyWith(
@@ -140,17 +143,14 @@ class ProfileCubit extends Cubit<ProfileState> {
     }
   }
 
-  updateAlert(bool alert) async {
+  updateNotificationSetting(bool value) async {
     try {
-      UserModel? userModel =
-          await profileRepository.updateAlert(state.userModel.data!, alert);
-      emit(state.copyWith(
-          userModel: ApiResponse.completed(userModel),
-          updateType: ProfileUpdateType.none));
-      getCurrentUser();
+      UserModel userModel = state.userModel.data!;
+      userModel.alerts = value;
+      await profileRepository.saveUser(userModel);
+      emit(state.copyWith(isNotificationsEnabled: value));
     } catch (e) {
-      emit(state.copyWith(
-          message: e.toString(), updateType: ProfileUpdateType.error));
+      debugPrint(e.toString());
     }
   }
 

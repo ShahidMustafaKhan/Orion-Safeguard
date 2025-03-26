@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:orion_safeguard/modules/alerts_announcements/cubits/alerts_cubit.dart';
 import 'package:orion_safeguard/modules/dashboard/cubits/my_shifts_cubits/my_shifts_cubit.dart';
+import 'package:orion_safeguard/modules/profile/cubit/company_details/company_details_cubit.dart';
 import 'package:orion_safeguard/modules/records/cubit/records_cubit.dart';
 
 import '../../../core/di/service_locator.dart';
@@ -39,6 +40,9 @@ class BlocDI extends StatelessWidget {
         ),
         BlocProvider<AlertsCubit>(
           create: (context) => AlertsCubit(),
+        ),
+        BlocProvider<CompanyDetailsCubit>(
+          create: (context) => CompanyDetailsCubit()..fetchCompanyDetails(),
         ),
       ],
       child: child,

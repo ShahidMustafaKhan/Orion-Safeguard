@@ -21,7 +21,7 @@ class ShiftsHttpRepository implements ShiftsRepository {
           ShiftModel.keyShiftStatus, ShiftModel.keyShiftStatusOngoing)
       ..whereValueExists(ShiftModel.keyCheckInTime, true)
       ..whereValueExists(ShiftModel.keyCheckInProof, true)
-      ..orderByDescending(ShiftModel.keyCreatedAt)
+      ..orderByDescending(ShiftModel.keyStartDate)
       ..includeObject([
         ShiftModel.keyEmployee,
       ]);
@@ -53,6 +53,7 @@ class ShiftsHttpRepository implements ShiftsRepository {
         ],
       )
       ..whereGreaterThan(ShiftModel.keyEndDate, currentTime())
+      ..orderByAscending(ShiftModel.keyStartDate)
       ..includeObject([
         ShiftModel.keyEmployee,
       ]);
@@ -82,6 +83,8 @@ class ShiftsHttpRepository implements ShiftsRepository {
           ShiftModel.keyShiftStatusMissed,
         ],
       )
+      ..orderByDescending(ShiftModel.keyEndDate)
+      ..setLimit(7)
       ..includeObject([
         ShiftModel.keyEmployee,
       ]);
@@ -146,8 +149,10 @@ class ShiftsHttpRepository implements ShiftsRepository {
   }
 
   @override
-  Future<ShiftModel?> checkOutApproval(ShiftModel shiftModel, File file) async {
+  Future<ShiftModel?> checkOutApproval(
+      ShiftModel shiftModel, File file, String reason) async {
     shiftModel.checkOutApproval = true;
+    shiftModel.checkOutReason = reason;
     shiftModel.checkOutTime = currentTime();
     shiftModel.checkOutProof = ParseFile(file);
     final response = await shiftModel.save();
@@ -173,7 +178,7 @@ class ShiftsHttpRepository implements ShiftsRepository {
       ..setLimit(7)
       ..whereValueExists(ShiftModel.keyCheckInTime, true)
       ..whereValueExists(ShiftModel.keyCheckOutTime, true)
-      ..orderByDescending(ShiftModel.keyCreatedAt)
+      ..orderByDescending(ShiftModel.keyCheckOutTime)
       ..includeObject([
         ShiftModel.keyEmployee,
       ]);
@@ -202,7 +207,7 @@ class ShiftsHttpRepository implements ShiftsRepository {
       ])
       ..setAmountToSkip(skip)
       ..setLimit(7)
-      ..orderByDescending(ShiftModel.keyCreatedAt)
+      ..orderByAscending(ShiftModel.keyStartDate)
       ..includeObject([
         ShiftModel.keyEmployee,
       ]);
@@ -240,6 +245,7 @@ class ShiftsHttpRepository implements ShiftsRepository {
         ],
       )
       ..setAmountToSkip(skip)
+      ..orderByDescending(ShiftModel.keyEndDate)
       ..setLimit(12)
       ..includeObject([
         ShiftModel.keyEmployee,

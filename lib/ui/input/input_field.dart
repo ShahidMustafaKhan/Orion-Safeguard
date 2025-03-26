@@ -179,9 +179,11 @@ class _InputFieldState extends State<InputField> {
                 filled: true,
                 fillColor: widget.fillColor,
                 isDense: true,
-                contentPadding: EdgeInsets.symmetric(
-                  horizontal: widget.horizontalPadding,
-                  vertical: widget.verticalPadding,
+                contentPadding: EdgeInsets.only(
+                  left: 20,
+                  right: widget.horizontalPadding,
+                  top: widget.verticalPadding,
+                  bottom: widget.verticalPadding,
                 ),
                 prefixIcon: Container(
                   margin: EdgeInsets.only(

@@ -72,7 +72,7 @@ class _ActiveShiftPageState extends State<ActiveShiftPage> {
                 shiftName: activeShifts[index].shiftName ?? '',
                 location: activeShifts[index].location ?? '',
                 status: activeShifts[index].shiftStatus ?? '',
-                date: formatDateTime(activeShifts[index].createdAt),
+                date: formatDateTime(activeShifts[index].startDate),
                 shiftStatusCallback: () => NavRouter.push(
                     context,
                     CheckInOutPage(

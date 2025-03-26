@@ -32,16 +32,14 @@ class RecordDataView extends StatelessWidget {
                   return RecordLoadingWidget();
                 }
 
+                bool isCompleted = records[index].shiftStatus ==
+                    ShiftModel.keyShiftStatusCompleted;
                 return RecordWidget(
-                  name: records[index].shiftName,
-                  location: records[index].location,
-                  date: formatDateTimeRange(
-                      records[index].startDate, records[index].endDate),
-                  isCompleted: records[index].shiftStatus ==
-                          ShiftModel.keyShiftStatusCompleted
-                      ? true
-                      : false,
-                );
+                    name: records[index].shiftName,
+                    location: records[index].location,
+                    date: formatDateTimeRange(
+                        records[index].startDate, records[index].endDate),
+                    isCompleted: isCompleted);
               },
               separatorBuilder: (BuildContext context, int index) {
                 return customDivider(thickness: 1.2);

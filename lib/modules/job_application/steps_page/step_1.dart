@@ -69,24 +69,34 @@ class Step1 extends StatelessWidget {
                           Positioned(
                             bottom: 2,
                             right: 2,
-                            child: Card(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(100.0)),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(
-                                      100.0,
-                                    ),
-                                    border: Border.all(
+                            child: GestureDetector(
+                              onTap: () async {
+                                File? file = await ImagePickerService()
+                                    .pickImageFromCamera();
+                                if (file != null) {
+                                  jobApplicationCubit.updateJobApplicationState(
+                                      state.copyWith(profilePicture: file));
+                                }
+                              },
+                              child: Card(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(100.0)),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(
+                                        100.0,
+                                      ),
+                                      border: Border.all(
+                                        color: Colors.white,
+                                        width: 1.5,
+                                      )),
+                                  child: CircleAvatar(
+                                    backgroundColor: AppColors.primaryColor,
+                                    radius: 22,
+                                    child: SvgPicture.asset(
+                                      Assets.svgCameraUnselected,
                                       color: Colors.white,
-                                      width: 1.5,
-                                    )),
-                                child: CircleAvatar(
-                                  backgroundColor: AppColors.primaryColor,
-                                  radius: 22,
-                                  child: SvgPicture.asset(
-                                    Assets.svgCameraUnselected,
-                                    color: Colors.white,
+                                    ),
                                   ),
                                 ),
                               ),

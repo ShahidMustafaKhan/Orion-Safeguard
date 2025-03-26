@@ -79,6 +79,7 @@ class OngoingShiftsSection extends StatelessWidget {
                               children: [
                                 Text(
                                   onGoingShifts.shiftName ?? '',
+                                  maxLines: 1,
                                   style: AppTextStyles.robotoMedium(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,

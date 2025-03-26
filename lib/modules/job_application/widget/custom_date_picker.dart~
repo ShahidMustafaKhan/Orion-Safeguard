@@ -40,8 +40,7 @@ class DatePickerTextField extends StatefulWidget {
     this.iconColor = AppColors.greyColor,
     this.onChange,
     this.validator,
-    this.onFieldSubmitted,
-    this.firstDate = 1940,
+    this.onFieldSubmitted, this.firstDate = 1940,
   });
 
   @override

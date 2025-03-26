@@ -74,6 +74,7 @@ class ActiveShiftWidget extends StatelessWidget {
                   children: [
                     Text(
                       shiftName,
+                      maxLines: 1,
                       style: AppTextStyles.robotoBold(
                         fontSize: 14.0,
                       ),
@@ -132,7 +133,7 @@ class ActiveShiftWidget extends StatelessWidget {
                                 showDialog(
                                         context: context,
                                         builder: (context) =>
-                                            const DeclineReasonDialogue())
+                                            const InputReasonDialogue())
                                     .then((value) {
                                   if (value["status"] == "submitted") {
                                     declineCallback!(value["reason"] ?? '');

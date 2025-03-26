@@ -41,6 +41,7 @@ class UpComingShiftsSection extends StatelessWidget {
                   context.read<DashboardCubit>().changePage(1);
                 },
               ),
+              h1,
               if (state.upcomingShifts.status == Status.loading)
                 UpcomingShiftsLoadingView()
               else
@@ -53,7 +54,7 @@ class UpComingShiftsSection extends StatelessWidget {
                         return UpComingShiftWidget(
                           shiftName: upcomingShifts[index].shiftName ?? '',
                           location: upcomingShifts[index].location ?? '',
-                          date: formatDateTime(upcomingShifts[index].createdAt),
+                          date: formatDateTime(upcomingShifts[index].startDate),
                           onDetailView: () {
                             NavRouter.push(
                                 context,

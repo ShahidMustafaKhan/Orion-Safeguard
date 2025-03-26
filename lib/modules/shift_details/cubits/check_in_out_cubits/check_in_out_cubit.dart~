@@ -116,8 +116,7 @@ class CheckInOutCubit extends Cubit<CheckInOutState> {
 
   Future<void> checkOutApproval(ShiftModel? shiftModel, String? reason) async {
     try {
-      await shiftsRepository.checkOutApproval(
-          shiftModel!, state.file!, reason ?? '');
+      await shiftsRepository.checkOutApproval(shiftModel!, state.file!, reason ?? '');
       emit(state.copyWith(
         approvalPostStatus: PostApiStatus.success,
       ));

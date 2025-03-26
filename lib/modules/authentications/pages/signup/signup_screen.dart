@@ -53,7 +53,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12.0),
                     child: Text(
-                        "Lorem ipsum dolor sit amet, elit. Ut et massa mi. Aliquam in hendrerit urna.",
+                        "Create an account to stay connected, get updates, and manage duties.",
                         textAlign: TextAlign.center,
                         style: AppTextStyles.robotoMedium(
                             fontSize: 16.sp, fontWeight: FontWeight.w400)),

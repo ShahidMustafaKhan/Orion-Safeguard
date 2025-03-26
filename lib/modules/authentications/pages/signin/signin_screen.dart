@@ -61,7 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 12.0),
                           child: Text(
-                              "Lorem ipsum dolor sit amet, elit. Ut et massa mi. Aliquam in hendrerit urna.",
+                              "Sign in to your account to stay connected, get\n updates, and manage duties.",
                               textAlign: TextAlign.center,
                               style: AppTextStyles.robotoMedium(
                                   fontSize: 16.sp,

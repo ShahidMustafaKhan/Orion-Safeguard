@@ -39,7 +39,7 @@ class ApproveDeclineButton extends StatelessWidget {
           onPressed: () {
             showDialog(
                     context: context,
-                    builder: (context) => const DeclineReasonDialogue())
+                    builder: (context) => const InputReasonDialogue())
                 .then((value) async {
               if (value["status"] == "submitted") {
                 context.read<ShiftDetailCubit>().decline(shiftModel);

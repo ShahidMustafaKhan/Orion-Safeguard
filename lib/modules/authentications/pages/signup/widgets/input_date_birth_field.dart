@@ -43,6 +43,7 @@ class _InputDateBirthState extends State<InputDateBirth> {
         builder: (context, state) {
           return DatePickerTextField(
             hintText: "Enter your Date of Birth",
+            firstDate: 1940,
             controller: controller,
             text: "Date of Birth",
             validator: (value) {

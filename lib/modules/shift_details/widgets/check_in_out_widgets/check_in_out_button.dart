@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../config/constants/app_colors.dart';
 import '../../../../ui/button/primary_button.dart';
 import '../../../../utils/display/display_utils.dart';
+import '../../../alerts_announcements/widgets/decline_reason_dialogue.dart';
 import '../../../common_modules/custom_dialogues/check_out_approval_dialogue.dart';
 import '../../../dashboard/cubits/dashboard_cubits/dashboard_cubit.dart';
 import '../../../dashboard/cubits/home_cubits/home_cubit.dart';
@@ -19,6 +20,7 @@ class CheckInOutButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    CheckInOutCubit checkInOutCubit = context.read<CheckInOutCubit>();
     return Builder(builder: (context) {
       return PrimaryButton(
         height: 50,
@@ -30,12 +32,23 @@ class CheckInOutButton extends StatelessWidget {
         borderRadius: 16.0,
         onPressed: () async {
           if (shift?.shiftStatus == ShiftModel.keyShiftStatusOngoing) {
-            context.read<CheckInOutCubit>().checkOutFunc(() => showDialog(
+            checkInOutCubit.checkOutFunc(() => showDialog(
                         context: context,
                         builder: (context) => const CheckoutApprovalDialogue())
                     .then((value) {
                   if (value == true) {
-                    context.read<CheckInOutCubit>().checkOutApproval(shift);
+                    if (context.mounted) {
+                      showDialog(
+                          context: context,
+                          builder: (context) => const InputReasonDialogue(
+                                fieldTitle: 'Reason of early checkout',
+                              )).then((value) {
+                        if (value["status"] == "submitted") {
+                          checkInOutCubit.checkOutApproval(
+                              shift, value["reason"]);
+                        }
+                      });
+                    }
                   }
                 }));
           } else if (shift?.shiftStatus == ShiftModel.keyShiftStatusCompleted) {
@@ -44,7 +57,7 @@ class CheckInOutButton extends StatelessWidget {
           } else {
             if (context.read<HomeCubit>().state.onGoingShifts.data?.objectId ==
                 null) {
-              context.read<CheckInOutCubit>().checkInFunc();
+              checkInOutCubit.checkInFunc();
             } else {
               DisplayUtils.showErrorToast(context, "You have an ongoing shift");
             }

@@ -146,7 +146,7 @@ class _FullAlertScreenState extends State<FullAlertScreen> {
                               showDialog(
                                       context: context,
                                       builder: (context) =>
-                                          const DeclineReasonDialogue())
+                                          const InputReasonDialogue())
                                   .then((value) {
                                 if (value?["status"] == "submitted") {
                                   context.read<AlertsCubit>().decline(

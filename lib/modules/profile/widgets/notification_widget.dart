@@ -9,6 +9,9 @@ class NotificationsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ProfileCubit profileCubit = context.read<ProfileCubit>();
+    profileCubit.updateNotificationSetting(
+        profileCubit.state.userModel.data?.alerts ?? true);
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,14 +47,17 @@ class NotificationsWidget extends StatelessWidget {
               ),
               BlocBuilder<ProfileCubit, ProfileState>(
                   buildWhen: (previous, next) =>
-                      previous.userModel != next.userModel,
+                      previous.isNotificationsEnabled !=
+                      next.isNotificationsEnabled,
                   builder: (context, state) {
                     return Transform.scale(
                       scale: 0.7,
                       child: Switch(
-                        value: state.userModel.data?.alerts ?? true,
+                        value: state.isNotificationsEnabled,
                         onChanged: (bool value) {
-                          context.read<ProfileCubit>().updateAlert(value);
+                          context
+                              .read<ProfileCubit>()
+                              .updateNotificationSetting(value);
                         },
                         activeTrackColor: Colors.black,
                         activeColor: Colors.white,
