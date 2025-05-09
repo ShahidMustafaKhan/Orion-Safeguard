@@ -24,7 +24,8 @@ class SubscriptionCubit extends Cubit<SubscriptionState> {
     subscription?.on(LiveQueryEvent.update, (value) {
       final accountStatus = value.get<String>(UserModel.keyAccountStatus);
       if (accountStatus == UserModel.keyAccountStatusTypeApproved ||
-          accountStatus == UserModel.keyAccountStatusTypeRejected) {
+          accountStatus == UserModel.keyAccountStatusTypeRejected ||
+          accountStatus == UserModel.keyAccountStatusTypeFreezed) {
         emit(SubscriptionUpdated(accountStatus));
       }
     });

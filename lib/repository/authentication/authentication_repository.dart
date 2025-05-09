@@ -12,6 +12,17 @@ abstract class AuthenticationRepository {
       String niNumber,
       String employmentType,
       String accountStatus);
+
+  Future<void> signUpAsExistingEmployee(
+      String email,
+      String password,
+      String firstName,
+      String lastName,
+      String licenseNo,
+      String dateBirth,
+      String niNumber,
+      String employmentType,
+      String accountStatus);
   Future<void> logout(UserModel? userModel);
 
   Future<void> forgetPassword(String? email);

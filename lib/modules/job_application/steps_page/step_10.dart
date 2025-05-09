@@ -25,6 +25,7 @@ class _Step10State extends State<Step10> {
   List<Map<String, dynamic>> experienceList = [
     {
       "nameInstitute": TextEditingController(),
+      "location": TextEditingController(),
       "sortCode": TextEditingController(),
       "postCode": TextEditingController(),
       "telephoneNo": TextEditingController(),
@@ -40,6 +41,7 @@ class _Step10State extends State<Step10> {
   List<Map<String, dynamic>> focusNodeList = [
     {
       "nameInstitute": FocusNode(),
+      "location": FocusNode(),
       "sortCode": FocusNode(),
       "postCode": FocusNode(),
       "telephoneNo": FocusNode(),
@@ -58,6 +60,7 @@ class _Step10State extends State<Step10> {
       setState(() {
         experienceList.add({
           "nameInstitute": TextEditingController(),
+          "location": TextEditingController(),
           "sortCode": TextEditingController(),
           "postCode": TextEditingController(),
           "telephoneNo": TextEditingController(),
@@ -70,6 +73,7 @@ class _Step10State extends State<Step10> {
         });
         focusNodeList.add({
           "nameInstitute": FocusNode(),
+          "location": FocusNode(),
           "sortCode": FocusNode(),
           "postCode": FocusNode(),
           "telephoneNo": FocusNode(),
@@ -96,6 +100,8 @@ class _Step10State extends State<Step10> {
         experienceList.add({
           "nameInstitute":
               TextEditingController(text: element.previousInstituteName),
+          "location":
+              TextEditingController(text: element.previousInstituteLocation),
           "sortCode":
               TextEditingController(text: element.previousInstituteSortCode),
           "postCode":
@@ -113,6 +119,7 @@ class _Step10State extends State<Step10> {
         });
         focusNodeList.add({
           "nameInstitute": FocusNode(),
+          "location": FocusNode(),
           "sortCode": FocusNode(),
           "postCode": FocusNode(),
           "telephoneNo": FocusNode(),
@@ -172,9 +179,17 @@ class _Step10State extends State<Step10> {
                               controller: experienceList[index]
                                   ["nameInstitute"],
                               focusNode: focusNodeList[index]["nameInstitute"],
-                              nextFocusNode: focusNodeList[index]["sortCode"],
-                              label: "Enter Address of Institute ",
+                              nextFocusNode: focusNodeList[index]["location"],
+                              label: "Enter Name of Institute ",
                               fieldTitle: "Name",
+                            ),
+                            h1,
+                            InputFormField(
+                              controller: experienceList[index]["location"],
+                              focusNode: focusNodeList[index]["location"],
+                              nextFocusNode: focusNodeList[index]["sortCode"],
+                              label: "Enter Location of Institute",
+                              fieldTitle: "Location",
                             ),
                             h1,
                             InputFormField(
@@ -312,6 +327,7 @@ class _Step10State extends State<Step10> {
               for (var element in experienceList) {
                 JobExperience experience = JobExperience(
                   previousInstituteName: element["nameInstitute"].text,
+                  previousInstituteLocation: element["location"].text,
                   previousInstituteSortCode: element["sortCode"].text,
                   previousInstitutePostCode: element["postCode"].text,
                   previousInstituteTelephoneNo: element["telephoneNo"].text,

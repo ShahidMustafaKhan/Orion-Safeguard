@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
 
 import '../../core/exceptions/app_exceptions.dart';
@@ -41,6 +42,10 @@ class AuthenticationHttpRepository implements AuthenticationRepository {
     user.accountStatus = accountStatus;
     user.employmentStatus = employmentType;
 
+    ParseACL acl = ParseACL();
+    acl.setPublicReadAccess(allowed: true);
+    user.setACL(acl);
+
     var response =
         await user.signUp(); // Assuming `signup()` exists in `UserModel`
 
@@ -48,6 +53,44 @@ class AuthenticationHttpRepository implements AuthenticationRepository {
       var userData = response.result as UserModel;
       return userData;
     } else {
+      throw AppException(response.error?.message ?? "Signup failed");
+    }
+  }
+
+  @override
+  Future<void> signUpAsExistingEmployee(
+      String email,
+      String password,
+      String firstName,
+      String lastName,
+      String licenseNo,
+      String dateBirth,
+      String niNumber,
+      String employmentType,
+      String accountStatus) async {
+    final ParseCloudFunction function =
+        ParseCloudFunction('signupAndCheckEmployee');
+
+    final Map<String, dynamic> data = {
+      "username": email,
+      "email": email,
+      "password": password,
+      "firstName": firstName,
+      "lastName": lastName,
+      "licenseNo": licenseNo,
+      "dateBirth": dateBirth,
+      "niNumber": niNumber,
+      "accountStatus": "pending",
+      "employmentType": "existing",
+    };
+
+    final ParseResponse response = await function.execute(parameters: data);
+
+    if (response.success && response.result != null) {
+      debugPrint("✅ User signed up");
+      return;
+    } else {
+      debugPrint("❌ Error: ${response.error?.message}");
       throw AppException(response.error?.message ?? "Signup failed");
     }
   }

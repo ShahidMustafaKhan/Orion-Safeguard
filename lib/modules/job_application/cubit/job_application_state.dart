@@ -12,6 +12,9 @@ class JobApplicationState extends Equatable {
   final String surname;
   final String forename;
   final String surnameAtBirth;
+  final String? gender;
+  final String dateOfBirth;
+  final String placeOfBirth;
 
   final String permanentAddress;
   final String postCode;
@@ -32,6 +35,7 @@ class JobApplicationState extends Equatable {
   final String passportNo;
   final String siaLicenseSector;
   final String siaLicenseNo;
+  final DateTime? siaLicenseExpiry;
 
   final String relationshipKin;
   final String nameKin;
@@ -90,6 +94,9 @@ class JobApplicationState extends Equatable {
     this.surname = '',
     this.forename = '',
     this.surnameAtBirth = '',
+    this.gender,
+    this.dateOfBirth = '',
+    this.placeOfBirth = '',
     this.permanentAddress = '',
     this.postCode = '',
     this.permanentAddressFromDate = '',
@@ -109,6 +116,7 @@ class JobApplicationState extends Equatable {
     this.passportNo = '',
     this.siaLicenseSector = '',
     this.siaLicenseNo = '',
+    this.siaLicenseExpiry,
     this.relationshipKin = '',
     this.nameKin = '',
     this.telephoneKin = '',
@@ -158,6 +166,9 @@ class JobApplicationState extends Equatable {
     String? surname,
     String? forename,
     String? surnameAtBirth,
+    String? gender,
+    String? dateOfBirth,
+    String? placeOfBirth,
     String? permanentAddress,
     String? postCode,
     String? permanentAddressFromDate,
@@ -177,6 +188,7 @@ class JobApplicationState extends Equatable {
     String? passportNo,
     String? siaLicenseSector,
     String? siaLicenseNo,
+    DateTime? siaLicenseExpiry,
     String? relationshipKin,
     String? nameKin,
     String? telephoneKin,
@@ -225,6 +237,9 @@ class JobApplicationState extends Equatable {
       surname: surname ?? this.surname,
       forename: forename ?? this.forename,
       surnameAtBirth: surnameAtBirth ?? this.surnameAtBirth,
+      gender: gender ?? this.gender,
+      dateOfBirth: dateOfBirth ?? this.dateOfBirth,
+      placeOfBirth: placeOfBirth ?? this.placeOfBirth,
       permanentAddress: permanentAddress ?? this.permanentAddress,
       postCode: postCode ?? this.postCode,
       permanentAddressFromDate:
@@ -249,6 +264,7 @@ class JobApplicationState extends Equatable {
       passportNo: passportNo ?? this.passportNo,
       siaLicenseSector: siaLicenseSector ?? this.siaLicenseSector,
       siaLicenseNo: siaLicenseNo ?? this.siaLicenseNo,
+      siaLicenseExpiry: siaLicenseExpiry ?? this.siaLicenseExpiry,
       relationshipKin: relationshipKin ?? this.relationshipKin,
       nameKin: nameKin ?? this.nameKin,
       telephoneKin: telephoneKin ?? this.telephoneKin,
@@ -305,6 +321,9 @@ class JobApplicationState extends Equatable {
         surname,
         forename,
         surnameAtBirth,
+        gender,
+        dateOfBirth,
+        placeOfBirth,
         permanentAddress,
         postCode,
         permanentAddressFromDate,
@@ -324,6 +343,7 @@ class JobApplicationState extends Equatable {
         passportNo,
         siaLicenseSector,
         siaLicenseNo,
+        siaLicenseExpiry,
         relationshipKin,
         nameKin,
         telephoneKin,

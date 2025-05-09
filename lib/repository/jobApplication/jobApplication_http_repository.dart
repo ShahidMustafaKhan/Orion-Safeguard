@@ -8,7 +8,7 @@ class JobApplicationHttpRepository implements JobApplicationRepository {
   @override
   Future<void> submitJobApplication(
       JobApplicationModel jobApplicationModel) async {
-    ParseResponse response = await jobApplicationModel.create();
+    ParseResponse response = await jobApplicationModel.save();
     if (response.success && response.results != null) {
       return;
     } else {

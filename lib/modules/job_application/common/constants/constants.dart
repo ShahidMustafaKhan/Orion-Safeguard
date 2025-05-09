@@ -46,6 +46,10 @@ List<String> relationship() {
   return ["Father", "Mom", "Brother", "Sister", "Uncle", "Son"];
 }
 
+List<String> gender() {
+  return ["Male", "Female", "Other"];
+}
+
 List<String> placeOfEntryInUK() {
   return [
     // Airports

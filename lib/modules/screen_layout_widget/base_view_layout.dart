@@ -6,6 +6,7 @@ import 'package:orion_safeguard/config/constants/app_text_styles.dart';
 import 'package:orion_safeguard/modules/profile/cubit/profile_cubit/profile_cubit.dart';
 import 'package:orion_safeguard/modules/profile/pages/profile_screen.dart';
 import 'package:orion_safeguard/ui/widgets/on_click.dart';
+import 'package:orion_safeguard/utils/extensions/extended_string.dart';
 
 import '../../config/routes/nav_router.dart';
 import '../../generated/assets.dart';
@@ -149,7 +150,9 @@ class _BaseViewLayoutState extends State<BaseViewLayout> {
                                               ),
                                             ),
                                             Text(
-                                              state.userModel.data?.name ?? '',
+                                              state.userModel.data?.name
+                                                      ?.capitalizeEachWord() ??
+                                                  '',
                                               style: AppTextStyles.robotoBold(
                                                 fontSize: 14.0,
                                                 color: Colors.white,

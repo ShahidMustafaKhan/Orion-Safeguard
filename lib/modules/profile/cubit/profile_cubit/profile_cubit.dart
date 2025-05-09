@@ -32,6 +32,9 @@ class ProfileCubit extends Cubit<ProfileState> {
             ? ApiResponse.loading()
             : ApiResponse.completed(currentUser),
         updateType: ProfileUpdateType.none));
+    if (state.userModel.data?.objectId != null) {
+      addDeviceToken();
+    }
   }
 
   getCurrentUser() async {

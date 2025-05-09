@@ -50,7 +50,7 @@ class Assets {
       'assets/icons/svg/shift_unselected.svg';
   static const String svgSms = 'assets/icons/svg/sms.svg';
   static const String svgSplashLogo = 'assets/icons/svg/splash_logo.svg';
-  static const String svgUserAdd = 'assets/icons/svg/authentication-add.svg';
+  static const String svgUserAdd = 'assets/icons/svg/user-add.svg';
   static const String svgUserIcon = 'assets/icons/svg/user_icon.svg';
   static const String svgVector = 'assets/icons/svg/Vector.svg';
   static const String svgVolumeMute = 'assets/icons/svg/volume-mute.svg';

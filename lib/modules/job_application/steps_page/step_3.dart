@@ -51,6 +51,7 @@ class _Step3State extends State<Step3> {
   TextEditingController passportNoController = TextEditingController();
   TextEditingController siaSectorController = TextEditingController();
   TextEditingController siaNoController = TextEditingController();
+  TextEditingController siaLicenseExpiryController = TextEditingController();
 
   FocusNode addressFocusNode = FocusNode();
   FocusNode postCodeFocusNode = FocusNode();
@@ -74,6 +75,7 @@ class _Step3State extends State<Step3> {
   FocusNode passportNoFocusNode = FocusNode();
   FocusNode siaNoFocusNode = FocusNode();
   FocusNode siaSectorFocusNode = FocusNode();
+  FocusNode siaLicenseExpiryFocusNode = FocusNode();
 
   @override
   void initState() {
@@ -109,6 +111,8 @@ class _Step3State extends State<Step3> {
     passportNoController.text = jobApplicationCubit.state.passportNo;
     siaSectorController.text = jobApplicationCubit.state.siaLicenseSector;
     siaNoController.text = jobApplicationCubit.state.siaLicenseNo;
+    siaLicenseExpiryController.text =
+        jobApplicationCubit.state.siaLicenseExpiry?.toString() ?? '';
 
     super.initState();
   }
@@ -332,6 +336,13 @@ class _Step3State extends State<Step3> {
                           fieldTitle: "SIA License Number",
                           controller: siaNoController,
                           focusNode: siaNoFocusNode,
+                          nextFocusNode: siaLicenseExpiryFocusNode,
+                        ),
+                        h1,
+                        DatePickerTextField(
+                          text: 'SIA License Expiration',
+                          hintText: 'Enter Expiration Date',
+                          controller: siaLicenseExpiryController,
                         ),
                       ],
                     ),
@@ -371,6 +382,8 @@ class _Step3State extends State<Step3> {
                           passportNo: passportNoController.text,
                           siaLicenseSector: siaSectorController.text,
                           siaLicenseNo: siaNoController.text,
+                          siaLicenseExpiry:
+                              DateTime.parse(siaLicenseExpiryController.text),
                         ));
                   },
                   formKey: formKey,

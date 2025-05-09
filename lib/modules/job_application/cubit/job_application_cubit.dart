@@ -77,19 +77,25 @@ class JobApplicationCubit extends Cubit<JobApplicationState> {
     JobApplicationModel jobApplicationModel = JobApplicationModel();
     jobApplicationModel.employee = _userModel;
 
-    if (state.profilePicture != null) {
-      jobApplicationModel.profilePicture = ParseFile(state.profilePicture);
-    }
+    // if (state.profilePicture != null) {
+    //   jobApplicationModel.profilePicture = ParseFile(state.profilePicture);
+    // }
 
     if (state.attachedDocument != null) {
       jobApplicationModel.attachedDocument = ParseFile(state.attachedDocument);
     }
+
+    print("doucment name ${state.attachedDocument?.path}");
+    print("profile pic ${state.profilePicture?.path}");
+
     jobApplicationModel.attachedDocumentName = state.attachedDocumentName;
     jobApplicationModel.positionAppliedFor = state.positionAppliedFor;
     jobApplicationModel.title = state.title;
     jobApplicationModel.surname = state.surname;
     jobApplicationModel.forename = state.forename;
     jobApplicationModel.surnameAtBirth = state.surnameAtBirth;
+    jobApplicationModel.dateOfBirth = state.dateOfBirth;
+    jobApplicationModel.gender = state.gender ?? '';
 
     jobApplicationModel.permanentAddress = state.permanentAddress;
     jobApplicationModel.postCode = state.postCode;
@@ -111,6 +117,9 @@ class JobApplicationCubit extends Cubit<JobApplicationState> {
     jobApplicationModel.passportNo = state.passportNo;
     jobApplicationModel.siaLicenseSector = state.siaLicenseSector;
     jobApplicationModel.siaLicenseNo = state.siaLicenseNo;
+    if (state.siaLicenseExpiry != null) {
+      jobApplicationModel.siaLicenseExpiry = state.siaLicenseExpiry!;
+    }
 
     jobApplicationModel.relationshipKin = state.relationshipKin;
     jobApplicationModel.nameKin = state.nameKin;

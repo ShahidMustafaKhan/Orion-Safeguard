@@ -4,6 +4,7 @@ import 'package:orion_safeguard/core/di/service_locator.dart';
 import 'package:orion_safeguard/core/services/session_controller/session_controller.dart';
 import 'package:parse_server_sdk/parse_server_sdk.dart';
 
+import '../../../../core/exceptions/app_exceptions.dart';
 import '../../../../repository/authentication/authentication_repository.dart';
 import '../../../../utils/enums.dart';
 import '../../../profile/model/user_model.dart';
@@ -66,6 +67,24 @@ class SignUpCubit extends Cubit<SignUpState> {
   Future<void> onSignUpButtonClicked() async {
     emit(state.copyWith(postApiStatus: PostApiStatus.loading));
     try {
+      UserModel? userModel = state.employmentStatus == EmploymentStatus.applying
+          ? await signUpAsApplyingEmployee()
+          : await signUpAsExistingEmployee();
+
+      ParseResponse response = await ParseSession().save();
+      SessionController().savedUserInPreference(
+          userModel?.objectId ?? '', response.result?.sessionToken ?? '');
+      SessionController().getUserFromPreference();
+      emit(state.copyWith(
+          postApiStatus: PostApiStatus.success, userModel: userModel));
+    } catch (e) {
+      emit(state.copyWith(
+          postApiStatus: PostApiStatus.error, message: e.toString()));
+    }
+  }
+
+  Future<UserModel?> signUpAsApplyingEmployee() async {
+    try {
       UserModel? userModel = await authenticationRepository.signup(
         state.email,
         state.password,
@@ -81,15 +100,36 @@ class SignUpCubit extends Cubit<SignUpState> {
             ? UserModel.keyAccountStatusTypeApplying
             : UserModel.keyAccountStatusTypePending,
       );
-      ParseResponse response = await ParseSession().save();
-      SessionController().savedUserInPreference(
-          userModel?.objectId ?? '', response.result?.sessionToken ?? '');
-      SessionController().getUserFromPreference();
-      emit(state.copyWith(
-          postApiStatus: PostApiStatus.success, userModel: userModel));
+      return userModel;
     } catch (e) {
-      emit(state.copyWith(
-          postApiStatus: PostApiStatus.error, message: e.toString()));
+      throw AppException(e.toString());
+    }
+  }
+
+  Future<UserModel?> signUpAsExistingEmployee() async {
+    try {
+      await authenticationRepository.signUpAsExistingEmployee(
+        state.email,
+        state.password,
+        state.firstName,
+        state.lastName,
+        state.licenseNo,
+        state.dateBirth,
+        state.niNumber,
+        state.employmentStatus == EmploymentStatus.applying
+            ? UserModel.keyEmploymentStatusApplying
+            : UserModel.keyEmploymentStatusExisting,
+        state.employmentStatus == EmploymentStatus.applying
+            ? UserModel.keyAccountStatusTypeApplying
+            : UserModel.keyAccountStatusTypePending,
+      );
+      UserModel? userModel = await authenticationRepository.login(
+        state.email,
+        state.password,
+      );
+      return userModel;
+    } catch (e) {
+      throw AppException(e.toString());
     }
   }
 }

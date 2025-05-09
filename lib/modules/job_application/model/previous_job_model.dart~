@@ -1,6 +1,5 @@
 class JobExperience {
   final String previousInstituteName;
-  final String previousInstituteLocation;
   final String previousInstituteSortCode;
   final String previousInstitutePostCode;
   final String previousInstituteTelephoneNo;
@@ -13,7 +12,6 @@ class JobExperience {
 
   JobExperience({
     required this.previousInstituteName,
-    required this.previousInstituteLocation,
     required this.previousInstituteSortCode,
     required this.previousInstitutePostCode,
     required this.previousInstituteTelephoneNo,
@@ -29,7 +27,6 @@ class JobExperience {
   Map<String, dynamic> toJson() {
     return {
       "previousInstituteName": previousInstituteName,
-      "previousInstituteLocation": previousInstituteLocation,
       "previousInstituteSortCode": previousInstituteSortCode,
       "previousInstitutePostCode": previousInstitutePostCode,
       "previousInstituteTelephoneNo": previousInstituteTelephoneNo,
@@ -46,7 +43,6 @@ class JobExperience {
   factory JobExperience.fromJson(Map<String, dynamic> json) {
     return JobExperience(
       previousInstituteName: json["previousInstituteName"] ?? "",
-      previousInstituteLocation: json["previousInstituteLocation"] ?? "",
       previousInstituteSortCode: json["previousInstituteSortCode"] ?? "",
       previousInstitutePostCode: json["previousInstitutePostCode"] ?? "",
       previousInstituteTelephoneNo: json["previousInstituteTelephoneNo"] ?? "",
@@ -62,7 +58,6 @@ class JobExperience {
   /// CopyWith function
   JobExperience copyWith({
     String? previousInstituteName,
-    String? previousInstituteLocation,
     String? previousInstituteSortCode,
     String? previousInstitutePostCode,
     String? previousInstituteTelephoneNo,
@@ -76,8 +71,6 @@ class JobExperience {
     return JobExperience(
       previousInstituteName:
           previousInstituteName ?? this.previousInstituteName,
-      previousInstituteLocation:
-          previousInstituteLocation ?? this.previousInstituteLocation,
       previousInstituteSortCode:
           previousInstituteSortCode ?? this.previousInstituteSortCode,
       previousInstitutePostCode:

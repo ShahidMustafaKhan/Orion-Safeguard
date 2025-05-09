@@ -21,6 +21,8 @@ class JobApplicationModel extends ParseObject implements ParseCloneable {
   static const String keySurname = 'surname';
   static const String keyForename = 'forename';
   static const String keySurnameAtBirth = 'surnameAtBirth';
+  static const String keyGender = 'gender';
+  static const String keyDateOfBirth = 'dateOfBirth';
 
   // Address Details
   static const String keyPermanentAddress = 'permanentAddress';
@@ -46,6 +48,7 @@ class JobApplicationModel extends ParseObject implements ParseCloneable {
   static const String keyPassportNo = 'passportNo';
   static const String keySiaLicenseSector = 'siaLicenseSector';
   static const String keySiaLicenseNo = 'siaLicenseNo';
+  static const String keySiaLicenseExpiry = 'siaLicenseExpiry';
 
   // Next of Kin
   static const String keyRelationshipKin = 'relationshipKin';
@@ -114,6 +117,8 @@ class JobApplicationModel extends ParseObject implements ParseCloneable {
   set surname(String value) => set<String>(keySurname, value);
   set forename(String value) => set<String>(keyForename, value);
   set surnameAtBirth(String value) => set<String>(keySurnameAtBirth, value);
+  set gender(String value) => set<String>(keyGender, value);
+  set dateOfBirth(String value) => set<String>(keyDateOfBirth, value);
 
   set permanentAddress(String value) => set<String>(keyPermanentAddress, value);
   set postCode(String value) => set<String>(keyPostCode, value);
@@ -141,6 +146,8 @@ class JobApplicationModel extends ParseObject implements ParseCloneable {
   set passportNo(String value) => set<String>(keyPassportNo, value);
   set siaLicenseSector(String value) => set<String>(keySiaLicenseSector, value);
   set siaLicenseNo(String value) => set<String>(keySiaLicenseNo, value);
+  set siaLicenseExpiry(DateTime value) =>
+      set<DateTime>(keySiaLicenseExpiry, value);
 
   set relationshipKin(String value) => set<String>(keyRelationshipKin, value);
   set nameKin(String value) => set<String>(keyNameKin, value);
